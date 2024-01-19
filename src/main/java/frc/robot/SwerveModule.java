@@ -30,6 +30,9 @@ public class SwerveModule {
     /* angle motor control requests */
     private final PositionVoltage anglePosition = new PositionVoltage(0);
 
+    // private final SlewRateLimiter openLoopLimiter = new SlewRateLimiter(.05);
+    // private final SlewRateLimiter closedLoopLimiter = new SlewRateLimiter(.05);
+
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
@@ -51,21 +54,40 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle); 
-        mAngleMotor.setControl(anglePosition.withPosition(desiredState.angle.getRotations()));
-        setSpeed(desiredState, isOpenLoop);
+        this.setAngleSpeed(desiredState.angle.getRotations());
+        this.setSpeed(desiredState, isOpenLoop);
+    }
+
+    /**
+     * @param rotations the number of rotations of a {@link Rotation2d}
+     */
+    private void setAngleSpeed(double rotations) {
+        mAngleMotor.setControl(anglePosition.withPosition(rotations));
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
         if(isOpenLoop){
-            driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
+            double toOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
+            
+            // toOutput = openLoopLimiter.calculate(toOutput);
+
+            driveDutyCycle.Output = toOutput;
+
             mDriveMotor.setControl(driveDutyCycle);
         }
         else {
-            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
+            double toOutputVelocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);             
+
+            // toOutputVelocity = closedLoopLimiter.calculate(toOutputVelocity);
+
+            driveVelocity.Velocity = toOutputVelocity;
             driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
+
             mDriveMotor.setControl(driveVelocity);
         }
     }
+
+
 
     public Rotation2d getCANcoder(){
         return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue());

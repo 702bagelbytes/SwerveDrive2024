@@ -73,6 +73,7 @@ public class RobotContainer {
             // Do whatever you want with the poses here
             field.getObject("path").setPoses(poses);
         });
+
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -114,8 +115,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new SequentialCommandGroup((new InstantCommand(() -> 
-        s_Swerve.zeroHeading())), autoChooser.getSelected());
+        return new SequentialCommandGroup((new InstantCommand(() -> {
+            s_Swerve.zeroHeading();
+            s_Swerve.gyro.reset();
+        })), autoChooser.getSelected());
         // An ExampleCommand will run in autonomous
         // return new exampleAuto(s_Swerve);
 

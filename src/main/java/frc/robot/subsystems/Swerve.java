@@ -49,9 +49,10 @@ public class Swerve extends SubsystemBase {
                 this::resetPose,
                 this::getRobotRelativeSpeeds,
                 this::driveRobotRelative,
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(.5, Constants.Swerve.driveKI, Constants.Swerve.driveKD), // Translation PID constants
-                        new PIDConstants(0.5, 0.12, 0.1), // Rotation PID constants
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                 // Constants class
+                        new PIDConstants(0.3, .02, .05),
+                        new PIDConstants(.5, .025, 0.05),
                         Constants.Swerve.maxSpeed, // Max module speed, in m/s
                         Constants.Swerve.drivebaseRadius,
                         new ReplanningConfig() // Default path replanning config. See the API for the options here
