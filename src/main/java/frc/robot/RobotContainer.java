@@ -45,12 +45,12 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    private final Swerve swerveDrive = new Swerve();
 
     private final Field2d field;
 
     /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
+     * The container for the robot. Contains subsystems, IO devices, and commands.
      */
     public RobotContainer() {
         field = new Field2d();
@@ -58,25 +58,22 @@ public class RobotContainer {
 
         // Logging callback for current robot pose
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
-            // Do whatever you want with the pose here
             field.setRobotPose(pose);
         });
 
         // Logging callback for target robot pose
         PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
-            // Do whatever you want with the pose here
             field.getObject("target pose").setPose(pose);
         });
 
         // Logging callback for the active path, this is sent as a list of poses
         PathPlannerLogging.setLogActivePathCallback((poses) -> {
-            // Do whatever you want with the poses here
             field.getObject("path").setPoses(poses);
         });
 
-        s_Swerve.setDefaultCommand(
+        swerveDrive.setDefaultCommand(
                 new TeleopSwerve(
-                        s_Swerve,
+                        swerveDrive,
                         () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3),
@@ -87,9 +84,6 @@ public class RobotContainer {
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoChooser = AutoBuilder.buildAutoChooser();
-
-        // Another option that allows you to specify the default auto by its name
-        // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
@@ -104,7 +98,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        zeroGyro.onTrue(new InstantCommand(() -> swerveDrive.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .77));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
     }
@@ -116,8 +110,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup((new InstantCommand(() -> {
-            s_Swerve.zeroHeading();
-            s_Swerve.gyro.reset();
+            swerveDrive.zeroHeading();
+            swerveDrive.gyro.reset();
         })), autoChooser.getSelected());
         // An ExampleCommand will run in autonomous
         // return new exampleAuto(s_Swerve);
