@@ -17,11 +17,12 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d angleOffset;
 
-    private TalonFX mAngleMotor;
-    private TalonFX mDriveMotor;
+    private TalonFX angleMotor;
+    private TalonFX driveMotor;
     private CANcoder angleEncoder;
 
-    private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
+    private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.DRIVE_KS,
+            Constants.Swerve.DRIVE_KV, Constants.Swerve.DRIVE_KA);
 
     /* drive motor control requests */
     private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
@@ -30,63 +31,81 @@ public class SwerveModule {
     /* angle motor control requests */
     private final PositionVoltage anglePosition = new PositionVoltage(0);
 
-    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
+    // private final SlewRateLimiter openLoopLimiter = new SlewRateLimiter(.05);
+    // private final SlewRateLimiter closedLoopLimiter = new SlewRateLimiter(.05);
+
+    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
-        
+
         /* Angle Encoder Config */
         angleEncoder = new CANcoder(moduleConstants.cancoderID);
-        angleEncoder.getConfigurator().apply(Robot.ctreConfigs.swerveCANcoderConfig);
+        angleEncoder.getConfigurator().apply(Robot.CTRE_CONFIGS.swerveCANcoderConfig);
 
         /* Angle Motor Config */
-        mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
-        mAngleMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
+        angleMotor = new TalonFX(moduleConstants.angleMotorID);
+        angleMotor.getConfigurator().apply(Robot.CTRE_CONFIGS.swerveAngleFXConfig);
         resetToAbsolute();
 
         /* Drive Motor Config */
-        mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
-        mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
-        mDriveMotor.getConfigurator().setPosition(0.0);
+        driveMotor = new TalonFX(moduleConstants.driveMotorID);
+        driveMotor.getConfigurator().apply(Robot.CTRE_CONFIGS.swerveDriveFXConfig);
+        driveMotor.getConfigurator().setPosition(0.0);
     }
 
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle); 
-        mAngleMotor.setControl(anglePosition.withPosition(desiredState.angle.getRotations()));
-        setSpeed(desiredState, isOpenLoop);
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
+        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+        this.setAngleSpeed(desiredState.angle.getRotations());
+        this.setSpeed(desiredState, isOpenLoop);
     }
 
-    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
-        if(isOpenLoop){
-            driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
-            mDriveMotor.setControl(driveDutyCycle);
-        }
-        else {
-            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
+    /**
+     * @param rotations the number of rotations of a {@link Rotation2d}
+     */
+    private void setAngleSpeed(double rotations) {
+        angleMotor.setControl(anglePosition.withPosition(rotations));
+    }
+
+    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
+        if (isOpenLoop) {
+            double toOutput = desiredState.speedMetersPerSecond / Constants.Swerve.MAX_SPEED;
+
+            // toOutput = openLoopLimiter.calculate(toOutput);
+
+            driveDutyCycle.Output = toOutput;
+
+            driveMotor.setControl(driveDutyCycle);
+        } else {
+            double toOutputVelocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond,
+                    Constants.Swerve.WHEEL_CIRCUMFERENCE);
+
+            // toOutputVelocity = closedLoopLimiter.calculate(toOutputVelocity);
+
+            driveVelocity.Velocity = toOutputVelocity;
             driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-            mDriveMotor.setControl(driveVelocity);
+
+            driveMotor.setControl(driveVelocity);
         }
     }
 
-    public Rotation2d getCANcoder(){
+    public Rotation2d getCANcoder() {
         return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue());
     }
 
-    public void resetToAbsolute(){
+    public void resetToAbsolute() {
         double absolutePosition = getCANcoder().getRotations() - angleOffset.getRotations();
-        mAngleMotor.setPosition(absolutePosition);
+        angleMotor.setPosition(absolutePosition);
     }
 
-    public SwerveModuleState getState(){
+    public SwerveModuleState getState() {
         return new SwerveModuleState(
-            Conversions.RPSToMPS(mDriveMotor.getVelocity().getValue(), Constants.Swerve.wheelCircumference), 
-            Rotation2d.fromRotations(mAngleMotor.getPosition().getValue())
-        );
+                Conversions.RPSToMPS(driveMotor.getVelocity().getValue(), Constants.Swerve.WHEEL_CIRCUMFERENCE),
+                Rotation2d.fromRotations(angleMotor.getPosition().getValue()));
     }
 
-    public SwerveModulePosition getPosition(){
+    public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            Conversions.rotationsToMeters(mDriveMotor.getPosition().getValue(), Constants.Swerve.wheelCircumference), 
-            Rotation2d.fromRotations(mAngleMotor.getPosition().getValue())
-        );
+                Conversions.rotationsToMeters(driveMotor.getPosition().getValue(), Constants.Swerve.WHEEL_CIRCUMFERENCE),
+                Rotation2d.fromRotations(angleMotor.getPosition().getValue()));
     }
 }
