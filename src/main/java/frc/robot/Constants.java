@@ -131,6 +131,35 @@ public final class Constants {
         }
     }
 
+    public static final class ArmConstants {
+        public static final int ArmMotorID = 0;
+
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double ArmPIDTolerance = 0.0;
+        public static final double ArmPosInValue = 0.0;
+        public static final double ArmPosOutValue = 0.0;
+
+
+
+    }
+    public static final class DeflectorConstants {
+        public static final int DeflectorMotorID = 0;
+
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double DeflectorPIDTolerance = 0.0;
+        public static final double DeflectorPosInValue = 0.0;
+        public static final double DeflectorPosOutValue = 0.0;
+
+
+
+    }
+
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
