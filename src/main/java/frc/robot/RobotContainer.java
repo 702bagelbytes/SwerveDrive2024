@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
@@ -26,9 +28,10 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final Subsystem s_ShooterSubsystem = new ShooterSubsystem();
-    private final Subsystem i_IntakeSubsystem = new IntakeSubsystem();
-    private final Subsystem d_DeflectorSubsystem = new DeflectorSubsystem();
+    private final ShooterSubsystem s_ShooterSubsystem = new ShooterSubsystem();
+    private final IntakeSubsystem i_IntakeSubsystem = new IntakeSubsystem();
+    private final DeflectorSubsystem d_DeflectorSubsystem = new DeflectorSubsystem();
+    private final ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -62,7 +65,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, IO devices, and commands.
      */
     public RobotContainer() {
-        field = new Field2d();
+        Field2d field = new Field2d();
         SmartDashboard.putData("Field", field);
 
         // Logging callback for current robot pose
@@ -80,9 +83,9 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
-        swerveDrive.setDefaultCommand(
+        s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
-                        swerveDrive,
+                        s_Swerve,
                         () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3),
@@ -108,7 +111,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> swerveDrive.zeroHeading()));
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .77));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
@@ -131,8 +134,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup((new InstantCommand(() -> {
-            swerveDrive.zeroHeading();
-            swerveDrive.gyro.reset();
+            s_Swerve.zeroHeading();
+            s_Swerve.gyro.reset();
         })), autoChooser.getSelected());
         // An ExampleCommand will run in autonomous
         // return new exampleAuto(s_Swerve);
