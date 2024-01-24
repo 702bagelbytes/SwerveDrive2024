@@ -19,7 +19,6 @@ import static frc.lib.util.COTSTalonFXSwerveConstants.SDS.MK4i.*;
 public final class Constants {
     public static final double CONTROLLER_DEADBAND = 0.1;
 
-
     public static final class Swerve {
         /**
          * Whether gyroscope values should be inverted.
@@ -100,7 +99,7 @@ public final class Constants {
         public static final double DRIVE_KA = 0.27;
 
         /** Units: m/s */
-      public static final double MAX_SPEED = 4.5;
+        public static final double MAX_SPEED = 4.5;
         /** Units: radians/s */
         public static final double MAX_ANGULAR_VELOCITY = 10.0;
 
@@ -157,6 +156,7 @@ public final class Constants {
                 new ReplanningConfig());
 
     }
+
     public static final class ArmConstants {
         public static final int ArmMotorID = 0;
 
@@ -168,9 +168,12 @@ public final class Constants {
         public static final double ArmPosInValue = 0.0;
         public static final double ArmPosOutValue = 0.0;
 
-
-
     }
+
+    public static final class IntakeConstants {
+        public static final int IntakeMotorID = 0;
+    }
+
     public static final class DeflectorConstants {
         public static final int DeflectorMotorID = 0;
 
@@ -182,30 +185,39 @@ public final class Constants {
         public static final double DeflectorPosInValue = 0.0;
         public static final double DeflectorPosOutValue = 0.0;
 
+    }
 
+    public static final class AutoAimConstants {
+        public static final double kP = 0.042;
+        public static final double kI = 0.0022;
+        public static final double kD = 0.00;
+
+        public static final double AutoAimPIDTolerance = 1.0;
+        // public static final double DeflectorPosInValue = 0.0;
+        // public static final double DeflectorPosOutValue = 0.0;
 
     }
 
-    public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
+    public static final class AutoConstants { // TODO: The below constants are used in the example auto, and must be
+                                              // tuned to specific robot
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-    
+
         public static final double kPXController = 1;
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
-    
+
         /**
          * Config for PathPlanner to follow auto paths
          */
-        
+
         /* Constraint for the motion profilied robot angle controller */
-      //  public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-       //     new TrapezoidProfile.Constraints(
-       //         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+        // public static final TrapezoidProfile.Constraints kThetaControllerConstraints
+        // =
+        // new TrapezoidProfile.Constraints(
+        // kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
-    
-    
 
 }

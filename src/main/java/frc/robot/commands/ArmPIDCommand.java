@@ -11,13 +11,14 @@ import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class ArmPIDCommand extends Command {
-  
+
   private PIDController ArmPID = new PIDController(
-    Constants.ArmConstants.kP, 
-    Constants.ArmConstants.kI, 
-    Constants.ArmConstants.kD);
+      Constants.ArmConstants.kP,
+      Constants.ArmConstants.kI,
+      Constants.ArmConstants.kD);
 
   ArmSubsystem armsubsystem;
+
   /** Creates a new ArmPIDCommand. */
   public ArmPIDCommand(Subsystem a_ArmSubsystem, double setpoint) {
     ArmPID.setSetpoint(setpoint);
@@ -27,7 +28,8 @@ public class ArmPIDCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

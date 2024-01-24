@@ -10,10 +10,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ArmSubsystem extends SubsystemBase{
+public class ArmSubsystem extends SubsystemBase {
     private TalonFX ArmMotor = new TalonFX(Constants.ArmConstants.ArmMotorID);
-
-
 
     public ArmSubsystem() {
         ArmMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -23,15 +21,15 @@ public class ArmSubsystem extends SubsystemBase{
         ArmMotor.setPosition(0);
     }
 
-    public double TickToDeg(double tick){
+    public double TickToDeg(double tick) {
         return tick;
     }
 
-    public double getArmAngle(){
+    public double getArmAngle() {
         return TickToDeg(ArmMotor.getPosition().getValueAsDouble());
     }
 
-    public void set(double value){
+    public void set(double value) {
         ArmMotor.set(value);
     }
 

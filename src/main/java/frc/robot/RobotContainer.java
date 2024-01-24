@@ -32,11 +32,11 @@ public class RobotContainer {
     private final IntakeSubsystem i_IntakeSubsystem = new IntakeSubsystem();
     private final DeflectorSubsystem d_DeflectorSubsystem = new DeflectorSubsystem();
     private final ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
+    private final LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final Joystick codriver = new Joystick(1);
-
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -52,9 +52,10 @@ public class RobotContainer {
     private final JoystickButton ArmPosOut = new JoystickButton(codriver, XboxController.Button.kY.value);
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
-
+    public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
 
     private double power = 1;
+    public static double AimPID = 0;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -88,10 +89,10 @@ public class RobotContainer {
                         s_Swerve,
                         () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
-                        () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3),
+                        () -> Math.pow(-driver.getRawAxis(rotationAxis) * power + AimPID, 3),
                         () -> robotCentric.getAsBoolean()));
 
-        a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(()-> codriver.getRawAxis(translationAxis)));
+        a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
         // Configure the button bindings
         configureButtonBindings();
 
@@ -118,15 +119,20 @@ public class RobotContainer {
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         ShootS.onTrue(new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem));
         ShootA.onTrue(new SequentialCommandGroup(
-            new ParallelCommandGroup(new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem), 
-        new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue)), 
-        new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue))
-        );
+                new ParallelCommandGroup(new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
+                        new DeflectorPIDCommand(d_DeflectorSubsystem,
+                                Constants.DeflectorConstants.DeflectorPosOutValue)),
+                new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue)));
+        AutoAim.whileTrue(new AutoAimCommand(l_LimelightSubsystem));
+
+        AutoAim.onFalse(new InstantCommand(() -> AimPID = 0));
 
     }
-    public void ResetArmPosition(){
+
+    public void ResetArmPosition() {
         a_ArmSubsystem.ResetArmPos();
     }
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *

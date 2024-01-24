@@ -10,10 +10,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class DeflectorSubsystem extends SubsystemBase{
+public class DeflectorSubsystem extends SubsystemBase {
     private TalonFX DeflectorMotor = new TalonFX(Constants.DeflectorConstants.DeflectorMotorID);
-
-
 
     public DeflectorSubsystem() {
         DeflectorMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -23,15 +21,15 @@ public class DeflectorSubsystem extends SubsystemBase{
         DeflectorMotor.setPosition(0);
     }
 
-    public double TickToDeg(double tick){
+    public double TickToDeg(double tick) {
         return tick;
     }
 
-    public double getArmAngle(){
+    public double getArmAngle() {
         return TickToDeg(DeflectorMotor.getPosition().getValueAsDouble());
     }
 
-    public void set(double value){
+    public void set(double value) {
         DeflectorMotor.set(value);
     }
 
