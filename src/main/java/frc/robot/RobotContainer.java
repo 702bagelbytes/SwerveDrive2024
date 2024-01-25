@@ -53,9 +53,11 @@ public class RobotContainer {
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
     public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
+    public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
 
     private double power = 1;
     public static double AimPID = 0;
+    public static double FollowPID = 0;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -87,7 +89,7 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
-                        () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3),
+                        () -> Math.pow(-driver.getRawAxis(translationAxis) * power + FollowPID, 3),
                         () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(rotationAxis) * power + AimPID, 3),
                         () -> robotCentric.getAsBoolean()));
@@ -124,8 +126,11 @@ public class RobotContainer {
                                 Constants.DeflectorConstants.DeflectorPosOutValue)),
                 new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue)));
         AutoAim.whileTrue(new AutoAimCommand(l_LimelightSubsystem));
+        AutoAim.whileTrue(new AutoFollowCommand(l_LimelightSubsystem));
 
         AutoAim.onFalse(new InstantCommand(() -> AimPID = 0));
+        AutoAim.onFalse(new InstantCommand(() -> FollowPID = 0));
+       
 
     }
 

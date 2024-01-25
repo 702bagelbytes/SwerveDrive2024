@@ -13,20 +13,20 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.LimelightSubsystem;
 
-public class AutoAimCommand extends Command {
+public class AutoFollowCommand extends Command {
   boolean interrupted;
 
-  private PIDController AutoAimPID = new PIDController(
+  private PIDController AutoFollowPID = new PIDController(
 
-      Constants.AutoAimConstants.kP,
-      Constants.AutoAimConstants.kI,
-      Constants.AutoAimConstants.kD);
+      Constants.AutoFollowConstants.kP,
+      Constants.AutoFollowConstants.kI,
+      Constants.AutoFollowConstants.kD);
 
   LimelightSubsystem l_LimelightSubsystem;
   PIDSubsystem p_PidSubsystem;
 
   /** Creates a new AutoAim. */
-  public AutoAimCommand(Subsystem l_LimelightSubsystem) {
+  public AutoFollowCommand(Subsystem l_LimelightSubsystem) {
     this.l_LimelightSubsystem = (LimelightSubsystem) l_LimelightSubsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -43,21 +43,21 @@ public class AutoAimCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AutoAimPID.setSetpoint(0);
-    AutoAimPID.setTolerance(1);
+    AutoFollowPID.setSetpoint(5);
+    AutoFollowPID.setTolerance(1);
 
-    double x = l_LimelightSubsystem.getTargetX();
+    double a = l_LimelightSubsystem.getTargetA();
     boolean Target = l_LimelightSubsystem.IsTargetAvailable();
-    double value = AutoAimPID.calculate(x);
+    double value = AutoFollowPID.calculate(a);
     double result = value > 0? value + 0.455: value - 0.455;
-    RobotContainer.AimPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
+    RobotContainer.FollowPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.AimPID = 0;
+    RobotContainer.FollowPID = 0;
   }
 
   // Returns true when the command should end.

@@ -188,11 +188,22 @@ public final class Constants {
     }
 
     public static final class AutoAimConstants {
-        public static final double kP = 0.042;
-        public static final double kI = 0.0022;
-        public static final double kD = 0.00;
+        public static final double kP = 0.0111;
+        public static final double kI = 0.000666;
+        public static final double kD = 0.0000333;
 
         public static final double AutoAimPIDTolerance = 1.0;
+        // public static final double DeflectorPosInValue = 0.0;
+        // public static final double DeflectorPosOutValue = 0.0;
+
+    }
+
+    public static final class AutoFollowConstants {
+        public static final double kP = 0.0111;
+        public static final double kI = 0.000666;
+        public static final double kD = 0.0000333;
+
+        public static final double AutoFollowPIDTolerance = 1.0;
         // public static final double DeflectorPosInValue = 0.0;
         // public static final double DeflectorPosOutValue = 0.0;
 
