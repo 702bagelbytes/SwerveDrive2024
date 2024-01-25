@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+//import frc.robot.commands.AutoAimCommand;
+//import frc.robot.commands.AutoFollowCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -89,9 +91,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
-                        () -> Math.pow(-driver.getRawAxis(translationAxis) * power + FollowPID, 3),
+                        () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
-                        () -> Math.pow(-driver.getRawAxis(rotationAxis) * power + AimPID, 3),
+                        () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3) + AimPID,
                         () -> robotCentric.getAsBoolean()));
 
         a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
@@ -125,11 +127,11 @@ public class RobotContainer {
                         new DeflectorPIDCommand(d_DeflectorSubsystem,
                                 Constants.DeflectorConstants.DeflectorPosOutValue)),
                 new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue)));
-        AutoAim.whileTrue(new AutoAimCommand(l_LimelightSubsystem));
-        AutoAim.whileTrue(new AutoFollowCommand(l_LimelightSubsystem));
-
-        AutoAim.onFalse(new InstantCommand(() -> AimPID = 0));
-        AutoAim.onFalse(new InstantCommand(() -> FollowPID = 0));
+        
+        AutoAim.whileTrue(new ParallelCommandGroup(new AutoFollowCommand(l_LimelightSubsystem.getTargetA(), l_LimelightSubsystem.IsTargetAvailable()), new AutoAimCommand(l_LimelightSubsystem.getTargetX(), l_LimelightSubsystem.IsTargetAvailable())));
+        
+        AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0), new InstantCommand(() -> AimPID = 0)));
+      
        
 
     }

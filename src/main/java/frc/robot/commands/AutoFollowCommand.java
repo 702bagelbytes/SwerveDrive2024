@@ -6,12 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.LimelightSubsystem;
 
 public class AutoFollowCommand extends Command {
   boolean interrupted;
@@ -22,15 +20,13 @@ public class AutoFollowCommand extends Command {
       Constants.AutoFollowConstants.kI,
       Constants.AutoFollowConstants.kD);
 
-  LimelightSubsystem l_LimelightSubsystem;
-  PIDSubsystem p_PidSubsystem;
+  double ta;
+  boolean tv;
 
   /** Creates a new AutoAim. */
-  public AutoFollowCommand(Subsystem l_LimelightSubsystem) {
-    this.l_LimelightSubsystem = (LimelightSubsystem) l_LimelightSubsystem;
-
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(l_LimelightSubsystem);
+  public AutoFollowCommand(double ta, boolean tv) {
+    this.ta = ta;
+    this.tv = tv;
 
   }
 
@@ -46,12 +42,13 @@ public class AutoFollowCommand extends Command {
     AutoFollowPID.setSetpoint(5);
     AutoFollowPID.setTolerance(1);
 
-    double a = l_LimelightSubsystem.getTargetA();
-    boolean Target = l_LimelightSubsystem.IsTargetAvailable();
+    double a = ta;
+    boolean Target = tv;
     double value = AutoFollowPID.calculate(a);
-    double result = value > 0? value + 0.455: value - 0.455;
+    double result = value > 0? value + 0.0955: value - 0.0955;
     RobotContainer.FollowPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
-
+    SmartDashboard.putNumber("FPID", value);
+    SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
   }
 
   // Called once the command ends or is interrupted.
@@ -63,6 +60,6 @@ public class AutoFollowCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return AutoFollowPID.atSetpoint();
   }
 }

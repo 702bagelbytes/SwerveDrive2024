@@ -6,12 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.LimelightSubsystem;
 
 public class AutoAimCommand extends Command {
   boolean interrupted;
@@ -21,16 +19,13 @@ public class AutoAimCommand extends Command {
       Constants.AutoAimConstants.kP,
       Constants.AutoAimConstants.kI,
       Constants.AutoAimConstants.kD);
-
-  LimelightSubsystem l_LimelightSubsystem;
-  PIDSubsystem p_PidSubsystem;
+  double tx;
+  boolean tv;
 
   /** Creates a new AutoAim. */
-  public AutoAimCommand(Subsystem l_LimelightSubsystem) {
-    this.l_LimelightSubsystem = (LimelightSubsystem) l_LimelightSubsystem;
-
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(l_LimelightSubsystem);
+  public AutoAimCommand(double tx, boolean tv) {
+    this.tv = tv;
+    this.tx = tx;
 
   }
 
@@ -46,11 +41,15 @@ public class AutoAimCommand extends Command {
     AutoAimPID.setSetpoint(0);
     AutoAimPID.setTolerance(1);
 
-    double x = l_LimelightSubsystem.getTargetX();
-    boolean Target = l_LimelightSubsystem.IsTargetAvailable();
+    double x = tx;
+    boolean Target = tv;
     double value = AutoAimPID.calculate(x);
-    double result = value > 0? value + 0.455: value - 0.455;
+    double result = value > 0? value + 0.0955: value - 0.0955;
     RobotContainer.AimPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
+    SmartDashboard.putNumber("APID", value);
+    SmartDashboard.putNumber("ran", 1);
+    SmartDashboard.putNumber("Atx", tx);
+    SmartDashboard.putNumber("AimPID", RobotContainer.AimPID);
 
   }
 
@@ -63,6 +62,6 @@ public class AutoAimCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return AutoAimPID.atSetpoint();
   }
 }
