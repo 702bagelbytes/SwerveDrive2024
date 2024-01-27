@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,11 +22,11 @@ public class AutoFollowCommand extends Command {
       Constants.AutoFollowConstants.kI,
       Constants.AutoFollowConstants.kD);
 
-  double ta;
-  boolean tv;
+  DoubleSupplier ta;
+  BooleanSupplier tv;
 
   /** Creates a new AutoAim. */
-  public AutoFollowCommand(double ta, boolean tv) {
+  public AutoFollowCommand(DoubleSupplier ta, BooleanSupplier tv) {
     this.ta = ta;
     this.tv = tv;
 
@@ -39,11 +41,11 @@ public class AutoFollowCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AutoFollowPID.setSetpoint(5);
+    AutoFollowPID.setSetpoint(40);
     AutoFollowPID.setTolerance(1);
 
-    double a = ta;
-    boolean Target = tv;
+    double a = ta.getAsDouble();
+    boolean Target = tv.getAsBoolean();
     double value = AutoFollowPID.calculate(a);
     double result = value > 0? value + 0.0955: value - 0.0955;
     RobotContainer.FollowPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
@@ -60,6 +62,6 @@ public class AutoFollowCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return AutoFollowPID.atSetpoint();
+    return false;
   }
 }

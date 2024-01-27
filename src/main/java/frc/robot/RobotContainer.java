@@ -91,7 +91,7 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
-                        () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3),
+                        () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3) + FollowPID,
                         () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3) + AimPID,
                         () -> robotCentric.getAsBoolean()));
@@ -128,7 +128,7 @@ public class RobotContainer {
                                 Constants.DeflectorConstants.DeflectorPosOutValue)),
                 new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue)));
         
-        AutoAim.whileTrue(new ParallelCommandGroup(new AutoFollowCommand(l_LimelightSubsystem.getTargetA(), l_LimelightSubsystem.IsTargetAvailable()), new AutoAimCommand(l_LimelightSubsystem.getTargetX(), l_LimelightSubsystem.IsTargetAvailable())));
+        AutoAim.whileTrue(new ParallelCommandGroup(new AutoFollowCommand(()->l_LimelightSubsystem.getTargetA(), ()->l_LimelightSubsystem.IsTargetAvailable()), new AutoAimCommand(()->l_LimelightSubsystem.getTargetX(), ()->l_LimelightSubsystem.IsTargetAvailable())));
         
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0), new InstantCommand(() -> AimPID = 0)));
       

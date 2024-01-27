@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,11 +22,11 @@ public class AutoAimCommand extends Command {
       Constants.AutoAimConstants.kP,
       Constants.AutoAimConstants.kI,
       Constants.AutoAimConstants.kD);
-  double tx;
-  boolean tv;
+  DoubleSupplier tx;
+  BooleanSupplier tv;
 
   /** Creates a new AutoAim. */
-  public AutoAimCommand(double tx, boolean tv) {
+  public AutoAimCommand(DoubleSupplier tx, BooleanSupplier tv) {
     this.tv = tv;
     this.tx = tx;
 
@@ -41,14 +44,14 @@ public class AutoAimCommand extends Command {
     AutoAimPID.setSetpoint(0);
     AutoAimPID.setTolerance(1);
 
-    double x = tx;
-    boolean Target = tv;
+    double x = tx.getAsDouble();
+    boolean Target = tv.getAsBoolean();
     double value = AutoAimPID.calculate(x);
     double result = value > 0? value + 0.0955: value - 0.0955;
     RobotContainer.AimPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
     SmartDashboard.putNumber("APID", value);
     SmartDashboard.putNumber("ran", 1);
-    SmartDashboard.putNumber("Atx", tx);
+    SmartDashboard.putNumber("Atx", x);
     SmartDashboard.putNumber("AimPID", RobotContainer.AimPID);
 
   }
@@ -62,6 +65,6 @@ public class AutoAimCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return AutoAimPID.atSetpoint();
+    return false;
   }
 }
