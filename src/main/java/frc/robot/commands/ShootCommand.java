@@ -18,36 +18,39 @@ public class ShootCommand extends Command {
   double speed;
   double StartTime;
   double Time;
+
   /** Creates a new ShootCommand. */
   public ShootCommand(Subsystem i_IntakeSubsystem2, Subsystem s_ShooterSubsystem2) {
     // Use addRequirements() here to declare subsystem dependencies.
-    
+
     addRequirements(i_IntakeSubsystem2);
     addRequirements(s_ShooterSubsystem2);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     new SequentialCommandGroup(i_IntakeSubsystem.runCmd(1), 
-     new WaitCommand(1), 
-     s_ShooterSubsystem.runCmd(1), 
-     new WaitCommand(1), 
-     new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0)));
-   
-      i_IntakeSubsystem.set(1.0);
-    
-  }
+    new SequentialCommandGroup(
+        s_ShooterSubsystem.runCmd(1),
+        new WaitCommand(1),
+        i_IntakeSubsystem.runCmd(1),
+        new WaitCommand(1),
+        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
+    );
 
- 
+    i_IntakeSubsystem.set(1.0);
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

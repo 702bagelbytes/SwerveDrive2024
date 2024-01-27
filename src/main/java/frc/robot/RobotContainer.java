@@ -1,5 +1,7 @@
 package frc.robot;
 
+
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
@@ -30,11 +32,25 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final ShooterSubsystem s_ShooterSubsystem = new ShooterSubsystem();
-    private final IntakeSubsystem i_IntakeSubsystem = new IntakeSubsystem();
-    private final DeflectorSubsystem d_DeflectorSubsystem = new DeflectorSubsystem();
-    private final ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
-    private final LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
+    private final static ShooterSubsystem s_ShooterSubsystem = new ShooterSubsystem();
+    private final static IntakeSubsystem i_IntakeSubsystem = new IntakeSubsystem();
+    private final static DeflectorSubsystem d_DeflectorSubsystem = new DeflectorSubsystem();
+    private final static ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
+    private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
+
+    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        new DeflectorPIDCommand(d_DeflectorSubsystem,
+                                Constants.DeflectorConstants.DeflectorPosOutValue)), new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
+                new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
+
+    public Command ShootSCommand = new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem);
+
+    public Command IntakeIn = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);
+    public Command IntakeOut = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue);
+
+    public Command IntakeOn = new InstantCommand(()->i_IntakeSubsystem.runCmd(1));
+    public Command IntakeOff = new InstantCommand(()->i_IntakeSubsystem.runCmd(0));
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -44,6 +60,8 @@ public class RobotContainer {
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
+    private final int LeftTrigger = XboxController.Axis.kLeftTrigger.value;
+    private final int RightTrigger = XboxController.Axis.kRightTrigger.value;
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
@@ -56,8 +74,11 @@ public class RobotContainer {
     private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
     public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
+    public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
+    public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
 
     private double power = 1;
+
     public static double AimPID = 0;
     public static double FollowPID = 0;
 
@@ -97,6 +118,8 @@ public class RobotContainer {
                         () -> robotCentric.getAsBoolean()));
 
         a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
+
+        i_IntakeSubsystem.setDefaultCommand(i_IntakeSubsystem.moveCmd(()-> codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)));
         // Configure the button bindings
         configureButtonBindings();
 
@@ -119,14 +142,12 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .77));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
-        ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
-        ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
-        ShootS.onTrue(new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem));
-        ShootA.onTrue(new SequentialCommandGroup(
-                new ParallelCommandGroup(new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
-                        new DeflectorPIDCommand(d_DeflectorSubsystem,
-                                Constants.DeflectorConstants.DeflectorPosOutValue)),
-                new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue)));
+        ArmPosIn.onTrue(IntakeIn);
+        ArmPosOut.onTrue(IntakeOut);
+        ShootS.onTrue(ShootSCommand);
+        ShootA.onTrue(ShootACommand);
+        
+        
         
         AutoAim.whileTrue(new ParallelCommandGroup(new AutoFollowCommand(()->l_LimelightSubsystem.getTargetA(), ()->l_LimelightSubsystem.IsTargetAvailable()), new AutoAimCommand(()->l_LimelightSubsystem.getTargetX(), ()->l_LimelightSubsystem.IsTargetAvailable())));
         

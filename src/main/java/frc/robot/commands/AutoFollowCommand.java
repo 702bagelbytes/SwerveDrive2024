@@ -41,14 +41,14 @@ public class AutoFollowCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AutoFollowPID.setSetpoint(40);
+    AutoFollowPID.setSetpoint(50);
     AutoFollowPID.setTolerance(1);
 
     double a = ta.getAsDouble();
     boolean Target = tv.getAsBoolean();
     double value = AutoFollowPID.calculate(a);
     double result = value > 0? value + 0.0955: value - 0.0955;
-    RobotContainer.FollowPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
+    RobotContainer.FollowPID = Target ? MathUtil.clamp(result, -0.67, 0.67) : 0;
     SmartDashboard.putNumber("FPID", value);
     SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
   }

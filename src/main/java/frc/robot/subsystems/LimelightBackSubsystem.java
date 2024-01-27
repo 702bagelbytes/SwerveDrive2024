@@ -10,7 +10,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class LimelightSubsystem extends SubsystemBase {
+public class LimelightBackSubsystem extends SubsystemBase {
   public NetworkTable table;
   public NetworkTableEntry tx;
   public NetworkTableEntry ty;
@@ -21,8 +21,8 @@ public class LimelightSubsystem extends SubsystemBase {
   public NetworkTableEntry tclass;
 
   /** Creates a new LimelightSubsystem. */
-  public LimelightSubsystem() {
-    table = NetworkTableInstance.getDefault().getTable("limelight-mike");
+  public LimelightBackSubsystem() {
+    table = NetworkTableInstance.getDefault().getTable("limelight-james");
     tx = table.getEntry("tx");
     ty = table.getEntry("ty");
     ta = table.getEntry("ta");
