@@ -81,9 +81,11 @@ public class RobotContainer {
 
     public static double AimPID = 0;
     public static double FollowPID = 0;
+    public static String Color = "blue";
 
     private final SendableChooser<Command> autoChooser;
-
+    private final SendableChooser<Command> teamChooser;
+    
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
 
@@ -125,8 +127,14 @@ public class RobotContainer {
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoChooser = AutoBuilder.buildAutoChooser();
+        teamChooser = new SendableChooser<>();
+        teamChooser.addOption("Red", new InstantCommand(()-> Color = "red"));
+        teamChooser.addOption("Blue", new InstantCommand(()-> Color = "blue"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Team Chooser", teamChooser);
+        
+
     }
 
     /**
@@ -150,6 +158,7 @@ public class RobotContainer {
         
         
         AutoAim.whileTrue(new ParallelCommandGroup(new AutoFollowCommand(()->l_LimelightSubsystem.getTargetA(), ()->l_LimelightSubsystem.IsTargetAvailable()), new AutoAimCommand(()->l_LimelightSubsystem.getTargetX(), ()->l_LimelightSubsystem.IsTargetAvailable())));
+        
         
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0), new InstantCommand(() -> AimPID = 0)));
       

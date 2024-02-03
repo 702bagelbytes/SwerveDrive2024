@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class LimelightBackSubsystem extends SubsystemBase {
   public NetworkTable table;
@@ -19,6 +20,10 @@ public class LimelightBackSubsystem extends SubsystemBase {
   public NetworkTableEntry pipeline;
   public NetworkTableEntry getpipe;
   public NetworkTableEntry tclass;
+  public NetworkTableEntry botpose_wpiblue;
+  public NetworkTableEntry botpose_wpired;
+  public NetworkTableEntry botpose;
+  public NetworkTableEntry camMode;
 
   /** Creates a new LimelightSubsystem. */
   public LimelightBackSubsystem() {
@@ -30,6 +35,10 @@ public class LimelightBackSubsystem extends SubsystemBase {
     pipeline = table.getEntry("pipeline");
     getpipe = table.getEntry("getpipe");
     tclass = table.getEntry("tclass");
+    camMode = table.getEntry("camMode");
+    botpose = table.getEntry("botpose");
+    botpose_wpiblue = table.getEntry("botpose_wpiblue");
+    botpose_wpired = table.getEntry("botpose_wpired");
   }
 
   public double getTargetX() {
@@ -58,6 +67,29 @@ public class LimelightBackSubsystem extends SubsystemBase {
 
   public int getClassifier() {
     return tclass.getNumber(0).intValue();
+  }
+
+  public double getBotPoseX(){
+    double pose[] = botpose.getDoubleArray(new double[6]);
+    return pose[0];
+  }
+
+  public double getBotPoseY(){
+    double pose[] = botpose.getDoubleArray(new double[6]);
+    return pose[1];
+  }
+
+  public double getBotPoseXTeamRelative(){
+    double pose[] = RobotContainer.Color == "red"? botpose_wpired.getDoubleArray(new double[6]): botpose_wpiblue.getDoubleArray(new double[6]);
+    return pose[0];
+  }
+  public double getBotPoseYTeamRelative(){
+    double pose[] = RobotContainer.Color == "red"? botpose_wpired.getDoubleArray(new double[6]): botpose_wpiblue.getDoubleArray(new double[6]);
+    return pose[1];
+  }
+
+  public void setCamMode(int value){
+    camMode.setDouble(value);
   }
 
   @Override
