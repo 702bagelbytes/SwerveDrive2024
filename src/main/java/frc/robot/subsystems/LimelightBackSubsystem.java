@@ -69,26 +69,29 @@ public class LimelightBackSubsystem extends SubsystemBase {
     return tclass.getNumber(0).intValue();
   }
 
-  public double getBotPoseX(){
+  public double getBotPoseX() {
     double pose[] = botpose.getDoubleArray(new double[6]);
     return pose[0];
   }
 
-  public double getBotPoseY(){
+  public double getBotPoseY() {
     double pose[] = botpose.getDoubleArray(new double[6]);
     return pose[1];
   }
 
-  public double getBotPoseXTeamRelative(){
-    double pose[] = RobotContainer.Color == "red"? botpose_wpired.getDoubleArray(new double[6]): botpose_wpiblue.getDoubleArray(new double[6]);
+  public double getBotPoseXTeamRelative() {
+    double pose[] = RobotContainer.Color == "red" ? botpose_wpired.getDoubleArray(new double[6])
+        : botpose_wpiblue.getDoubleArray(new double[6]);
     return pose[0];
   }
-  public double getBotPoseYTeamRelative(){
-    double pose[] = RobotContainer.Color == "red"? botpose_wpired.getDoubleArray(new double[6]): botpose_wpiblue.getDoubleArray(new double[6]);
+
+  public double getBotPoseYTeamRelative() {
+    double pose[] = RobotContainer.Color == "red" ? botpose_wpired.getDoubleArray(new double[6])
+        : botpose_wpiblue.getDoubleArray(new double[6]);
     return pose[1];
   }
 
-  public void setCamMode(int value){
+  public void setCamMode(int value) {
     camMode.setDouble(value);
   }
 

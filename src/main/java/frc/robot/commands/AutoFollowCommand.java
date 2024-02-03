@@ -47,16 +47,16 @@ public class AutoFollowCommand extends Command {
     double a = ta.getAsDouble();
     boolean Target = tv.getAsBoolean();
     double value = AutoFollowPID.calculate(a);
-    double result = value > 0? value + 0.0955: value - 0.0955;
-    RobotContainer.FollowPID = Target ? MathUtil.clamp(result, -0.67, 0.67) : 0;
+    double result = value > 0 ? value + 0.0955 : value - 0.0955;
+    RobotContainer.setFollowPID(Target ? MathUtil.clamp(result, -0.67, 0.67) : 0);
     SmartDashboard.putNumber("FPID", value);
-    SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
+    // SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.FollowPID = 0;
+    RobotContainer.setFollowPID(0);
   }
 
   // Returns true when the command should end.

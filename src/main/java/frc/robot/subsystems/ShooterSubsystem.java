@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ShooterSubsystem extends SubsystemBase {
   private TalonFX ShooterMotor1 = new TalonFX(0);
   private TalonFX ShooterMotor2 = new TalonFX(0);
+
   /** Creates a new IntakeSubsystem. */
   public ShooterSubsystem() {
     ShooterMotor1.setNeutralMode(NeutralModeValue.Brake);
@@ -24,22 +25,22 @@ public class ShooterSubsystem extends SubsystemBase {
 
   }
 
-  public void set(double value){
+  public void set(double value) {
     ShooterMotor1.set(value);
     ShooterMotor2.set(value);
   }
 
-  public Command runCmd(double value){
-    return this.run(()-> this.set(value));
+  public Command runCmd(double value) {
+    return this.run(() -> this.set(value));
   }
 
   @Override
   public void periodic() {
-    
+
   }
 
   public Command moveCmd(DoubleSupplier input) {
-        return this.runEnd(() -> this.set(input.getAsDouble()), () -> this.set(0));
+    return this.runEnd(() -> this.set(input.getAsDouble()), () -> this.set(0));
 
-    }
+  }
 }

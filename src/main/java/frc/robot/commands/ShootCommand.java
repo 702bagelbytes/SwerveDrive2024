@@ -40,8 +40,7 @@ public class ShootCommand extends Command {
         new WaitCommand(1),
         i_IntakeSubsystem.runCmd(1),
         new WaitCommand(1),
-        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
-    );
+        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0)));
 
     i_IntakeSubsystem.set(1.0);
 

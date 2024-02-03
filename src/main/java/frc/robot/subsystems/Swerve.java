@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
-
+import frc.robot.RobotContainer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -45,7 +45,7 @@ public class Swerve extends SubsystemBase {
                 this::getRobotRelativeSpeeds,
                 this::driveRobotRelative,
                 Constants.Swerve.PATHPLANNER_FOLLOWER_CONFIG,
-                () -> false,
+                () -> RobotContainer.Color.equals("red"),
                 this);
     }
 
