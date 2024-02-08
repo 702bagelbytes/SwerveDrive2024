@@ -3,6 +3,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -34,12 +36,50 @@ public class RobotContainer {
     private final static DeflectorSubsystem d_DeflectorSubsystem = new DeflectorSubsystem();
     private final static ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
     private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
+    private final static LimitSwitch l_LimitSwitch = new LimitSwitch();
+<<<<<<< Updated upstream
+=======
 
+>>>>>>> Stashed changes
+
+
+<<<<<<< Updated upstream
+=======
+    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                    new DeflectorPIDCommand(d_DeflectorSubsystem,
+                            Constants.DeflectorConstants.DeflectorPosOutValue)),
+            new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
+            new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
+
+    public Command ShootSCommand = new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem);
+
+    /**
+     * Stows the arm mechanism
+     */
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     public Command IntakeIn = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);
+    /**
+     * Sticks out the arm mechanism
+     */
     public Command IntakeOut = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue);
 
-    public Command IntakeOn = new InstantCommand(() -> i_IntakeSubsystem.runCmd(1));
-    public Command IntakeOff = new InstantCommand(() -> i_IntakeSubsystem.runCmd(0));
+    /**
+     * Turns on the intake motor
+     */
+
+    public Command IntakeOn = i_IntakeSubsystem.runCmd(Constants.IntakeConstants.MaxIntakeSpeed);
+
+    /**
+     * Turns off the intake motor
+     */
+    public Command IntakeOff = i_IntakeSubsystem.runCmd(0);
+
+    public Command OnAndStow = Commands.either(IntakeIn, i_IntakeSubsystem.runEndCmd(Constants.IntakeConstants.MaxIntakeSpeed), ()->l_LimitSwitch.isRingIn());
+<<<<<<< Updated upstream
 
     public SequentialCommandGroup Shoot = new SequentialCommandGroup(
         s_ShooterSubsystem.runCmd(1),
@@ -55,6 +95,8 @@ public class RobotContainer {
                                 Constants.DeflectorConstants.DeflectorPosOutValue)), Shoot,
                 new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
 
+=======
+>>>>>>> Stashed changes
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -80,20 +122,31 @@ public class RobotContainer {
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private final JoystickButton DeflectorPosIn = new JoystickButton(codriver, XboxController.Button.kB.value);
     private final JoystickButton DeflectorPosOut = new JoystickButton(codriver, XboxController.Button.kX.value);
+=======
+    public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
+>>>>>>> Stashed changes
+=======
+    public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
+>>>>>>> Stashed changes
 
     private double power = 1;
 
     private static double AimPID = 0;
     private static double FollowPID = 0;
     public static String Color = "blue";
+    
 
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<Command> teamChooser;
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+
+   
 
     /**
      * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -117,6 +170,10 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
+       
+
+        
+
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -128,8 +185,11 @@ public class RobotContainer {
         a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
 
         i_IntakeSubsystem.setDefaultCommand(
-                i_IntakeSubsystem.moveCmd(() -> codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)));
+        
+        i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25));
+
         // Configure the button bindings
+
         configureButtonBindings();
 
         // Build an auto chooser. This will use Commands.none() as the default option.
@@ -140,8 +200,13 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         SmartDashboard.putData("Team Chooser", teamChooser);
-
     }
+
+    /**
+     * If the limit switch is pressed, we can assume that the ring is inside!
+     * @return the value of the limit switch.
+     */
+   
 
     public static void setAimPID(double AimPID) {
         RobotContainer.AimPID = AimPID;
@@ -170,6 +235,8 @@ public class RobotContainer {
         DeflectorPosOut.onTrue(IntakeOut);
         ShootS.onTrue(Shoot);
         ShootA.onTrue(ShootACommand);
+        onandstow.onTrue(OnAndStow);
+        
 
         AutoAim.whileTrue(new ParallelCommandGroup(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),

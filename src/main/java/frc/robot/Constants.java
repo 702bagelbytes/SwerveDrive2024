@@ -19,6 +19,11 @@ import static frc.lib.util.COTSTalonFXSwerveConstants.SDS.MK4i.*;
 public final class Constants {
     public static final double CONTROLLER_DEADBAND = 0.1;
 
+    /**
+     * Corresponds to port zero on the Roborio DIO. 
+     */
+    public static final int LIMIT_SWITCH_INTAKE = 0;
+
     public static final class Swerve {
         /**
          * Whether gyroscope values should be inverted.
@@ -172,6 +177,8 @@ public final class Constants {
 
     public static final class IntakeConstants {
         public static final int IntakeMotorID = 14;
+        
+        public static final double MaxIntakeSpeed = 1;
     }
 
     public static final class DeflectorConstants {
