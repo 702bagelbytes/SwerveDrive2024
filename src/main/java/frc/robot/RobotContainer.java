@@ -35,15 +35,6 @@ public class RobotContainer {
     private final static ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
     private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
 
-    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                    new DeflectorPIDCommand(d_DeflectorSubsystem,
-                            Constants.DeflectorConstants.DeflectorPosOutValue)),
-            new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
-            new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
-
-    public Command ShootSCommand = new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem);
-
     public Command IntakeIn = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);
     public Command IntakeOut = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue);
 
@@ -89,6 +80,8 @@ public class RobotContainer {
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
+    private final JoystickButton DeflectorPosIn = new JoystickButton(codriver, XboxController.Button.kB.value);
+    private final JoystickButton DeflectorPosOut = new JoystickButton(codriver, XboxController.Button.kX.value);
 
     private double power = 1;
 
@@ -171,8 +164,10 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .77));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
-        ArmPosIn.onTrue(IntakeIn);
-        ArmPosOut.onTrue(IntakeOut);
+        ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
+        ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
+        DeflectorPosIn.onTrue(IntakeIn);
+        DeflectorPosOut.onTrue(IntakeOut);
         ShootS.onTrue(Shoot);
         ShootA.onTrue(ShootACommand);
 
