@@ -35,15 +35,9 @@ public class ShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    new SequentialCommandGroup(
-        s_ShooterSubsystem.runCmd(1),
-        new WaitCommand(1),
-        i_IntakeSubsystem.runCmd(1),
-        new WaitCommand(1),
-        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
-    );
+    
 
-    i_IntakeSubsystem.set(1.0);
+    
 
   }
 

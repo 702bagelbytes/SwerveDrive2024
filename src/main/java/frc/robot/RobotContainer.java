@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
@@ -38,12 +39,6 @@ public class RobotContainer {
     private final static ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
     private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
 
-    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
-                new ParallelCommandGroup(
-                        new DeflectorPIDCommand(d_DeflectorSubsystem,
-                                Constants.DeflectorConstants.DeflectorPosOutValue)), new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
-                new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
-
     public Command ShootSCommand = new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem);
 
     public Command IntakeIn = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);
@@ -51,6 +46,21 @@ public class RobotContainer {
 
     public Command IntakeOn = new InstantCommand(()->i_IntakeSubsystem.runCmd(1));
     public Command IntakeOff = new InstantCommand(()->i_IntakeSubsystem.runCmd(0));
+
+    public SequentialCommandGroup Shoot = new SequentialCommandGroup(
+        s_ShooterSubsystem.runCmd(1),
+        new WaitCommand(0.5),
+        i_IntakeSubsystem.runCmd(1),
+        new WaitCommand(0.5),
+        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
+    );
+
+    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        new DeflectorPIDCommand(d_DeflectorSubsystem,
+                                Constants.DeflectorConstants.DeflectorPosOutValue)), Shoot,
+                new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
+
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -144,7 +154,7 @@ public class RobotContainer {
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(IntakeIn);
         ArmPosOut.onTrue(IntakeOut);
-        ShootS.onTrue(ShootSCommand);
+        ShootS.onTrue(Shoot);
         ShootA.onTrue(ShootACommand);
         
         

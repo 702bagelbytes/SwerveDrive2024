@@ -22,7 +22,7 @@ public class DeflectorSubsystem extends SubsystemBase {
     }
 
     public double TickToDeg(double tick) {
-        return tick;
+        return tick * 5/720;
     }
 
     public double getArmAngle() {
