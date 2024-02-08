@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.COTSTalonFXSwerveConstants;
@@ -18,20 +17,16 @@ import frc.lib.util.COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios;
 import frc.lib.util.SwerveModuleConstants;
 import frc.robot.commands.DeflectorPIDCommand;
 import frc.robot.commands.ShootCommand;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DeflectorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import static frc.lib.util.COTSTalonFXSwerveConstants.SDS.MK4i.*;
 
 public final class Constants {
-     private final static ShooterSubsystem s_ShooterSubsystem = new ShooterSubsystem();
+    private final static ShooterSubsystem s_ShooterSubsystem = new ShooterSubsystem();
     private final static IntakeSubsystem i_IntakeSubsystem = new IntakeSubsystem();
     private final static DeflectorSubsystem d_DeflectorSubsystem = new DeflectorSubsystem();
-    private final ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
-    private final LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
     public static final double CONTROLLER_DEADBAND = 0.1;
 
     public static final class Swerve {
@@ -173,7 +168,7 @@ public final class Constants {
     }
 
     public static final class ArmConstants {
-        public static final int ArmMotorID = 0;
+        public static final int ArmMotorID = 13;
 
         public static final double kP = 0.0;
         public static final double kI = 0.0;
@@ -186,11 +181,11 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final int IntakeMotorID = 0;
+        public static final int IntakeMotorID = 14;
     }
 
     public static final class DeflectorConstants {
-        public static final int DeflectorMotorID = 0;
+        public static final int DeflectorMotorID = 15;
 
         public static final double kP = 0.0;
         public static final double kI = 0.0;
@@ -238,7 +233,8 @@ public final class Constants {
         public static final SequentialCommandGroup ShootS = new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new DeflectorPIDCommand(d_DeflectorSubsystem,
-                                Constants.DeflectorConstants.DeflectorPosOutValue)), new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
+                                Constants.DeflectorConstants.DeflectorPosOutValue)),
+                new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
                 new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
 
         /**

@@ -9,7 +9,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -18,10 +18,10 @@ public class AutoAimCommand extends Command {
   boolean interrupted;
 
   private PIDController AutoAimPID = new PIDController(
-
       Constants.AutoAimConstants.kP,
       Constants.AutoAimConstants.kI,
       Constants.AutoAimConstants.kD);
+
   DoubleSupplier tx;
   BooleanSupplier tv;
 
@@ -47,19 +47,19 @@ public class AutoAimCommand extends Command {
     double x = tx.getAsDouble();
     boolean Target = tv.getAsBoolean();
     double value = AutoAimPID.calculate(x);
-    double result = value > 0? value + 0.0955: value - 0.0955;
-    RobotContainer.AimPID = Target ? MathUtil.clamp(result, -0.57, 0.57) : 0;
-    SmartDashboard.putNumber("APID", value);
-    SmartDashboard.putNumber("ran", 1);
-    SmartDashboard.putNumber("Atx", x);
-    SmartDashboard.putNumber("AimPID", RobotContainer.AimPID);
-
+    double result = Math.copySign(Math.abs(value) + 0.0955, value); 
+    // value > 0 ? value + 0.0955 : value - 0.0955;
+    RobotContainer.setAimPID(Target ? MathUtil.clamp(result, -0.57, 0.57) : 0);
+    // SmartDashboard.putNumber("APID", value);
+    // SmartDashboard.putNumber("ran", 1);
+    // SmartDashboard.putNumber("Atx", x);
+    // SmartDashboard.putNumber("AimPID", RobotContainer.AimPID);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.AimPID = 0;
+    RobotContainer.setAimPID(0);
   }
 
   // Returns true when the command should end.

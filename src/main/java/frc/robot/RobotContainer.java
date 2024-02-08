@@ -1,7 +1,5 @@
 package frc.robot;
 
-
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
@@ -20,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-//import frc.robot.commands.AutoAimCommand;
-//import frc.robot.commands.AutoFollowCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -39,13 +35,20 @@ public class RobotContainer {
     private final static ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
     private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
 
+    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                    new DeflectorPIDCommand(d_DeflectorSubsystem,
+                            Constants.DeflectorConstants.DeflectorPosOutValue)),
+            new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
+            new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
+
     public Command ShootSCommand = new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem);
 
     public Command IntakeIn = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);
     public Command IntakeOut = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue);
 
-    public Command IntakeOn = new InstantCommand(()->i_IntakeSubsystem.runCmd(1));
-    public Command IntakeOff = new InstantCommand(()->i_IntakeSubsystem.runCmd(0));
+    public Command IntakeOn = new InstantCommand(() -> i_IntakeSubsystem.runCmd(1));
+    public Command IntakeOff = new InstantCommand(() -> i_IntakeSubsystem.runCmd(0));
 
     public SequentialCommandGroup Shoot = new SequentialCommandGroup(
         s_ShooterSubsystem.runCmd(1),
@@ -89,10 +92,12 @@ public class RobotContainer {
 
     private double power = 1;
 
-    public static double AimPID = 0;
-    public static double FollowPID = 0;
+    private static double AimPID = 0;
+    private static double FollowPID = 0;
+    public static String Color = "blue";
 
     private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> teamChooser;
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
@@ -129,14 +134,28 @@ public class RobotContainer {
 
         a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
 
-        i_IntakeSubsystem.setDefaultCommand(i_IntakeSubsystem.moveCmd(()-> codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)));
+        i_IntakeSubsystem.setDefaultCommand(
+                i_IntakeSubsystem.moveCmd(() -> codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)));
         // Configure the button bindings
         configureButtonBindings();
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoChooser = AutoBuilder.buildAutoChooser();
+        teamChooser = new SendableChooser<>();
+        teamChooser.addOption("Red", new InstantCommand(() -> Color = "red"));
+        teamChooser.addOption("Blue", new InstantCommand(() -> Color = "blue"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Team Chooser", teamChooser);
+
+    }
+
+    public static void setAimPID(double AimPID) {
+        RobotContainer.AimPID = AimPID;
+    }
+
+    public static void setFollowPID(double FollowPID) {
+        RobotContainer.FollowPID = FollowPID;
     }
 
     /**
@@ -156,14 +175,15 @@ public class RobotContainer {
         ArmPosOut.onTrue(IntakeOut);
         ShootS.onTrue(Shoot);
         ShootA.onTrue(ShootACommand);
-        
-        
-        
-        AutoAim.whileTrue(new ParallelCommandGroup(new AutoFollowCommand(()->l_LimelightSubsystem.getTargetA(), ()->l_LimelightSubsystem.IsTargetAvailable()), new AutoAimCommand(()->l_LimelightSubsystem.getTargetX(), ()->l_LimelightSubsystem.IsTargetAvailable())));
-        
-        AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0), new InstantCommand(() -> AimPID = 0)));
-      
-       
+
+        AutoAim.whileTrue(new ParallelCommandGroup(
+                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable()),
+                new AutoAimCommand(() -> l_LimelightSubsystem.getTargetX(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable())));
+
+        AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
+                new InstantCommand(() -> AimPID = 0)));
 
     }
 
