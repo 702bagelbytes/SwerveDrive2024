@@ -90,7 +90,8 @@ public class RobotContainer {
     );
 }
 
-   public Command ShootACommand() {return new SequentialCommandGroup(
+   public Command ShootACommand() {
+    return new SequentialCommandGroup(
                new ParallelCommandGroup( DeflectorOut(), Shoot()),
                 DeflectorIn());
             }
@@ -233,18 +234,16 @@ public class RobotContainer {
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());
-        ShootS.onTrue(new SequentialCommandGroup(
-        s_ShooterSubsystem.runCmd(0.75),
-        new WaitCommand(0.5),
-        i_IntakeSubsystem.runCmd(0.75),
-        new WaitCommand(0.5),
-        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
-    ));
+        ShootS.onTrue(Shoot());
         ShootA.onTrue(ShootACommand());
         onandstow.onTrue(OnAndStow());
         
 
-        AutoAim.whileTrue(Shoot());
+        AutoAim.whileTrue(new ParallelCommandGroup(
+                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable()),
+                new AutoAimCommand(() -> l_LimelightSubsystem.getTargetX(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable())));
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0)));
