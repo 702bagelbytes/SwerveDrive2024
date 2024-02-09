@@ -3,7 +3,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -37,66 +37,65 @@ public class RobotContainer {
     private final static ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
     private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
     private final static LimitSwitch l_LimitSwitch = new LimitSwitch();
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
-
-
-<<<<<<< Updated upstream
-=======
-    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                    new DeflectorPIDCommand(d_DeflectorSubsystem,
-                            Constants.DeflectorConstants.DeflectorPosOutValue)),
-            new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem),
-            new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
-
-    public Command ShootSCommand = new ShootCommand(i_IntakeSubsystem, s_ShooterSubsystem);
 
     /**
      * Stows the arm mechanism
      */
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    public Command IntakeIn = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);
+
+    public Command IntakeIn() { 
+        return new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);}
     /**
      * Sticks out the arm mechanism
      */
-    public Command IntakeOut = new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue);
+    public Command IntakeOut() { 
+        return new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue);
+    }
+
+    public Command DeflectorIn(){
+        return new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue);
+    } 
+   
+     public Command DeflectorOut(){
+        return new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue);
+    } 
+
+    
+
+   
 
     /**
      * Turns on the intake motor
      */
 
-    public Command IntakeOn = i_IntakeSubsystem.runCmd(Constants.IntakeConstants.MaxIntakeSpeed);
+    public Command IntakeOn(){ 
+        return i_IntakeSubsystem.runCmd(Constants.IntakeConstants.MaxIntakeSpeed);}
 
     /**
      * Turns off the intake motor
      */
-    public Command IntakeOff = i_IntakeSubsystem.runCmd(0);
+    public Command IntakeOff(){ 
+        return i_IntakeSubsystem.runCmd(0);}
 
-    public Command OnAndStow = Commands.either(IntakeIn, i_IntakeSubsystem.runEndCmd(Constants.IntakeConstants.MaxIntakeSpeed), ()->l_LimitSwitch.isRingIn());
-<<<<<<< Updated upstream
+    public Command OnAndStow(){
+        return Commands.either(IntakeIn(), i_IntakeSubsystem.runEndCmd(Constants.IntakeConstants.MaxIntakeSpeed), ()->l_LimitSwitch.isRingIn());}
 
-    public SequentialCommandGroup Shoot = new SequentialCommandGroup(
-        s_ShooterSubsystem.runCmd(1),
-        new WaitCommand(0.5),
-        i_IntakeSubsystem.runCmd(1),
-        new WaitCommand(0.5),
+
+    public Command Shoot(){ 
+        return new SequentialCommandGroup(
+        
+        new WaitCommand(0.5).deadlineWith(s_ShooterSubsystem.runCmd(0.75)),
+        
+        new WaitCommand(0.5).deadlineWith(i_IntakeSubsystem.runCmd(0.75)),
         new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
     );
+}
 
-    public SequentialCommandGroup ShootACommand = new SequentialCommandGroup(
-                new ParallelCommandGroup(
-                        new DeflectorPIDCommand(d_DeflectorSubsystem,
-                                Constants.DeflectorConstants.DeflectorPosOutValue)), Shoot,
-                new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
+   public Command ShootACommand() {return new SequentialCommandGroup(
+               new ParallelCommandGroup( DeflectorOut(), Shoot()),
+                DeflectorIn());
+            }
 
-=======
->>>>>>> Stashed changes
+
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -117,21 +116,18 @@ public class RobotContainer {
     private final JoystickButton ArmPosIn = new JoystickButton(codriver, XboxController.Button.kA.value);
     private final JoystickButton ArmPosOut = new JoystickButton(codriver, XboxController.Button.kY.value);
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kRightBumper.value);
     public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
     private final JoystickButton DeflectorPosIn = new JoystickButton(codriver, XboxController.Button.kB.value);
     private final JoystickButton DeflectorPosOut = new JoystickButton(codriver, XboxController.Button.kX.value);
-=======
+
     public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
->>>>>>> Stashed changes
-=======
-    public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
->>>>>>> Stashed changes
+
+    
 
     private double power = 1;
 
@@ -184,9 +180,11 @@ public class RobotContainer {
 
         a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
 
+        s_ShooterSubsystem.setDefaultCommand(s_ShooterSubsystem.moveCmd(() -> codriver.getRawAxis(rotationAxis)));
+
         i_IntakeSubsystem.setDefaultCommand(
         
-        i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25));
+        i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25 - codriver.getRawAxis(rotationAxis)));
 
         // Configure the button bindings
 
@@ -225,27 +223,33 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        
+
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .77));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
-        DeflectorPosIn.onTrue(IntakeIn);
-        DeflectorPosOut.onTrue(IntakeOut);
-        ShootS.onTrue(Shoot);
-        ShootA.onTrue(ShootACommand);
-        onandstow.onTrue(OnAndStow);
+        DeflectorPosIn.onTrue(DeflectorIn());
+        DeflectorPosOut.onTrue(DeflectorOut());
+        ShootS.onTrue(new SequentialCommandGroup(
+        s_ShooterSubsystem.runCmd(0.75),
+        new WaitCommand(0.5),
+        i_IntakeSubsystem.runCmd(0.75),
+        new WaitCommand(0.5),
+        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
+    ));
+        ShootA.onTrue(ShootACommand());
+        onandstow.onTrue(OnAndStow());
         
 
-        AutoAim.whileTrue(new ParallelCommandGroup(
-                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()),
-                new AutoAimCommand(() -> l_LimelightSubsystem.getTargetX(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable())));
+        AutoAim.whileTrue(Shoot());
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0)));
+
+        
 
     }
 

@@ -15,6 +15,7 @@ public class DeflectorSubsystem extends SubsystemBase {
 
     public DeflectorSubsystem() {
         DeflectorMotor.setNeutralMode(NeutralModeValue.Brake);
+        DeflectorMotor.setInverted(false);
     }
 
     public void ResetArmPos() {
@@ -22,7 +23,7 @@ public class DeflectorSubsystem extends SubsystemBase {
     }
 
     public double TickToDeg(double tick) {
-        return tick * 5/720;
+        return tick * 9/2;
     }
 
     public double getArmAngle() {
@@ -35,7 +36,8 @@ public class DeflectorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm Angle", getArmAngle());
+        SmartDashboard.putNumber("Deflector Angle", getArmAngle());
+        SmartDashboard.putNumber("Deflector", DeflectorMotor.getPosition().getValueAsDouble());
     }
 
     public Command moveCmd(DoubleSupplier input) {

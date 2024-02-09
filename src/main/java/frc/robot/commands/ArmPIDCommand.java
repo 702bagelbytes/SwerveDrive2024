@@ -20,7 +20,8 @@ public class ArmPIDCommand extends Command {
   ArmSubsystem armsubsystem;
 
   /** Creates a new ArmPIDCommand. */
-  public ArmPIDCommand(Subsystem a_ArmSubsystem, double setpoint) {
+  public ArmPIDCommand(ArmSubsystem a_ArmSubsystem, double setpoint) {
+    this.armsubsystem = a_ArmSubsystem;
     ArmPID.setSetpoint(setpoint);
     ArmPID.setTolerance(Constants.ArmConstants.ArmPIDTolerance);
     addRequirements(a_ArmSubsystem);

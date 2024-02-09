@@ -9,12 +9,13 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private TalonFX ShooterMotor1 = new TalonFX(0);
-  private TalonFX ShooterMotor2 = new TalonFX(0);
+  private TalonFX ShooterMotor1 = new TalonFX(17);
+  private TalonFX ShooterMotor2 = new TalonFX(16);
 
   /** Creates a new IntakeSubsystem. */
   public ShooterSubsystem() {
@@ -22,10 +23,12 @@ public class ShooterSubsystem extends SubsystemBase {
     ShooterMotor2.setNeutralMode(NeutralModeValue.Brake);
     ShooterMotor1.setInverted(false);
     ShooterMotor2.setInverted(true);
+    
 
   }
 
   public void set(double value) {
+    value = MathUtil.applyDeadband(value, 0.1);
     ShooterMotor1.set(value);
     ShooterMotor2.set(value);
   }
