@@ -23,7 +23,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double TickToDeg(double tick) {
-        return tick/360;
+        return tick;
     }
 
     public double getArmAngle() {

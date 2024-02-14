@@ -19,8 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Creates a new IntakeSubsystem. */
   public ShooterSubsystem() {
-    ShooterMotor1.setNeutralMode(NeutralModeValue.Brake);
-    ShooterMotor2.setNeutralMode(NeutralModeValue.Brake);
+    ShooterMotor1.setNeutralMode(NeutralModeValue.Coast);
+    ShooterMotor2.setNeutralMode(NeutralModeValue.Coast);
     ShooterMotor1.setInverted(false);
     ShooterMotor2.setInverted(true);
     

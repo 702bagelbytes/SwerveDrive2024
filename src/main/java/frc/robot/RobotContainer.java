@@ -68,13 +68,13 @@ public class RobotContainer {
      */
 
     public Command IntakeOn(){ 
-        return i_IntakeSubsystem.runCmd(Constants.IntakeConstants.MaxIntakeSpeed);}
+        return new InstantCommand(()->i_IntakeSubsystem.set(Constants.IntakeConstants.MaxIntakeSpeed));}
 
     /**
      * Turns off the intake motor
      */
     public Command IntakeOff(){ 
-        return i_IntakeSubsystem.runCmd(0);}
+        return new InstantCommand(()->i_IntakeSubsystem.set(0));}
 
     public Command OnAndStow(){
         return Commands.either(IntakeIn(), i_IntakeSubsystem.runEndCmd(Constants.IntakeConstants.MaxIntakeSpeed), ()->l_LimitSwitch.isRingIn());}
@@ -82,11 +82,12 @@ public class RobotContainer {
 
     public Command Shoot(){ 
         return new SequentialCommandGroup(
+        new InstantCommand(()-> s_ShooterSubsystem.set(0.55)),
+        new WaitCommand(3),
+        new InstantCommand(()-> s_ShooterSubsystem.set(0))
+        //new WaitCommand(1.2),
+        //new ParallelCommandGroup(new InstantCommand(()-> s_ShooterSubsystem.set(0)), new InstantCommand(()-> i_IntakeSubsystem.set(0)))
         
-        new WaitCommand(0.5).deadlineWith(s_ShooterSubsystem.runCmd(0.75)),
-        
-        new WaitCommand(0.5).deadlineWith(i_IntakeSubsystem.runCmd(0.75)),
-        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0))
     );
 }
 
@@ -179,13 +180,13 @@ public class RobotContainer {
                         () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3) + AimPID,
                         () -> robotCentric.getAsBoolean()));
 
-        a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
+        //a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
 
         s_ShooterSubsystem.setDefaultCommand(s_ShooterSubsystem.moveCmd(() -> codriver.getRawAxis(rotationAxis)));
 
         i_IntakeSubsystem.setDefaultCommand(
         
-        i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25 - codriver.getRawAxis(rotationAxis)));
+        i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25));
 
         // Configure the button bindings
 
@@ -228,7 +229,7 @@ public class RobotContainer {
 
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .77));
+        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .666));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
