@@ -3,7 +3,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -42,62 +41,73 @@ public class RobotContainer {
      * Stows the arm mechanism
      */
 
-    public Command IntakeIn() { 
-        return new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);}
+    public Command IntakeIn() {
+        return new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue);
+    }
+
     /**
      * Sticks out the arm mechanism
      */
-    public Command IntakeOut() { 
+    public Command IntakeOut() {
         return new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue);
     }
 
-    public Command DeflectorIn(){
+    public Command DeflectorIn() {
         return new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue);
-    } 
-   
-     public Command DeflectorOut(){
+    }
+
+    public Command DeflectorOut() {
         return new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue);
-    } 
-
-    
-
-   
+    }
 
     /**
      * Turns on the intake motor
      */
 
-    public Command IntakeOn(){ 
-        return new InstantCommand(()->i_IntakeSubsystem.set(Constants.IntakeConstants.MaxIntakeSpeed));}
+    public Command IntakeOn() {
+        return new InstantCommand(() -> i_IntakeSubsystem.set(Constants.IntakeConstants.MaxIntakeSpeed));
+    }
 
     /**
      * Turns off the intake motor
      */
-    public Command IntakeOff(){ 
-        return new InstantCommand(()->i_IntakeSubsystem.set(0));}
+    public Command IntakeOff() {
+        return new InstantCommand(() -> i_IntakeSubsystem.set(0));
+    }
 
-    public Command OnAndStow(){
-        return Commands.either(IntakeIn(), i_IntakeSubsystem.runEndCmd(Constants.IntakeConstants.MaxIntakeSpeed), ()->l_LimitSwitch.isRingIn());}
+    public Command OnAndStow() {
+        return Commands.either(IntakeIn(), i_IntakeSubsystem.runEndCmd(Constants.IntakeConstants.MaxIntakeSpeed),
+                () -> l_LimitSwitch.isRingIn());
+    }
 
+    public Command Shoot() {
+        return new SequentialCommandGroup(IntakeIn(),
+                Commands.runOnce(() -> s_ShooterSubsystem.set(0.45), s_ShooterSubsystem),
+                new WaitCommand(0.25),
+                Commands.runOnce(() -> i_IntakeSubsystem.set(-0.25), i_IntakeSubsystem),
+                new WaitCommand(0.35),
+                new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
+                        Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem))
 
-    public Command Shoot(){ 
+        );
+    }
+    public Command ShootA() {
+        return new SequentialCommandGroup(IntakeIn(),
+                Commands.runOnce(() -> s_ShooterSubsystem.set(0.28), s_ShooterSubsystem),
+                new WaitCommand(0.25),
+                Commands.runOnce(() -> i_IntakeSubsystem.set(-0.25), i_IntakeSubsystem),
+                new WaitCommand(0.35),
+                new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
+                        Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem))
+
+        );
+    }
+
+    public Command ShootACommand() {
         return new SequentialCommandGroup(
-        new InstantCommand(()-> s_ShooterSubsystem.set(0.55)),
-        new WaitCommand(3),
-        new InstantCommand(()-> s_ShooterSubsystem.set(0))
-        //new WaitCommand(1.2),
-        //new ParallelCommandGroup(new InstantCommand(()-> s_ShooterSubsystem.set(0)), new InstantCommand(()-> i_IntakeSubsystem.set(0)))
-        
-    );
-}
-
-   public Command ShootACommand() {
-    return new SequentialCommandGroup(
-               new ParallelCommandGroup( DeflectorOut(), Shoot()),
+                new ParallelCommandGroup(DeflectorOut(), Shoot()),
                 DeflectorIn());
-            }
-
-
+    }
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -129,22 +139,17 @@ public class RobotContainer {
 
     public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
 
-    
-
     private double power = 1;
 
     private static double AimPID = 0;
     private static double FollowPID = 0;
     public static String Color = "blue";
-    
 
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<Command> teamChooser;
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-
-   
 
     /**
      * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -168,10 +173,6 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
-       
-
-        
-
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -180,13 +181,15 @@ public class RobotContainer {
                         () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3) + AimPID,
                         () -> robotCentric.getAsBoolean()));
 
-        //a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
+        // a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() ->
+        // codriver.getRawAxis(translationAxis)));
 
         s_ShooterSubsystem.setDefaultCommand(s_ShooterSubsystem.moveCmd(() -> codriver.getRawAxis(rotationAxis)));
 
         i_IntakeSubsystem.setDefaultCommand(
-        
-        i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25));
+
+                i_IntakeSubsystem
+                        .moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25));
 
         // Configure the button bindings
 
@@ -204,9 +207,9 @@ public class RobotContainer {
 
     /**
      * If the limit switch is pressed, we can assume that the ring is inside!
+     * 
      * @return the value of the limit switch.
      */
-   
 
     public static void setAimPID(double AimPID) {
         RobotContainer.AimPID = AimPID;
@@ -225,7 +228,6 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        
 
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
@@ -238,7 +240,6 @@ public class RobotContainer {
         ShootS.onTrue(Shoot());
         ShootA.onTrue(ShootACommand());
         onandstow.onTrue(OnAndStow());
-        
 
         AutoAim.whileTrue(new ParallelCommandGroup(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
@@ -248,8 +249,6 @@ public class RobotContainer {
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0)));
-
-        
 
     }
 

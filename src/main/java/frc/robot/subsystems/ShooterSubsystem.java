@@ -21,8 +21,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     ShooterMotor1.setNeutralMode(NeutralModeValue.Coast);
     ShooterMotor2.setNeutralMode(NeutralModeValue.Coast);
-    ShooterMotor1.setInverted(false);
-    ShooterMotor2.setInverted(true);
+    ShooterMotor1.setInverted(true);
+    ShooterMotor2.setInverted(false);
     
 
   }
