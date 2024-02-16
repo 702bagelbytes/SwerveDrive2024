@@ -19,6 +19,86 @@ import static frc.lib.util.COTSTalonFXSwerveConstants.SDS.MK4i.*;
 public final class Constants {
     public static final double CONTROLLER_DEADBAND = 0.1;
 
+    public enum Direction {
+        UP(0), RIGHT(90), DOWN(180), LEFT(270);
+
+        int direction;
+
+        private Direction(int direction) {
+            this.direction = direction;
+        }
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case UP:
+                    return "UP";
+                case DOWN:
+                    return "DOWN";
+                case LEFT:
+                    return "LEFT";
+                case RIGHT:
+                    return "RIGHT";
+            }
+
+            return null;
+        }
+    }
+
+    public enum ShooterSpeeds {
+        STOPPED(0,   "Stopped         "),
+        SLOW(.1,     "Slow               "),
+        MEDIUM(.30,  "Medium         "),
+        DEFAULT(.45, "Default           "),
+        VERY_FAST(.65, "Very Fast       "),
+        INSANELY_FAST(.85, "Insanely Fast");
+
+        public final double speed;
+        public final String label;
+        private ShooterSpeeds(double speed, String label) {
+            this.speed = speed;
+            this.label = label;
+        }
+
+        public ShooterSpeeds next() {
+            switch (this) {
+                case STOPPED:
+                    return SLOW;
+                case SLOW:
+                    return MEDIUM;
+                case MEDIUM:
+                    return DEFAULT;
+                case DEFAULT:
+                    return VERY_FAST;
+                case VERY_FAST:
+                case INSANELY_FAST:
+                    return INSANELY_FAST;
+            }
+
+            throw new IllegalStateException("never reached");
+        }
+
+        public ShooterSpeeds prev() {
+            switch (this) {
+                case STOPPED:
+                    return STOPPED;
+                case SLOW:
+                    return STOPPED;
+                case MEDIUM:
+                    return SLOW;
+                case DEFAULT:
+                    return MEDIUM;
+                case VERY_FAST:
+                    return DEFAULT;
+                case INSANELY_FAST:
+                    return VERY_FAST;
+            }
+
+            // should never be reached
+            throw new IllegalStateException("never reached");
+        }
+    }
+
     /**
      * Corresponds to port zero on the Roborio DIO. 
      */

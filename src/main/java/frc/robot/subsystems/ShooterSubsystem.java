@@ -33,6 +33,14 @@ public class ShooterSubsystem extends SubsystemBase {
     ShooterMotor2.set(value);
   }
 
+  public void set(double top, double bottom) {
+    top = MathUtil.applyDeadband(top, 0.1);
+    bottom = MathUtil.applyDeadband(bottom, 0.1);
+
+    ShooterMotor1.set(top);
+    ShooterMotor2.set(bottom);
+  }
+
   public Command runCmd(double value) {
     return this.run(() -> this.set(value));
   }

@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants.Direction;
+import frc.robot.Constants.ShooterSpeeds;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -80,17 +82,22 @@ public class RobotContainer {
                 () -> l_LimitSwitch.isRingIn());
     }
 
+    private double power = 1;
+
+    private ShooterSpeeds topShooterSpeed = ShooterSpeeds.DEFAULT;
+    private ShooterSpeeds bottomShooterSpeed = ShooterSpeeds.DEFAULT;
+
     public Command Shoot() {
         return new SequentialCommandGroup(IntakeIn(),
-                Commands.runOnce(() -> s_ShooterSubsystem.set(0.45), s_ShooterSubsystem),
+                Commands.runOnce(() -> s_ShooterSubsystem.set(topShooterSpeed.speed, bottomShooterSpeed.speed / 2),
+                        s_ShooterSubsystem),
                 new WaitCommand(0.25),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.25), i_IntakeSubsystem),
                 new WaitCommand(0.35),
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
-                        Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem))
-
-        );
+                        Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem)));
     }
+
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(0.28), s_ShooterSubsystem),
@@ -139,7 +146,12 @@ public class RobotContainer {
 
     public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
 
-    private double power = 1;
+
+    private final POVButton increaseTopSpeed = new POVButton(codriver, Direction.UP.direction);
+    private final POVButton decreaseTopSpeed = new POVButton(codriver, Direction.DOWN.direction);
+
+    private final POVButton increaseBottomSpeed = new POVButton(codriver, Direction.RIGHT.direction);
+    private final POVButton decreaseBottomSpeed = new POVButton(codriver, Direction.LEFT.direction);
 
     private static double AimPID = 0;
     private static double FollowPID = 0;
@@ -150,6 +162,13 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+
+    public void debugSpeeds() {
+        SmartDashboard.putString("Top Shooter Speed",
+                String.format("%s (%d%%)", topShooterSpeed.label, (int) (topShooterSpeed.speed * 100)));
+        SmartDashboard.putString("Bottom Shooter Speed",
+                String.format("%s (%d%%)", bottomShooterSpeed.label, (int) (bottomShooterSpeed.speed * 100)));
+    }
 
     /**
      * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -179,7 +198,7 @@ public class RobotContainer {
                         () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3) + FollowPID,
                         () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
                         () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3) + AimPID,
-                        () -> robotCentric.getAsBoolean()));
+                        robotCentric::getAsBoolean));
 
         // a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() ->
         // codriver.getRawAxis(translationAxis)));
@@ -187,12 +206,13 @@ public class RobotContainer {
         s_ShooterSubsystem.setDefaultCommand(s_ShooterSubsystem.moveCmd(() -> codriver.getRawAxis(rotationAxis)));
 
         i_IntakeSubsystem.setDefaultCommand(
-
                 i_IntakeSubsystem
                         .moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25));
 
         // Configure the button bindings
 
+        debugSpeeds();
+        
         configureButtonBindings();
 
         // Build an auto chooser. This will use Commands.none() as the default option.
@@ -217,6 +237,13 @@ public class RobotContainer {
 
     public static void setFollowPID(double FollowPID) {
         RobotContainer.FollowPID = FollowPID;
+    }
+
+    private Command wrapSpeedChange(Runnable r) {
+        return Commands.runOnce(() -> {
+            r.run();
+            RobotContainer.this.debugSpeeds();
+        });
     }
 
     /**
@@ -250,6 +277,26 @@ public class RobotContainer {
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0)));
 
+        increaseTopSpeed.onTrue(wrapSpeedChange(this::nextTopSpeed));
+        decreaseTopSpeed.onTrue(wrapSpeedChange(this::prevTopSpeed));
+        increaseBottomSpeed.onTrue(wrapSpeedChange(this::nextBottomSpeed));
+        decreaseBottomSpeed.onTrue(wrapSpeedChange(this::prevBottomSpeed));
+    }
+
+    void nextTopSpeed() {
+        this.topShooterSpeed = this.topShooterSpeed.next();
+    }
+
+    void nextBottomSpeed() {
+        this.bottomShooterSpeed = this.bottomShooterSpeed.next();
+    }
+
+    void prevTopSpeed() {
+        this.topShooterSpeed = this.topShooterSpeed.prev();
+    }
+
+    void prevBottomSpeed() {
+        this.bottomShooterSpeed = this.bottomShooterSpeed.prev();
     }
 
     public void ResetArmPosition() {
