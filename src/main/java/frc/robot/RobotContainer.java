@@ -100,7 +100,7 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Commands.runOnce(() -> s_ShooterSubsystem.set(0.28), s_ShooterSubsystem),
+                Commands.runOnce(() -> s_ShooterSubsystem.set(0.35), s_ShooterSubsystem),
                 new WaitCommand(0.25),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.25), i_IntakeSubsystem),
                 new WaitCommand(0.35),
@@ -112,7 +112,7 @@ public class RobotContainer {
 
     public Command ShootACommand() {
         return new SequentialCommandGroup(
-                new ParallelCommandGroup(DeflectorOut(), Shoot()),
+                new ParallelCommandGroup(DeflectorOut(), ShootA()),
                 DeflectorIn());
     }
 
