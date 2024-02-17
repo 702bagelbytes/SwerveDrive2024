@@ -47,11 +47,11 @@ public final class Constants {
 
     public enum ShooterSpeeds {
         STOPPED(0,   "Stopped         "),
-        SLOW(.1,     "Slow               "),
-        MEDIUM(.30,  "Medium         "),
-        DEFAULT(.45, "Default           "),
-        VERY_FAST(.65, "Very Fast       "),
-        INSANELY_FAST(.85, "Insanely Fast");
+        SLOW(.30,     "Slow               "),
+        MEDIUM(.45,  "Medium         "),
+        DEFAULT(.52, "Default           "),
+        VERY_FAST(.62, "Very Fast       "),
+        INSANELY_FAST(.75, "Insanely Fast");
 
         public final double speed;
         public final String label;
@@ -71,6 +71,7 @@ public final class Constants {
                 case DEFAULT:
                     return VERY_FAST;
                 case VERY_FAST:
+                    return INSANELY_FAST;
                 case INSANELY_FAST:
                     return INSANELY_FAST;
             }
@@ -171,12 +172,12 @@ public final class Constants {
          * loop driving.
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
          */
-        public static final double OPEN_LOOP_RAMP = 0.25;
+        public static final double OPEN_LOOP_RAMP = 0.30;
         public static final double CLOSED_LOOP_RAMP = 0.0;
 
         public static final PIDConstants ANGLE_PID = new PIDConstants(FALCON_500_CONSTANTS.angleKP,
                 FALCON_500_CONSTANTS.angleKI, FALCON_500_CONSTANTS.angleKD);
-        public static final PIDConstants DRIVE_PID = new PIDConstants(0.12, 0.0, 0.0);
+        public static final PIDConstants DRIVE_PID = new PIDConstants(0.12, 0.0, 0.09);
 
         /* Drive Motor Characterization Values From SYSID */
         public static final double DRIVE_KS = 0.32;

@@ -91,7 +91,7 @@ public class RobotContainer {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(topShooterSpeed.speed, bottomShooterSpeed.speed / 2),
                         s_ShooterSubsystem),
-                new WaitCommand(0.25),
+                new WaitCommand(1.65),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.25), i_IntakeSubsystem),
                 new WaitCommand(0.35),
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
