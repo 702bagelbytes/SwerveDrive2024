@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -14,8 +15,15 @@ public class DeflectorSubsystem extends SubsystemBase {
     private TalonFX DeflectorMotor = new TalonFX(Constants.DeflectorConstants.DeflectorMotorID);
 
     public DeflectorSubsystem() {
+        var limitConfigs = new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(Constants.DeflectorConstants.DeflectorLimitEnable)
+        .withForwardSoftLimitThreshold(Constants.DeflectorConstants.DeflectorPosStowValue)
+        .withReverseSoftLimitThreshold(Constants.DeflectorConstants.DeflectorPosInValue)
+        .withReverseSoftLimitEnable(Constants.DeflectorConstants.DeflectorLimitEnable);
+
         DeflectorMotor.setNeutralMode(NeutralModeValue.Brake);
         DeflectorMotor.setInverted(false);
+        DeflectorMotor.getConfigurator().apply(limitConfigs);
     }
 
     public void ResetArmPos() {

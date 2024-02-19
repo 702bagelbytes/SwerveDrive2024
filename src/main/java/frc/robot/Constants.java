@@ -156,23 +156,26 @@ public final class Constants {
         /**
          * Units: Volts
          */
+        public static final int ANGLE_STATOR_CURRENT_LIMIT = 40;
         public static final int ANGLE_CURRENT_LIMIT = 25;
-
         public static final int ANGLE_CURRENT_THRESHOLD = 40;
         public static final double ANGLE_CURRENT_THRESHOLD_TIME = 0.1;
         public static final boolean ANGLE_ENABLE_CURRENT_LIMIT = true;
+        public static final boolean ANGLE_ENABLE_STATOR_CURRENT_LIMIT = true;
 
-        public static final int DRIVE_CURRENT_LIMIT = 35;
-        public static final int DRIVE_CURRENT_THRESHOLD = 60;
+        public static final int DRIVE_STATOR_CURRENT_LIMIT = 60;
+        public static final int DRIVE_CURRENT_LIMIT = 35;//35
+        public static final int DRIVE_CURRENT_THRESHOLD = 60;//60
         public static final double DRIVE_CURRENT_THRESHOLD_TIME = 0.1;
         public static final boolean DRIVE_ENABLE_CURRENT_LIMIT = true;
+        public static final boolean DRIVE_ENABLE_STATOR_CURRENT_LIMIT = true;
 
         /*
          * These values are used by the drive falcon to ramp in open loop and closed
          * loop driving.
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
          */
-        public static final double OPEN_LOOP_RAMP = 0.30;
+        public static final double OPEN_LOOP_RAMP = 0.25;
         public static final double CLOSED_LOOP_RAMP = 0.0;
 
         public static final PIDConstants ANGLE_PID = new PIDConstants(FALCON_500_CONSTANTS.angleKP,
@@ -246,13 +249,14 @@ public final class Constants {
     public static final class ArmConstants {
         public static final int ArmMotorID = 13;
 
-        public static final double kP = 0.05;
+        public static final double kP = 0.042;
         public static final double kI = 0.0014;
-        public static final double kD = 0.0032;
+        public static final double kD = 0.0042;
 
         public static final double ArmPIDTolerance = 1.0;
         public static final double ArmPosInValue = 0.0;
         public static final double ArmPosOutValue = -57.5;
+        public static final boolean ArmLimitEnable = true;
 
     }
 
@@ -271,7 +275,52 @@ public final class Constants {
 
         public static final double DeflectorPIDTolerance = 5;
         public static final double DeflectorPosInValue = 0.0;
-        public static final double DeflectorPosOutValue = 97.0;     
+        public static final double DeflectorPosOutValue = 107.0;  
+        public static final double DeflectorPosStowValue = 200.0;  
+
+        public static final boolean DeflectorLimitEnable = true;
+
+
+    }
+
+    public static final class ShootConstants {
+        public static final int BottomShootMotorID = 16;
+        public static final int TopShootMotorID = 17;
+
+        public static final boolean TopShootMotorInverted = true;
+        public static final boolean BottomShootMotorInverted = false;
+
+        public static final NeutralModeValue TopShootMotorMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue BottomShootMotorMode = NeutralModeValue.Coast;
+        
+        public static final double MaxShootSpeed = 1;
+    }
+
+    public static final class ClimberConstants {
+        public static final int LeftLiftMotorID = 18;
+        public static final int RightLiftMotorID = 19;
+
+         public static final boolean LeftLiftMotorInverted = true;
+        public static final boolean RightLiftMotorInverted = true;
+
+        public static final NeutralModeValue LeftLiftMotorMode = NeutralModeValue.Brake;
+        public static final NeutralModeValue RightLiftMotorMode = NeutralModeValue.Brake;
+        
+        public static final double MaxLiftSpeed = 1.0;
+
+        public static final double LP = 0.05;
+        public static final double LI = 0.0023;
+        public static final double LD = 0.00147;
+        public static final double RP = 0.1;
+        public static final double RI = 0.0023;
+        public static final double RD = 0.00147;
+
+        public static final boolean LiftLimitEnable = true;
+        public static final double LiftPIDTolerance = .5;
+        public static final double LeftLiftPosInValue = -41.7;
+        public static final double LeftLiftPosOutValue = 0;   
+        public static final double RightLiftPosInValue = -13;
+        public static final double RightLiftPosOutValue = 0;     
 
     }
 

@@ -22,6 +22,8 @@ public final class CTREConfigs {
         swerveAngleFXConfig.ClosedLoopGeneral.ContinuousWrap = true;
 
         /* Current Limiting */
+        swerveAngleFXConfig.CurrentLimits.StatorCurrentLimitEnable = Constants.Swerve.ANGLE_ENABLE_STATOR_CURRENT_LIMIT;
+        swerveAngleFXConfig.CurrentLimits.StatorCurrentLimit = Constants.Swerve.ANGLE_STATOR_CURRENT_LIMIT;
         swerveAngleFXConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.ANGLE_ENABLE_CURRENT_LIMIT;
         swerveAngleFXConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.ANGLE_CURRENT_LIMIT;
         swerveAngleFXConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Swerve.ANGLE_CURRENT_THRESHOLD;
@@ -41,6 +43,8 @@ public final class CTREConfigs {
         swerveDriveFXConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.DRIVE_GEAR_RATIO;
 
         /* Current Limiting */
+        swerveDriveFXConfig.CurrentLimits.StatorCurrentLimitEnable = Constants.Swerve.DRIVE_ENABLE_STATOR_CURRENT_LIMIT;
+        swerveDriveFXConfig.CurrentLimits.StatorCurrentLimit = Constants.Swerve.DRIVE_STATOR_CURRENT_LIMIT;
         swerveDriveFXConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.DRIVE_ENABLE_CURRENT_LIMIT;
         swerveDriveFXConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.DRIVE_CURRENT_LIMIT;
         swerveDriveFXConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Swerve.DRIVE_CURRENT_THRESHOLD;

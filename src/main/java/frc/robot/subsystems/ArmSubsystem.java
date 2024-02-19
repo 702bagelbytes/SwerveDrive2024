@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -15,7 +16,14 @@ public class ArmSubsystem extends SubsystemBase {
     private TalonFX ArmMotor = new TalonFX(Constants.ArmConstants.ArmMotorID);
 
     public ArmSubsystem() {
+        var limitConfigs = new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(Constants.ArmConstants.ArmLimitEnable)
+        .withForwardSoftLimitThreshold(Constants.ArmConstants.ArmPosInValue)
+        .withReverseSoftLimitThreshold(Constants.ArmConstants.ArmPosOutValue)
+        .withReverseSoftLimitEnable(Constants.ArmConstants.ArmLimitEnable);
+
         ArmMotor.setNeutralMode(NeutralModeValue.Brake);
+        ArmMotor.getConfigurator().apply(limitConfigs);
     }
 
     public void ResetArmPos() {

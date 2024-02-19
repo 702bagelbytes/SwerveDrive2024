@@ -7,22 +7,23 @@ package frc.robot.subsystems;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private TalonFX ShooterMotor1 = new TalonFX(17);
-  private TalonFX ShooterMotor2 = new TalonFX(16);
+  private TalonFX ShooterMotor1 = new TalonFX(Constants.ShootConstants.TopShootMotorID);
+  private TalonFX ShooterMotor2 = new TalonFX(Constants.ShootConstants.BottomShootMotorID);
 
   /** Creates a new IntakeSubsystem. */
   public ShooterSubsystem() {
-    ShooterMotor1.setNeutralMode(NeutralModeValue.Coast);
-    ShooterMotor2.setNeutralMode(NeutralModeValue.Coast);
-    ShooterMotor1.setInverted(true);
-    ShooterMotor2.setInverted(false);
+    ShooterMotor1.setNeutralMode(Constants.ShootConstants.TopShootMotorMode);
+    ShooterMotor2.setNeutralMode(Constants.ShootConstants.BottomShootMotorMode);
+    ShooterMotor1.setInverted(Constants.ShootConstants.TopShootMotorInverted);
+    ShooterMotor2.setInverted(Constants.ShootConstants.BottomShootMotorInverted);
     
 
   }
