@@ -17,8 +17,8 @@ public class DeflectorSubsystem extends SubsystemBase {
     public DeflectorSubsystem() {
         var limitConfigs = new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(Constants.DeflectorConstants.DeflectorLimitEnable)
-        .withForwardSoftLimitThreshold(Constants.DeflectorConstants.DeflectorPosStowValue)
-        .withReverseSoftLimitThreshold(Constants.DeflectorConstants.DeflectorPosInValue)
+        .withForwardSoftLimitThreshold(DegToTick(Constants.DeflectorConstants.DeflectorPosStowValue))
+        .withReverseSoftLimitThreshold(DegToTick(Constants.DeflectorConstants.DeflectorPosInValue))
         .withReverseSoftLimitEnable(Constants.DeflectorConstants.DeflectorLimitEnable);
 
         DeflectorMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -32,6 +32,10 @@ public class DeflectorSubsystem extends SubsystemBase {
 
     public double TickToDeg(double tick) {
         return tick * 9/2;
+    }
+
+    public double DegToTick(double deg) {
+        return deg * 2/9;
     }
 
     public double getArmAngle() {

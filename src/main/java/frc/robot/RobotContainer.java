@@ -38,6 +38,7 @@ public class RobotContainer {
     private final static DeflectorSubsystem d_DeflectorSubsystem = new DeflectorSubsystem();
     private final static ArmSubsystem a_ArmSubsystem = new ArmSubsystem();
     private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
+    private final static LimelightBackSubsystem l_LimelightBackSubsystem = new LimelightBackSubsystem();
     private final static LimitSwitch l_LimitSwitch = new LimitSwitch();
     private final static ClimberSubsystem c_ClimberSubsystem = new ClimberSubsystem();
 
@@ -65,11 +66,11 @@ public class RobotContainer {
     }
 
     public Command ArmMove(double value){
-        return Commands.runEnd(()-> a_ArmSubsystem.set(value), ()-> a_ArmSubsystem.set(0));
+        return new InstantCommand(()-> a_ArmSubsystem.set(value));
     }
 
     public Command DeflectorMove(double value){
-        return Commands.runEnd(()-> d_DeflectorSubsystem.set(value), ()-> d_DeflectorSubsystem.set(0));
+        return new InstantCommand(()-> d_DeflectorSubsystem.set(value));
     }
     /**
      * Turns on the intake motor
@@ -103,7 +104,7 @@ public class RobotContainer {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(TopSpeed, BottomSpeed),
                         s_ShooterSubsystem),
-                new WaitCommand(0.48),
+                new WaitCommand(1.28),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.25), i_IntakeSubsystem),
                 new WaitCommand(0.35),
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
@@ -112,7 +113,7 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0, 50)
+                Shoot(0, 0.42)
 
         );
     }
@@ -148,7 +149,9 @@ public class RobotContainer {
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
-    public final JoystickButton AutoShoot = new JoystickButton(driver, XboxController.Button.kStart.value);
+    public final JoystickButton AutoShoot = new JoystickButton(codriver, XboxController.Button.kStart.value);
+    public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
+
 
     private final JoystickButton DeflectorPosIn = new JoystickButton(codriver, XboxController.Button.kB.value);
     private final JoystickButton DeflectorPosOut = new JoystickButton(codriver, XboxController.Button.kX.value);
@@ -290,7 +293,7 @@ public class RobotContainer {
         onandstow.onTrue(OnAndStow());
         LiftPosOut.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue));
         LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue, Constants.ClimberConstants.RightLiftPosOutValue));
-/* 
+
         AutoAim.whileTrue(new ParallelCommandGroup(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
                         () -> l_LimelightSubsystem.IsTargetAvailable()),
@@ -299,17 +302,20 @@ public class RobotContainer {
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0)));
-*/
         AutoShoot.whileTrue(new SequentialCommandGroup(
-                new AutoAimCommand(() -> l_LimelightSubsystem.getTargetX(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()), Shoot(50, 50)));
+                new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
+                        () -> l_LimelightBackSubsystem.IsTargetAvailable()), Shoot(50, 50)));
 
         AutoShoot.onFalse( new InstantCommand(() -> AimPID = 0));
 
         OutIntake.onTrue(ArmMove(-0.4));
+        OutIntake.onFalse(ArmMove(0));
         InIntake.onTrue(ArmMove(0.4));
+        InIntake.onFalse(ArmMove(0));
         InDeflector.onTrue(DeflectorMove(-0.5));
+        InDeflector.onFalse(DeflectorMove(0));
         OutDeflector.onTrue(DeflectorMove(0.5));
+        OutDeflector.onFalse(DeflectorMove(0));
         
         increaseTopSpeed.onTrue(wrapSpeedChange(this::nextTopSpeed));
         decreaseTopSpeed.onTrue(wrapSpeedChange(this::prevTopSpeed));

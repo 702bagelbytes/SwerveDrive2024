@@ -18,8 +18,8 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem() {
         var limitConfigs = new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(Constants.ArmConstants.ArmLimitEnable)
-        .withForwardSoftLimitThreshold(Constants.ArmConstants.ArmPosInValue)
-        .withReverseSoftLimitThreshold(Constants.ArmConstants.ArmPosOutValue)
+        .withForwardSoftLimitThreshold(DegToTick(Constants.ArmConstants.ArmPosInValue))
+        .withReverseSoftLimitThreshold(DegToTick(Constants.ArmConstants.ArmPosOutValue))
         .withReverseSoftLimitEnable(Constants.ArmConstants.ArmLimitEnable);
 
         ArmMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -31,6 +31,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double TickToDeg(double tick) {
+        return tick;
+    }
+
+    public double DegToTick(double tick) {
         return tick;
     }
 

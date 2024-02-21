@@ -276,7 +276,7 @@ public final class Constants {
         public static final double DeflectorPIDTolerance = 5;
         public static final double DeflectorPosInValue = 0.0;
         public static final double DeflectorPosOutValue = 107.0;  
-        public static final double DeflectorPosStowValue = 200.0;  
+        public static final double DeflectorPosStowValue = 120.0;  
 
         public static final boolean DeflectorLimitEnable = true;
 

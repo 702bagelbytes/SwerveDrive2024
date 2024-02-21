@@ -27,7 +27,7 @@ public class LimelightBackSubsystem extends SubsystemBase {
 
   /** Creates a new LimelightSubsystem. */
   public LimelightBackSubsystem() {
-    table = NetworkTableInstance.getDefault().getTable("limelight-james");
+    table = NetworkTableInstance.getDefault().getTable("limelight-mike");
     tx = table.getEntry("tx");
     ty = table.getEntry("ty");
     ta = table.getEntry("ta");
