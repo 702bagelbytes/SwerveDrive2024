@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -83,13 +84,13 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public double getBotPoseXTeamRelative() {
-    double pose[] = RobotContainer.Color == "red" ? botpose_wpired.getDoubleArray(new double[6])
+    double pose[] = RobotContainer.color == Color.kRed ? botpose_wpired.getDoubleArray(new double[6])
         : botpose_wpiblue.getDoubleArray(new double[6]);
     return pose[0];
   }
 
   public double getBotPoseYTeamRelative() {
-    double pose[] = RobotContainer.Color == "red" ? botpose_wpired.getDoubleArray(new double[6])
+    double pose[] = RobotContainer.color == Color.kRed ? botpose_wpired.getDoubleArray(new double[6])
         : botpose_wpiblue.getDoubleArray(new double[6]);
     return pose[1];
   }
