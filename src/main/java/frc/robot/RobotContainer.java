@@ -1,9 +1,12 @@
 package frc.robot;
 
 
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -14,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -41,6 +45,8 @@ public class RobotContainer {
     private final static LimelightBackSubsystem l_LimelightBackSubsystem = new LimelightBackSubsystem();
     private final static LimitSwitch l_LimitSwitch = new LimitSwitch();
     private final static ClimberSubsystem c_ClimberSubsystem = new ClimberSubsystem();
+    public static boolean isRingIn;
+  
 
     /**
      * Stows the arm mechanism
@@ -92,7 +98,12 @@ public class RobotContainer {
                 () -> l_LimitSwitch.isRingIn());
     }
 
-   
+    public Command Stow() {
+        return Commands.either(IntakeIn(), null,
+                () -> l_LimitSwitch.isRingIn());
+    }
+
+    
 
     private double power = 1;
 
@@ -104,8 +115,8 @@ public class RobotContainer {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(TopSpeed, BottomSpeed),
                         s_ShooterSubsystem),
-                new WaitCommand(1.28),
-                Commands.runOnce(() -> i_IntakeSubsystem.set(-0.25), i_IntakeSubsystem),
+                new WaitCommand(0.48),
+                Commands.runOnce(() -> i_IntakeSubsystem.set(-0.55), i_IntakeSubsystem),
                 new WaitCommand(0.35),
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
                         Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem)));
@@ -113,7 +124,7 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0, 0.42)
+                Shoot(0.22, 0.42)
 
         );
     }
@@ -123,6 +134,8 @@ public class RobotContainer {
                 new ParallelCommandGroup(DeflectorOut(), ShootA()),
                 DeflectorIn());
     }
+
+    
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -174,7 +187,7 @@ public class RobotContainer {
     private final POVButton InDeflector = new POVButton(codriver, Direction.RIGHT.direction);
     private final POVButton OutDeflector = new POVButton(codriver, Direction.LEFT.direction);
 
-
+   
     private static double AimPID = 0;
     private static double FollowPID = 0;
     public static String Color = "blue";
@@ -220,19 +233,20 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
-                        () -> Math.pow(-driver.getRawAxis(translationAxis) * power, 3) + FollowPID,
-                        () -> Math.pow(-driver.getRawAxis(strafeAxis) * power, 3),
-                        () -> Math.pow(-driver.getRawAxis(rotationAxis) * power, 3) + AimPID,
+                        () -> -driver.getRawAxis(translationAxis) * power + FollowPID,
+                        () -> -driver.getRawAxis(strafeAxis) * power,
+                        () -> -driver.getRawAxis(rotationAxis) * power + AimPID,
                         robotCentric::getAsBoolean));
 
-        // a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() ->
-        // codriver.getRawAxis(translationAxis)));
+        
 
         c_ClimberSubsystem.setDefaultCommand(c_ClimberSubsystem.moveCmd(()->codriver.getRawAxis(translationAxis), ()->codriver.getRawAxis(upAxis)));
         i_IntakeSubsystem.setDefaultCommand(
                 i_IntakeSubsystem
-                        .moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)) * 0.25));
-
+                        .moveCmd(()-> l_LimitSwitch.isRingIn()? 0- codriver.getRawAxis(RightTrigger)* 0.25:codriver.getRawAxis(LeftTrigger)* 0.25 - codriver.getRawAxis(RightTrigger)* 0.25));
+        
+                        //
+                        //l_LimitSwitch.setDefaultCommand(IsRingIn());
         // Configure the button bindings
 
         debugSpeeds();
@@ -285,6 +299,7 @@ public class RobotContainer {
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .666));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
+        ArmPosIn.onFalse(Stow());
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());
@@ -293,7 +308,8 @@ public class RobotContainer {
         onandstow.onTrue(OnAndStow());
         LiftPosOut.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue));
         LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue, Constants.ClimberConstants.RightLiftPosOutValue));
-
+       
+      
         AutoAim.whileTrue(new ParallelCommandGroup(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
                         () -> l_LimelightSubsystem.IsTargetAvailable()),
@@ -304,7 +320,7 @@ public class RobotContainer {
                 new InstantCommand(() -> AimPID = 0)));
         AutoShoot.whileTrue(new SequentialCommandGroup(
                 new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
-                        () -> l_LimelightBackSubsystem.IsTargetAvailable()), Shoot(50, 50)));
+                        () -> l_LimelightSubsystem.IsTargetAvailable()), Shoot(50, 50)));
 
         AutoShoot.onFalse( new InstantCommand(() -> AimPID = 0));
 

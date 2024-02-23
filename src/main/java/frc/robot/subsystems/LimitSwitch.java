@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class LimitSwitch extends SubsystemBase {
   /** Creates a new LimitSwitch. */
@@ -25,7 +26,9 @@ public class LimitSwitch extends SubsystemBase {
 
   @Override
   public void periodic() {
+    RobotContainer.isRingIn = isRingIn();
     // This method will be called once per scheduler run
      SmartDashboard.putBoolean("isRingIn", isRingIn());
+     SmartDashboard.putBoolean("Ring", RobotContainer.isRingIn);
   }
 }
