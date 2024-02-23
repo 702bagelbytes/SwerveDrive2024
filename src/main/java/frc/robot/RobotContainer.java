@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -41,6 +42,7 @@ public class RobotContainer {
     private final static LimelightBackSubsystem l_LimelightBackSubsystem = new LimelightBackSubsystem();
     private final static LimitSwitch l_LimitSwitch = new LimitSwitch();
     private final static ClimberSubsystem c_ClimberSubsystem = new ClimberSubsystem();
+    private final static LEDSubsystem l_LEDSubsystem = new LEDSubsystem();
 
     /**
      * Stows the arm mechanism
@@ -177,7 +179,7 @@ public class RobotContainer {
 
     private static double AimPID = 0;
     private static double FollowPID = 0;
-    public static String Color = "blue";
+    public static Color color = Color.kBlue;
 
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<Command> teamChooser;
@@ -242,8 +244,14 @@ public class RobotContainer {
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoChooser = AutoBuilder.buildAutoChooser();
         teamChooser = new SendableChooser<>();
-        teamChooser.addOption("Red", new InstantCommand(() -> Color = "red"));
-        teamChooser.addOption("Blue", new InstantCommand(() -> Color = "blue"));
+        teamChooser.addOption("Red", new InstantCommand(() -> {
+            color = Color.kRed;
+            l_LEDSubsystem.setColor(color);
+        }));
+        teamChooser.addOption("Blue", new InstantCommand(() -> {
+            color = Color.kBlue;
+            l_LEDSubsystem.setColor(color);
+        }));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         SmartDashboard.putData("Team Chooser", teamChooser);

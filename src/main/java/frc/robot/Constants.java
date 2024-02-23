@@ -369,4 +369,9 @@ public final class Constants {
         // kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
 
+    public static final class LEDConstants {
+        public static final int PwmID = 9;
+
+        public static final int LEDLength = 60;
+    }
 }
