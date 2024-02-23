@@ -119,12 +119,12 @@ public final class Constants {
         /**
          * Units: Meters
          */
-        public static final double TRACK_WIDTH = Units.inchesToMeters(28.5);
+        public static final double TRACK_WIDTH = Units.inchesToMeters(23.5);
 
         /**
          * Units: Meters
          */
-        public static final double BASE_WIDTH = Units.inchesToMeters(28.5);
+        public static final double BASE_WIDTH = Units.inchesToMeters(23.5);
 
         /**
          * Units: Meters

@@ -4,6 +4,7 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -83,8 +84,8 @@ public class RobotContainer {
      * Turns on the intake motor
      */
 
-    public Command IntakeOn() {
-        return new InstantCommand(() -> i_IntakeSubsystem.set(Constants.IntakeConstants.MaxIntakeSpeed));
+    public Command IntakeOn(double val) {
+        return new InstantCommand(RobotContainer.isRingIn? ()->i_IntakeSubsystem.set(0): ()->i_IntakeSubsystem.set(val));
     }
 
     /**
@@ -116,16 +117,18 @@ public class RobotContainer {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(TopSpeed, BottomSpeed),
                         s_ShooterSubsystem),
-                new WaitCommand(0.48),
+                new WaitCommand(0.38),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.55), i_IntakeSubsystem),
                 new WaitCommand(0.35),
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
                         Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem)));
     }
 
+    
+
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0.22, 0.42)
+                Shoot(0.42, 0.42)
 
         );
     }
@@ -231,6 +234,12 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
+        NamedCommands.registerCommand("Shoot", Shoot(0.5, 0.5));
+        NamedCommands.registerCommand("Shoot2", Shoot(0.87, 0.42));
+        NamedCommands.registerCommand("IntakeOut", IntakeOut());
+         NamedCommands.registerCommand("IntakeOff", IntakeOff());
+        NamedCommands.registerCommand("IntakeOn", IntakeOn(0.35));
+
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -306,7 +315,7 @@ public class RobotContainer {
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .666));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
-        ArmPosIn.onFalse(Stow());
+        //ArmPosOut.onFalse();
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());

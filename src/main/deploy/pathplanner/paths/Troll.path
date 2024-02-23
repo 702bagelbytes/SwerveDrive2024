@@ -3,59 +3,53 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5962865513517293,
-        "y": 6.5486372194118445
+        "x": 1.0218446899998135,
+        "y": 2.141101483220779
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8689559460380862,
-        "y": 6.587589990081325
+        "x": 2.212506002620149,
+        "y": 1.9008803412008866
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.348283169848783,
-        "y": 6.5486372194118445
+        "x": 7.988257808571464,
+        "y": 1.4726600445515083
       },
       "prevControl": {
-        "x": 2.294952538677295,
-        "y": 6.519230609700464
+        "x": 6.57404424619837,
+        "y": 1.4726600445515083
       },
       "nextControl": {
-        "x": 3.4658337001152373,
-        "y": 7.164856670680264
+        "x": 9.105808338837921,
+        "y": 1.4726600445515083
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.348283169848783,
-        "y": 6.329304872350202
+        "x": 8.614921657327981,
+        "y": 7.300633837905662
       },
       "prevControl": {
-        "x": 2.4846178671919614,
-        "y": 6.54354511103234
+        "x": 8.364921657327981,
+        "y": 8.800633837905668
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.9,
-      "rotationDegrees": 20.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 2.0,
+      "waypointRelativePos": 0.55,
       "command": {
         "type": "parallel",
         "data": {
@@ -63,13 +57,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Shoot2"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeOff"
+                "name": "Shoot"
               }
             }
           ]
@@ -85,7 +73,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 24.676863170336997,
+    "rotation": 60.04639183219861,
     "rotateFast": false
   },
   "reversed": false,

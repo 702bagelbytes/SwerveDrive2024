@@ -21,13 +21,19 @@ public class LEDSubsystem extends SubsystemBase {
     led.setData(buffer);
     led.start();
   }
-
+  
    public void setColor(Color color) {
     for(int i = 0; i < buffer.getLength(); ++i) {
         buffer.setLED(i, color);
     }
    }
-
+/* 
+   public void rainbow(){
+    for(int i = 0; i < buffer.getLength(); i++){
+      double hue = (m_rainbowFirstPixelHue + (i*));
+    }
+   }
+*/
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
