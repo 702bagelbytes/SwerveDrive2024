@@ -163,7 +163,7 @@ public final class Constants {
         public static final boolean ANGLE_ENABLE_CURRENT_LIMIT = true;
         public static final boolean ANGLE_ENABLE_STATOR_CURRENT_LIMIT = true;
 
-        public static final int DRIVE_STATOR_CURRENT_LIMIT = 60;
+        public static final int DRIVE_STATOR_CURRENT_LIMIT = 50;
         public static final int DRIVE_CURRENT_LIMIT = 35;//35
         public static final int DRIVE_CURRENT_THRESHOLD = 60;//60
         public static final double DRIVE_CURRENT_THRESHOLD_TIME = 0.1;
@@ -175,7 +175,7 @@ public final class Constants {
          * loop driving.
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
          */
-        public static final double OPEN_LOOP_RAMP = 0.25;
+        public static final double OPEN_LOOP_RAMP = 0.3;
         public static final double CLOSED_LOOP_RAMP = 0.0;
 
         public static final PIDConstants ANGLE_PID = new PIDConstants(FALCON_500_CONSTANTS.angleKP,
@@ -273,9 +273,9 @@ public final class Constants {
         public static final double kI = 0.0023;
         public static final double kD = 0.00147;
 
-        public static final double DeflectorPIDTolerance = 5;
+        public static final double DeflectorPIDTolerance = 1.5;
         public static final double DeflectorPosInValue = 0.0;
-        public static final double DeflectorPosOutValue = 107.0;  
+        public static final double DeflectorPosOutValue = 103.0;  
         public static final double DeflectorPosStowValue = 120.0;  
 
         public static final boolean DeflectorLimitEnable = true;

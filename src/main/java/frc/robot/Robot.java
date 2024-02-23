@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.LimelightBackSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,6 +26,9 @@ public class Robot extends TimedRobot {
 
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+  private final static LimelightSubsystem l_LimelightSubsystem = new LimelightSubsystem();
+  private final static LimelightBackSubsystem l_LimelightBackSubsystem = new LimelightBackSubsystem();
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -78,10 +84,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     autonomousCommand = robotContainer.getAutonomousCommand();
 
+
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
+    l_LimelightSubsystem.setCamMode(0);
+    l_LimelightBackSubsystem.setCamMode(0);
   }
 
   /** This function is called periodically during autonomous. */
@@ -98,6 +107,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+    l_LimelightSubsystem.setCamMode(1);
+    l_LimelightBackSubsystem.setCamMode(0);
   }
 
   /** This function is called periodically during operator control. */
