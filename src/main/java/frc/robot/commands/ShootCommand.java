@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -22,7 +23,8 @@ public class ShootCommand extends Command {
   /** Creates a new ShootCommand. */
   public ShootCommand(Subsystem i_IntakeSubsystem2, Subsystem s_ShooterSubsystem2) {
     // Use addRequirements() here to declare subsystem dependencies.
-
+    this.i_IntakeSubsystem = i_IntakeSubsystem;
+    this.s_ShooterSubsystem = s_ShooterSubsystem;
     addRequirements(i_IntakeSubsystem2);
     addRequirements(s_ShooterSubsystem2);
   }
@@ -36,11 +38,12 @@ public class ShootCommand extends Command {
   @Override
   public void execute() {
     new SequentialCommandGroup(
-        s_ShooterSubsystem.runCmd(1),
+        new InstantCommand(() -> s_ShooterSubsystem.set(1)),
+        new WaitCommand(0.5),
+        new InstantCommand(() -> s_ShooterSubsystem.set(0.5)),
         new WaitCommand(1),
-        i_IntakeSubsystem.runCmd(1),
-        new WaitCommand(1),
-        new ParallelCommandGroup(s_ShooterSubsystem.runCmd(0), i_IntakeSubsystem.runCmd(0)));
+        new ParallelCommandGroup(new InstantCommand(() -> s_ShooterSubsystem.set(0)),
+            new InstantCommand(() -> i_IntakeSubsystem.set(0))));
 
     i_IntakeSubsystem.set(1.0);
 

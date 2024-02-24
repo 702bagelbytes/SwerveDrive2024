@@ -172,31 +172,42 @@ public final class Constants {
     public static final class ArmConstants {
         public static final int ArmMotorID = 13;
 
-        public static final double kP = 0.0;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kP = 0.05;
+        public static final double kI = 0.0014;
+        public static final double kD = 0.0032;
 
         public static final double ArmPIDTolerance = 0.0;
         public static final double ArmPosInValue = 0.0;
-        public static final double ArmPosOutValue = 0.0;
+        public static final double ArmPosOutValue = -10.0;
 
     }
 
     public static final class IntakeConstants {
         public static final int IntakeMotorID = 14;
+        public static final boolean IntakeMotorInverted = false;
     }
 
     public static final class DeflectorConstants {
         public static final int DeflectorMotorID = 15;
+        public static final boolean DeflectorMotorInverted = false;
 
-        public static final double kP = 0.0;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
+
+        public static final double kP = 0.0005;
+        public static final double kI = 0.000023;
+        public static final double kD = 0.0000043;
 
         public static final double DeflectorPIDTolerance = 0.0;
         public static final double DeflectorPosInValue = 0.0;
-        public static final double DeflectorPosOutValue = 0.0;
+        public static final double DeflectorPosOutValue = 20.0;
 
+    }
+
+    public static final class ShooterConstants{
+        public static final int TMotorID = 17;
+        public static final int BMotorID = 16;
+
+        public static final boolean TMotorInvert = true;
+        public static final boolean BMotorInvert = false;
     }
 
     public static final class AutoAimConstants {

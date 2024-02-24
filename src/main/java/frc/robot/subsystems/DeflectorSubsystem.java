@@ -14,7 +14,8 @@ public class DeflectorSubsystem extends SubsystemBase {
     private TalonFX DeflectorMotor = new TalonFX(Constants.DeflectorConstants.DeflectorMotorID);
 
     public DeflectorSubsystem() {
-        DeflectorMotor.setNeutralMode(NeutralModeValue.Brake);
+        DeflectorMotor.setNeutralMode(NeutralModeValue.Coast);
+        DeflectorMotor.setInverted(Constants.DeflectorConstants.DeflectorMotorInverted);
     }
 
     public void ResetArmPos() {
@@ -22,7 +23,7 @@ public class DeflectorSubsystem extends SubsystemBase {
     }
 
     public double TickToDeg(double tick) {
-        return tick;
+        return tick * 9/2 ;
     }
 
     public double getArmAngle() {
@@ -35,7 +36,8 @@ public class DeflectorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm Angle", getArmAngle());
+        SmartDashboard.putNumber("Deflector Angle", getArmAngle());
+        
     }
 
     public Command moveCmd(DoubleSupplier input) {

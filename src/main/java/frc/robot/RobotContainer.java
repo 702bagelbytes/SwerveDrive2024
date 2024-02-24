@@ -49,6 +49,9 @@ public class RobotContainer {
     public Command IntakeOn = new InstantCommand(() -> i_IntakeSubsystem.runCmd(1));
     public Command IntakeOff = new InstantCommand(() -> i_IntakeSubsystem.runCmd(0));
 
+    public Command DeflectorIn = new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue);
+    public Command DeflectorOut = new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue);
+
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final Joystick codriver = new Joystick(1);
@@ -68,11 +71,13 @@ public class RobotContainer {
     private final JoystickButton ArmPosIn = new JoystickButton(codriver, XboxController.Button.kA.value);
     private final JoystickButton ArmPosOut = new JoystickButton(codriver, XboxController.Button.kY.value);
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kRightBumper.value);
     public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
+public final JoystickButton shoot = new JoystickButton(driver, XboxController.Axis.kRightTrigger.value);
+   
 
     private double power = 1;
 
@@ -117,9 +122,11 @@ public class RobotContainer {
                         () -> robotCentric.getAsBoolean()));
 
         a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
+        s_ShooterSubsystem.setDefaultCommand(s_ShooterSubsystem.moveCmd(()-> driver.getRawAxis(2)));
+                d_DeflectorSubsystem.setDefaultCommand(d_DeflectorSubsystem.moveCmd(()-> driver.getRawAxis(3)));
 
         i_IntakeSubsystem.setDefaultCommand(
-                i_IntakeSubsystem.moveCmd(() -> codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger)));
+                i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger))* 0.25));
         // Configure the button bindings
         configureButtonBindings();
 
@@ -155,8 +162,8 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .77));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
-        ArmPosIn.onTrue(IntakeIn);
-        ArmPosOut.onTrue(IntakeOut);
+        ArmPosIn.onTrue(new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
+        ArmPosOut.onTrue(new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue));
         ShootS.onTrue(ShootSCommand);
         ShootA.onTrue(ShootACommand);
 

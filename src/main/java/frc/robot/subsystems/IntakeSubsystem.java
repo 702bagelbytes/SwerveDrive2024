@@ -19,6 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
     IntakeMotor.setNeutralMode(NeutralModeValue.Brake);
+    IntakeMotor.setInverted(Constants.IntakeConstants.IntakeMotorInverted);
   }
 
   public void set(double value) {

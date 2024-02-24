@@ -22,6 +22,7 @@ public class DeflectorPIDCommand extends Command {
 
   /** Creates a new ArmPIDCommand. */
   public DeflectorPIDCommand(DeflectorSubsystem d_DeflectorSubsystem, double setpoint) {
+    this.d_DeflectorSubsystem = d_DeflectorSubsystem;
     DeflectorPID.setSetpoint(setpoint);
     DeflectorPID.setTolerance(Constants.DeflectorConstants.DeflectorPIDTolerance);
     addRequirements(d_DeflectorSubsystem);
