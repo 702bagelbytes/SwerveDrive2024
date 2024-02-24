@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -14,8 +15,15 @@ public class DeflectorSubsystem extends SubsystemBase {
     private TalonFX DeflectorMotor = new TalonFX(Constants.DeflectorConstants.DeflectorMotorID);
 
     public DeflectorSubsystem() {
-        DeflectorMotor.setNeutralMode(NeutralModeValue.Coast);
-        DeflectorMotor.setInverted(Constants.DeflectorConstants.DeflectorMotorInverted);
+        var limitConfigs = new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(Constants.DeflectorConstants.DeflectorLimitEnable)
+        .withForwardSoftLimitThreshold(DegToTick(Constants.DeflectorConstants.DeflectorPosStowValue))
+        .withReverseSoftLimitThreshold(DegToTick(Constants.DeflectorConstants.DeflectorPosInValue))
+        .withReverseSoftLimitEnable(Constants.DeflectorConstants.DeflectorLimitEnable);
+
+        DeflectorMotor.setNeutralMode(NeutralModeValue.Brake);
+        DeflectorMotor.setInverted(false);
+        DeflectorMotor.getConfigurator().apply(limitConfigs);
     }
 
     public void ResetArmPos() {
@@ -23,7 +31,11 @@ public class DeflectorSubsystem extends SubsystemBase {
     }
 
     public double TickToDeg(double tick) {
-        return tick * 9/2 ;
+        return tick * 9/2;
+    }
+
+    public double DegToTick(double deg) {
+        return deg * 2/9;
     }
 
     public double getArmAngle() {
@@ -37,7 +49,7 @@ public class DeflectorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Deflector Angle", getArmAngle());
-        
+        SmartDashboard.putNumber("Deflector", DeflectorMotor.getPosition().getValueAsDouble());
     }
 
     public Command moveCmd(DoubleSupplier input) {

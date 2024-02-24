@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -20,7 +19,8 @@ public class ArmPIDCommand extends Command {
   ArmSubsystem armsubsystem;
 
   /** Creates a new ArmPIDCommand. */
-  public ArmPIDCommand(Subsystem a_ArmSubsystem, double setpoint) {
+  public ArmPIDCommand(ArmSubsystem a_ArmSubsystem, double setpoint) {
+    this.armsubsystem = a_ArmSubsystem;
     ArmPID.setSetpoint(setpoint);
     ArmPID.setTolerance(Constants.ArmConstants.ArmPIDTolerance);
     addRequirements(a_ArmSubsystem);

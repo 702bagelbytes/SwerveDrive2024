@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,7 +16,14 @@ public class ArmSubsystem extends SubsystemBase {
     private TalonFX ArmMotor = new TalonFX(Constants.ArmConstants.ArmMotorID);
 
     public ArmSubsystem() {
+        var limitConfigs = new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(Constants.ArmConstants.ArmLimitEnable)
+        .withForwardSoftLimitThreshold(DegToTick(Constants.ArmConstants.ArmPosInValue))
+        .withReverseSoftLimitThreshold(DegToTick(Constants.ArmConstants.ArmPosOutValue))
+        .withReverseSoftLimitEnable(Constants.ArmConstants.ArmLimitEnable);
+
         ArmMotor.setNeutralMode(NeutralModeValue.Brake);
+        ArmMotor.getConfigurator().apply(limitConfigs);
     }
 
     public void ResetArmPos() {
@@ -22,6 +31,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double TickToDeg(double tick) {
+        return tick;
+    }
+
+    public double DegToTick(double tick) {
         return tick;
     }
 

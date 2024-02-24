@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -24,10 +25,11 @@ public class LimelightSubsystem extends SubsystemBase {
   public NetworkTableEntry botpose_wpired;
   public NetworkTableEntry botpose;
   public NetworkTableEntry camMode;
+  public NetworkTableEntry targetpose_cameraspace;
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem() {
-    table = NetworkTableInstance.getDefault().getTable("limelight-mike");
+    table = NetworkTableInstance.getDefault().getTable("limelight-james");
     tx = table.getEntry("tx");
     ty = table.getEntry("ty");
     ta = table.getEntry("ta");
@@ -39,6 +41,7 @@ public class LimelightSubsystem extends SubsystemBase {
     botpose = table.getEntry("botpose");
     botpose_wpiblue = table.getEntry("botpose_wpiblue");
     botpose_wpired = table.getEntry("botpose_wpired");
+    targetpose_cameraspace = table.getEntry("targetpose_cameraspace");
 
   }
 
@@ -81,15 +84,24 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public double getBotPoseXTeamRelative() {
-    double pose[] = RobotContainer.Color == "red" ? botpose_wpired.getDoubleArray(new double[6])
+    double pose[] = RobotContainer.color == Color.kRed ? botpose_wpired.getDoubleArray(new double[6])
         : botpose_wpiblue.getDoubleArray(new double[6]);
     return pose[0];
   }
 
   public double getBotPoseYTeamRelative() {
-    double pose[] = RobotContainer.Color == "red" ? botpose_wpired.getDoubleArray(new double[6])
+    double pose[] = RobotContainer.color == Color.kRed ? botpose_wpired.getDoubleArray(new double[6])
         : botpose_wpiblue.getDoubleArray(new double[6]);
     return pose[1];
+  }
+
+  public double getTargetPos(int value){
+    double pos[] = targetpose_cameraspace.getDoubleArray(new double[6]);
+    return pos[value];
+  }
+
+  public double TargetDistance(){
+    return Math.sqrt(Math.pow(getTargetPos(0), 2) + Math.pow(getTargetPos(1), 2));
   }
 
   public void setCamMode(int value) {
