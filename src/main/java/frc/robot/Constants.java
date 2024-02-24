@@ -268,6 +268,8 @@ public final class Constants {
 
     public static final class DeflectorConstants {
         public static final int DeflectorMotorID = 15;
+        public static final boolean DeflectorMotorInverted = false;
+
 
         public static final double kP = 0.05;
         public static final double kI = 0.0023;
@@ -322,6 +324,14 @@ public final class Constants {
         public static final double RightLiftPosInValue = -13;
         public static final double RightLiftPosOutValue = 0;     
 
+    }
+
+    public static final class ShooterConstants{
+        public static final int TMotorID = 17;
+        public static final int BMotorID = 16;
+
+        public static final boolean TMotorInvert = true;
+        public static final boolean BMotorInvert = false;
     }
 
     public static final class AutoAimConstants {
