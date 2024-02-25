@@ -114,7 +114,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // l_LimelightSubsystem.setCamMode(1);
+     l_LimelightSubsystem.setCamMode(1);
+     l_LimelightBackSubsystem.setCamMode(1);
   }
 
   @Override

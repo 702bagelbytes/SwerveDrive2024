@@ -100,7 +100,7 @@ public class RobotContainer {
     }
 
     public Command Stow() {
-        return Commands.either(IntakeIn(), null,
+        return Commands.either( new InstantCommand(),IntakeIn(),
                 () -> l_LimitSwitch.isRingIn());
     }
 
@@ -164,21 +164,12 @@ public class RobotContainer {
     private final JoystickButton ArmPosOut = new JoystickButton(codriver, XboxController.Button.kY.value);
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kRightBumper.value);
-<<<<<<< HEAD
-    public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
-    public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
-    public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
-    public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
-public final JoystickButton shoot = new JoystickButton(driver, XboxController.Axis.kRightTrigger.value);
-   
-=======
     //public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
     public final JoystickButton AutoShoot = new JoystickButton(codriver, XboxController.Button.kStart.value);
     public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
->>>>>>> 7ccb93a005132b659ce6e86a7e47aa7800b56580
 
 
     private final JoystickButton DeflectorPosIn = new JoystickButton(codriver, XboxController.Button.kB.value);
@@ -259,25 +250,15 @@ public final JoystickButton shoot = new JoystickButton(driver, XboxController.Ax
                         () -> -driver.getRawAxis(rotationAxis) * power + AimPID,
                         robotCentric::getAsBoolean));
 
-<<<<<<< HEAD
-        a_ArmSubsystem.setDefaultCommand(a_ArmSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis)));
-        s_ShooterSubsystem.setDefaultCommand(s_ShooterSubsystem.moveCmd(()-> driver.getRawAxis(2)));
-                d_DeflectorSubsystem.setDefaultCommand(d_DeflectorSubsystem.moveCmd(()-> driver.getRawAxis(3)));
-=======
         
->>>>>>> 7ccb93a005132b659ce6e86a7e47aa7800b56580
 
         c_ClimberSubsystem.setDefaultCommand(c_ClimberSubsystem.moveCmd(()->codriver.getRawAxis(translationAxis), ()->codriver.getRawAxis(upAxis)));
         i_IntakeSubsystem.setDefaultCommand(
-<<<<<<< HEAD
-                i_IntakeSubsystem.moveCmd(() -> (codriver.getRawAxis(LeftTrigger) - codriver.getRawAxis(RightTrigger))* 0.25));
-=======
                 i_IntakeSubsystem
                         .moveCmd(()-> l_LimitSwitch.isRingIn()? 0- codriver.getRawAxis(RightTrigger)* 0.25:codriver.getRawAxis(LeftTrigger)* 0.25 - codriver.getRawAxis(RightTrigger)* 0.25));
         
                         //
                         //l_LimitSwitch.setDefaultCommand(IsRingIn());
->>>>>>> 7ccb93a005132b659ce6e86a7e47aa7800b56580
         // Configure the button bindings
 
         debugSpeeds();
@@ -335,26 +316,18 @@ public final JoystickButton shoot = new JoystickButton(driver, XboxController.Ax
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .666));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
-<<<<<<< HEAD
-        ArmPosIn.onTrue(new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue));
-        ArmPosOut.onTrue(new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue));
-        ShootS.onTrue(ShootSCommand);
-        ShootA.onTrue(ShootACommand);
-
-=======
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
-        //ArmPosOut.onFalse();
+        //ArmPosOut.onFalse(Stow());
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());
         ShootS.onTrue(Shoot(topShooterSpeed.speed, bottomShooterSpeed.speed));
         ShootA.onTrue(ShootACommand());
         onandstow.onTrue(OnAndStow());
-        LiftPosOut.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue));
+        LiftPosOut.onTrue(new ParallelCommandGroup(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue), DeflectorOut()));
         LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue, Constants.ClimberConstants.RightLiftPosOutValue));
        
       
->>>>>>> 7ccb93a005132b659ce6e86a7e47aa7800b56580
         AutoAim.whileTrue(new ParallelCommandGroup(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
                         () -> l_LimelightSubsystem.IsTargetAvailable()),

@@ -20,24 +20,24 @@
         "y": 6.5486372194118445
       },
       "prevControl": {
-        "x": 2.3023032988844965,
-        "y": 6.508702818427551
+        "x": 2.294952538677295,
+        "y": 6.519230609700464
       },
       "nextControl": {
-        "x": 4.009014815717492,
-        "y": 7.9910145485030855
+        "x": 3.4658337001152373,
+        "y": 7.164856670680264
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.348283169848783,
-        "y": 6.329304872350202
+        "x": 2.748701298114341,
+        "y": 6.320087041123074
       },
       "prevControl": {
-        "x": 2.4846178671919614,
-        "y": 6.54354511103234
+        "x": 2.8850359954575193,
+        "y": 6.534327279805211
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.9,
-      "rotationDegrees": 40.0,
+      "rotationDegrees": 20.0,
       "rotateFast": false
     }
   ],
@@ -55,11 +55,24 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.2,
+      "waypointRelativePos": 2.0,
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot2"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeOff"
+              }
+            }
+          ]
         }
       }
     }
