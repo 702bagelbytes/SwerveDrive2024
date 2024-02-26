@@ -255,8 +255,15 @@ public final class Constants {
 
         public static final double ArmPIDTolerance = 1.0;
         public static final double ArmPosInValue = 0.0;
-        public static final double ArmPosOutValue = -57.5;
+        public static final double ArmPosOutValue = -58;
         public static final boolean ArmLimitEnable = true;
+
+        public static final int STATOR_CURRENT_LIMIT = 20;
+        public static final int CURRENT_LIMIT = 15;
+        public static final int CURRENT_THRESHOLD = 20;
+        public static final double CURRENT_THRESHOLD_TIME = 0.1;
+        public static final boolean ENABLE_CURRENT_LIMIT = true;
+        public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
 
     }
 

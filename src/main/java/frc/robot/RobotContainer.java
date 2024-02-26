@@ -1,8 +1,5 @@
 package frc.robot;
 
-
-
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -72,19 +69,34 @@ public class RobotContainer {
         return new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue);
     }
 
-    public Command ArmMove(double value){
-        return new InstantCommand(()-> a_ArmSubsystem.set(value));
+    public Command ArmMove(double value) {
+        return new InstantCommand(() -> a_ArmSubsystem.set(value));
     }
 
-    public Command DeflectorMove(double value){
-        return new InstantCommand(()-> d_DeflectorSubsystem.set(value));
+    public Command DeflectorMove(double value) {
+        return new InstantCommand(() -> d_DeflectorSubsystem.set(value));
     }
+
     /**
      * Turns on the intake motor
      */
 
     public Command IntakeOn(double val) {
-        return new InstantCommand(RobotContainer.isRingIn? ()->i_IntakeSubsystem.set(0): ()->i_IntakeSubsystem.set(val));
+        return Commands.runEnd(() -> i_IntakeSubsystem.set(val), () -> i_IntakeSubsystem.set(0), i_IntakeSubsystem)
+                .until(l_LimitSwitch::isRingIn);
+    }
+
+    public Command AutoPickUp() {
+        return new ParallelCommandGroup(
+                IntakeOut(), 
+                new AutoAimCommand(() -> l_LimelightSubsystem.getTargetX(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable()), 
+                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable()),
+                Commands.repeatingSequence(new TeleopSwerve(s_Swerve, () -> FollowPID, null, () -> AimPID, () -> true)),
+                new SequentialCommandGroup(
+                        IntakeOn(0.25),
+                        IntakeIn()));
     }
 
     /**
@@ -100,17 +112,14 @@ public class RobotContainer {
     }
 
     public Command Stow() {
-        return Commands.either( new InstantCommand(),IntakeIn(),
+        return Commands.either(new InstantCommand(), IntakeIn(),
                 () -> l_LimitSwitch.isRingIn());
     }
-
-    
 
     private double power = 1;
 
     private ShooterSpeeds topShooterSpeed = ShooterSpeeds.DEFAULT;
     private ShooterSpeeds bottomShooterSpeed = ShooterSpeeds.DEFAULT;
-    
 
     public Command Shoot(double TopSpeed, double BottomSpeed) {
         return new SequentialCommandGroup(IntakeIn(),
@@ -122,8 +131,6 @@ public class RobotContainer {
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
                         Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem)));
     }
-
-    
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
@@ -138,10 +145,10 @@ public class RobotContainer {
                 DeflectorIn());
     }
 
-    
-
-    public Command DeflectorIn = new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosInValue);
-    public Command DeflectorOut = new DeflectorPIDCommand(d_DeflectorSubsystem, Constants.DeflectorConstants.DeflectorPosOutValue);
+    public Command DeflectorIn = new DeflectorPIDCommand(d_DeflectorSubsystem,
+            Constants.DeflectorConstants.DeflectorPosInValue);
+    public Command DeflectorOut = new DeflectorPIDCommand(d_DeflectorSubsystem,
+            Constants.DeflectorConstants.DeflectorPosOutValue);
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -164,22 +171,20 @@ public class RobotContainer {
     private final JoystickButton ArmPosOut = new JoystickButton(codriver, XboxController.Button.kY.value);
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kRightBumper.value);
-    //public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
+    // public final JoystickButton AutoAim = new JoystickButton(driver,
+    // XboxController.Button.kStart.value);
     public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
     public final JoystickButton AutoShoot = new JoystickButton(codriver, XboxController.Button.kStart.value);
     public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
 
-
     private final JoystickButton DeflectorPosIn = new JoystickButton(codriver, XboxController.Button.kB.value);
     private final JoystickButton DeflectorPosOut = new JoystickButton(codriver, XboxController.Button.kX.value);
-    private final JoystickButton LiftPosOut = new JoystickButton(codriver, XboxController.Button.kLeftStick.value); 
-    private final JoystickButton LiftPosIn = new JoystickButton(codriver, XboxController.Button.kRightStick.value); 
-
+    private final JoystickButton LiftPosOut = new JoystickButton(codriver, XboxController.Button.kLeftStick.value);
+    private final JoystickButton LiftPosIn = new JoystickButton(codriver, XboxController.Button.kRightStick.value);
 
     public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
-    
 
     private final POVButton increaseTopSpeed = new POVButton(driver, Direction.UP.direction);
     private final POVButton decreaseTopSpeed = new POVButton(driver, Direction.DOWN.direction);
@@ -193,7 +198,6 @@ public class RobotContainer {
     private final POVButton InDeflector = new POVButton(codriver, Direction.RIGHT.direction);
     private final POVButton OutDeflector = new POVButton(codriver, Direction.LEFT.direction);
 
-   
     private static double AimPID = 0;
     private static double FollowPID = 0;
     public static Color color = Color.kBlue;
@@ -201,7 +205,7 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<Command> teamChooser;
 
-   // private static final Orchestra orchestra = new Orchestra("mario.chrp");
+    // private static final Orchestra orchestra = new Orchestra("mario.chrp");
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
@@ -219,7 +223,6 @@ public class RobotContainer {
     public RobotContainer() {
         Field2d field = new Field2d();
         SmartDashboard.putData("Field", field);
-
 
         // Logging callback for current robot pose
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
@@ -239,7 +242,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot", Shoot(0.5, 0.5));
         NamedCommands.registerCommand("Shoot2", Shoot(0.87, 0.42));
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
-         NamedCommands.registerCommand("IntakeOff", IntakeOff());
+        NamedCommands.registerCommand("IntakeOff", IntakeOff());
         NamedCommands.registerCommand("IntakeOn", IntakeOn(0.35));
 
         s_Swerve.setDefaultCommand(
@@ -250,19 +253,19 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(rotationAxis) * power + AimPID,
                         robotCentric::getAsBoolean));
 
-        
-
-        c_ClimberSubsystem.setDefaultCommand(c_ClimberSubsystem.moveCmd(()->codriver.getRawAxis(translationAxis), ()->codriver.getRawAxis(upAxis)));
+        c_ClimberSubsystem.setDefaultCommand(c_ClimberSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis),
+                () -> codriver.getRawAxis(upAxis)));
         i_IntakeSubsystem.setDefaultCommand(
                 i_IntakeSubsystem
-                        .moveCmd(()-> l_LimitSwitch.isRingIn()? 0- codriver.getRawAxis(RightTrigger)* 0.25:codriver.getRawAxis(LeftTrigger)* 0.25 - codriver.getRawAxis(RightTrigger)* 0.25));
-        
-                        //
-                        //l_LimitSwitch.setDefaultCommand(IsRingIn());
+                        .moveCmd(() -> l_LimitSwitch.isRingIn() ? 0 - codriver.getRawAxis(RightTrigger) * 0.25
+                                : codriver.getRawAxis(LeftTrigger) * 0.25 - codriver.getRawAxis(RightTrigger) * 0.25));
+
+        //
+        // l_LimitSwitch.setDefaultCommand(IsRingIn());
         // Configure the button bindings
 
         debugSpeeds();
-        
+
         configureButtonBindings();
 
         // Build an auto chooser. This will use Commands.none() as the default option.
@@ -317,17 +320,19 @@ public class RobotContainer {
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .666));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
-        //ArmPosOut.onFalse(Stow());
+        // ArmPosOut.onFalse(Stow());
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());
         ShootS.onTrue(Shoot(topShooterSpeed.speed, bottomShooterSpeed.speed));
         ShootA.onTrue(ShootACommand());
         onandstow.onTrue(OnAndStow());
-        LiftPosOut.onTrue(new ParallelCommandGroup(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue), DeflectorOut()));
-        LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue, Constants.ClimberConstants.RightLiftPosOutValue));
-       
-      
+        LiftPosOut.onTrue(new ParallelCommandGroup(new ClimberPIDCommand(c_ClimberSubsystem,
+                Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue),
+                DeflectorOut()));
+        LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue,
+                Constants.ClimberConstants.RightLiftPosOutValue));
+
         AutoAim.whileTrue(new ParallelCommandGroup(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
                         () -> l_LimelightSubsystem.IsTargetAvailable()),
@@ -338,9 +343,10 @@ public class RobotContainer {
                 new InstantCommand(() -> AimPID = 0)));
         AutoShoot.whileTrue(new SequentialCommandGroup(
                 new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()), Shoot(50, 50)));
+                        () -> l_LimelightSubsystem.IsTargetAvailable()),
+                Shoot(50, 50)));
 
-        AutoShoot.onFalse( new InstantCommand(() -> AimPID = 0));
+        AutoShoot.onFalse(new InstantCommand(() -> AimPID = 0));
 
         OutIntake.onTrue(ArmMove(-0.4));
         OutIntake.onFalse(ArmMove(0));
@@ -350,11 +356,11 @@ public class RobotContainer {
         InDeflector.onFalse(DeflectorMove(0));
         OutDeflector.onTrue(DeflectorMove(0.5));
         OutDeflector.onFalse(DeflectorMove(0));
-        
+
         increaseTopSpeed.onTrue(wrapSpeedChange(this::nextTopSpeed));
         decreaseTopSpeed.onTrue(wrapSpeedChange(this::prevTopSpeed));
         increaseBottomSpeed.onTrue(wrapSpeedChange(this::nextBottomSpeed));
-        decreaseBottomSpeed.onTrue(wrapSpeedChange(this::prevBottomSpeed)); 
+        decreaseBottomSpeed.onTrue(wrapSpeedChange(this::prevBottomSpeed));
     }
 
     void nextTopSpeed() {
