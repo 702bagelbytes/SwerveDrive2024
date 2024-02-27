@@ -22,13 +22,22 @@ public class AutoFollowCommand extends Command {
       Constants.AutoFollowConstants.kI,
       Constants.AutoFollowConstants.kD);
 
+      private PIDController AutoAimPID = new PIDController(
+        Constants.AutoAimConstants.kP,
+        Constants.AutoAimConstants.kI,
+        Constants.AutoAimConstants.kD);
+  
+  
+  DoubleSupplier tx;
   DoubleSupplier ta;
   BooleanSupplier tv;
 
   /** Creates a new AutoAim. */
-  public AutoFollowCommand(DoubleSupplier ta, BooleanSupplier tv) {
+  public AutoFollowCommand(DoubleSupplier tx, DoubleSupplier ta, BooleanSupplier tv) {
     this.ta = ta;
+    this.tx = tx;
     this.tv = tv;
+    
 
   }
 
@@ -43,6 +52,9 @@ public class AutoFollowCommand extends Command {
   public void execute() {
     AutoFollowPID.setSetpoint(50);
     AutoFollowPID.setTolerance(1);
+    AutoAimPID.setSetpoint(0);
+    AutoAimPID.setTolerance(1);
+
 
     double a = ta.getAsDouble();
     boolean Target = tv.getAsBoolean();
@@ -50,6 +62,13 @@ public class AutoFollowCommand extends Command {
     double result = value > 0 ? value + 0.0955 : value - 0.0955;
     RobotContainer.setFollowPID(Target ? MathUtil.clamp(result, -0.67, 0.67) : 0);
     SmartDashboard.putNumber("FPID", value);
+
+    double x = tx.getAsDouble();
+
+    double value2 = AutoAimPID.calculate(x);
+    double result2 = Math.copySign(Math.abs(value2) + 0.0955, value2); 
+    // value > 0 ? value + 0.0955 : value - 0.0955;
+    RobotContainer.setAimPID(Target ? MathUtil.clamp(result2, -0.57, 0.57) : 0);
     // SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
   }
 

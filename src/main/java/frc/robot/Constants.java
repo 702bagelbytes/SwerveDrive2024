@@ -163,7 +163,7 @@ public final class Constants {
         public static final boolean ANGLE_ENABLE_CURRENT_LIMIT = true;
         public static final boolean ANGLE_ENABLE_STATOR_CURRENT_LIMIT = true;
 
-        public static final int DRIVE_STATOR_CURRENT_LIMIT = 50;
+        public static final int DRIVE_STATOR_CURRENT_LIMIT = 60;
         public static final int DRIVE_CURRENT_LIMIT = 35;//35
         public static final int DRIVE_CURRENT_THRESHOLD = 60;//60
         public static final double DRIVE_CURRENT_THRESHOLD_TIME = 0.1;
@@ -343,7 +343,7 @@ public final class Constants {
 
     public static final class AutoAimConstants {
         public static final double kP = 0.007237;
-        public static final double kI = 0.000666;
+        public static final double kI = 0.000665;
         public static final double kD = 0.0000333;
 
         public static final double AutoAimPIDTolerance = 1.0;
@@ -354,7 +354,7 @@ public final class Constants {
 
     public static final class AutoFollowConstants {
         public static final double kP = 0.01571;
-        public static final double kI = 0.000666;
+        public static final double kI = 0.000665;
         public static final double kD = 0.0000333;
 
         public static final double AutoFollowPIDTolerance = 1.0;

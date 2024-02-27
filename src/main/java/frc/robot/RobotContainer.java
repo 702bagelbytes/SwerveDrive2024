@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -87,16 +90,14 @@ public class RobotContainer {
     }
 
     public Command AutoPickUp() {
-        return new ParallelCommandGroup(
-                IntakeOut(), 
-                new AutoAimCommand(() -> l_LimelightSubsystem.getTargetX(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()), 
-                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()),
-                Commands.repeatingSequence(new TeleopSwerve(s_Swerve, () -> FollowPID, null, () -> AimPID, () -> true)),
-                new SequentialCommandGroup(
-                        IntakeOn(0.25),
-                        IntakeIn()));
+
+        return new SequentialCommandGroup(new ParallelCommandGroup(
+                IntakeOut(), IntakeOn(0.25), new InstantCommand(()-> robotCentric = true),
+                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(),
+                        () -> l_LimelightSubsystem.getTargetA(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable())),
+                
+                IntakeIn(),  new InstantCommand(()-> robotCentric = false));
     }
 
     /**
@@ -164,7 +165,7 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    //private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton fastMode = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton ArmPosIn = new JoystickButton(codriver, XboxController.Button.kA.value);
@@ -201,6 +202,7 @@ public class RobotContainer {
     private static double AimPID = 0;
     private static double FollowPID = 0;
     public static Color color = Color.kBlue;
+    public static boolean robotCentric = false;
 
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<Command> teamChooser;
@@ -244,6 +246,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());
         NamedCommands.registerCommand("IntakeOn", IntakeOn(0.35));
+        NamedCommands.registerCommand("IntakeIn", IntakeIn());
+        NamedCommands.registerCommand("AutoPickUpCmd", AutoPickUp());
 
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
@@ -251,7 +255,7 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(translationAxis) * power + FollowPID,
                         () -> -driver.getRawAxis(strafeAxis) * power,
                         () -> -driver.getRawAxis(rotationAxis) * power + AimPID,
-                        robotCentric::getAsBoolean));
+                        ()-> robotCentric));
 
         c_ClimberSubsystem.setDefaultCommand(c_ClimberSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis),
                 () -> codriver.getRawAxis(upAxis)));
@@ -317,7 +321,7 @@ public class RobotContainer {
 
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .666));
+        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .665));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
         // ArmPosOut.onFalse(Stow());
@@ -333,11 +337,9 @@ public class RobotContainer {
         LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue,
                 Constants.ClimberConstants.RightLiftPosOutValue));
 
-        AutoAim.whileTrue(new ParallelCommandGroup(
-                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()),
-                new AutoAimCommand(() -> l_LimelightSubsystem.getTargetX(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable())));
+        AutoAim.whileTrue(
+                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(), () -> l_LimelightSubsystem.getTargetA(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable()));
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0)));
