@@ -188,7 +188,7 @@ public final class Constants {
         public static final double DRIVE_KA = 0.27;
 
         /** Units: m/s */
-        public static final double MAX_SPEED = 4.5;
+        public static final double MAX_SPEED = 10;
         /** Units: radians/s */
         public static final double MAX_ANGULAR_VELOCITY = 10.0;
 
@@ -278,13 +278,13 @@ public final class Constants {
         public static final boolean DeflectorMotorInverted = false;
 
 
-        public static final double kP = 0.05;
-        public static final double kI = 0.0023;
-        public static final double kD = 0.00147;
+        public static final double kP = 0.028;
+        public static final double kI = 0.00;
+        public static final double kD = 0.0012;
 
-        public static final double DeflectorPIDTolerance = 1.5;
+        public static final double DeflectorPIDTolerance = 0.5;
         public static final double DeflectorPosInValue = 0.0;
-        public static final double DeflectorPosOutValue = 103.0;  
+        public static final double DeflectorPosOutValue = 102.0;  
         public static final double DeflectorPosStowValue = 120.0;  
 
         public static final boolean DeflectorLimitEnable = true;

@@ -91,13 +91,13 @@ public class RobotContainer {
 
     public Command AutoPickUp() {
 
-        return new SequentialCommandGroup(new ParallelCommandGroup(
-                IntakeOut(), IntakeOn(0.25), new InstantCommand(()-> robotCentric = true),
+        return new SequentialCommandGroup(
+                IntakeOut(),(IntakeOn(0.25)).raceWith(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(),
                         () -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable())),
+                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve)));
                 
-                IntakeIn(),  new InstantCommand(()-> robotCentric = false));
+                
     }
 
     /**
@@ -126,7 +126,7 @@ public class RobotContainer {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(TopSpeed, BottomSpeed),
                         s_ShooterSubsystem),
-                new WaitCommand(0.38),
+                new WaitCommand(.52),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.55), i_IntakeSubsystem),
                 new WaitCommand(0.35),
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
@@ -135,14 +135,14 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0.42, 0.42)
+                Shoot(0.1542, 0.47) //0.13 0.57   0.52 0    0.1542 0.42
 
         );
     }
 
     public Command ShootACommand() {
         return new SequentialCommandGroup(
-                new ParallelCommandGroup(DeflectorOut(), ShootA()),
+                new ParallelCommandGroup(DeflectorOut(), ShootA()),new WaitCommand(0.4),
                 DeflectorIn());
     }
 
@@ -199,8 +199,8 @@ public class RobotContainer {
     private final POVButton InDeflector = new POVButton(codriver, Direction.RIGHT.direction);
     private final POVButton OutDeflector = new POVButton(codriver, Direction.LEFT.direction);
 
-    private static double AimPID = 0;
-    private static double FollowPID = 0;
+    public static double AimPID;
+    public static double FollowPID;
     public static Color color = Color.kBlue;
     public static boolean robotCentric = false;
 
@@ -242,12 +242,16 @@ public class RobotContainer {
         });
 
         NamedCommands.registerCommand("Shoot", Shoot(0.5, 0.5));
-        NamedCommands.registerCommand("Shoot2", Shoot(0.87, 0.42));
+        NamedCommands.registerCommand("Shoot2", Shoot(0.90, 0.21));
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());
         NamedCommands.registerCommand("IntakeOn", IntakeOn(0.35));
         NamedCommands.registerCommand("IntakeIn", IntakeIn());
         NamedCommands.registerCommand("AutoPickUpCmd", AutoPickUp());
+        NamedCommands.registerCommand("AutoFollowCmd", new AutoFollowCommand(
+                        () -> l_LimelightSubsystem.getTargetX(),
+                        () -> l_LimelightSubsystem.getTargetA(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve));
 
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
@@ -339,7 +343,7 @@ public class RobotContainer {
 
         AutoAim.whileTrue(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(), () -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()));
+                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve));
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0)));
