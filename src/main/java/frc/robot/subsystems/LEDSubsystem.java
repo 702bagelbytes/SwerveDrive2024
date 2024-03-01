@@ -13,31 +13,31 @@ import frc.robot.Constants;
 
 public class LEDSubsystem extends SubsystemBase {
   /** Creates a new LimitSwitch. */
-  private AddressableLED led = new AddressableLED(Constants.LEDConstants.PwmID);
-  private AddressableLEDBuffer buffer = new AddressableLEDBuffer(Constants.LEDConstants.LEDLength);
+  private AddressableLED led1 = new AddressableLED(Constants.LEDConstants.LED_1_PwmID);
+  private AddressableLEDBuffer buffer1 = new AddressableLEDBuffer(Constants.LEDConstants.LED_1_Length);
   private int m_rainbowFirstPixelHue = 0;
 
   public LEDSubsystem() {
-    led.setLength(Constants.LEDConstants.LEDLength);
-    led.setData(buffer);
-    led.start();
+    led1.setLength(Constants.LEDConstants.LED_1_Length);
+    led1.setData(buffer1);
+    led1.start();
     rainbow();
   }
   
    public void setColor(Color color) {
-    for(int i = 0; i < buffer.getLength(); ++i) {
-        buffer.setLED(i, color);
+    for(int i = 0; i < buffer1.getLength(); ++i) {
+        buffer1.setLED(i, color);
     }
    }
  
    public void rainbow(){
     // For every pixel
-    for (var i = 0; i < buffer.getLength(); i++) {
+    for (var i = 0; i < buffer1.getLength(); i++) {
       // Calculate the hue - hue is easier for rainbows because the color
       // shape is a circle so only one value needs to precess
-      final var hue = (m_rainbowFirstPixelHue + (i * 180 / buffer.getLength())) % 180;
+      final var hue = (m_rainbowFirstPixelHue + (i * 180 / buffer1.getLength())) % 180;
       // Set the value
-      buffer.setHSV(i, hue, 255, 128);
+      buffer1.setHSV(i, hue, 255, 128);
     }
     // Increase by to make the rainbow "move"
     m_rainbowFirstPixelHue += 3;
