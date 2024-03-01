@@ -91,7 +91,7 @@ public class RobotContainer {
     public Command AutoPickUp() {
 
         return new SequentialCommandGroup(
-                IntakeOut(),(IntakeOn(0.25)).raceWith(
+                (IntakeOn(0.25)).raceWith(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(),
                         () -> l_LimelightSubsystem.getTargetA(),
                         () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve)));

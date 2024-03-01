@@ -24,9 +24,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Return Path"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Return Path"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              }
+            ]
           }
         },
         {
@@ -42,15 +55,59 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Return Path"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Return Path"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Shoot Path2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoPickUpCmd"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Return Path"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot Path"
           }
         }
       ]
