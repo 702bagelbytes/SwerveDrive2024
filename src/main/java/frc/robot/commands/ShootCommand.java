@@ -23,8 +23,8 @@ public class ShootCommand extends Command {
   /** Creates a new ShootCommand. */
   public ShootCommand(Subsystem i_IntakeSubsystem2, Subsystem s_ShooterSubsystem2) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.i_IntakeSubsystem = i_IntakeSubsystem;
-    this.s_ShooterSubsystem = s_ShooterSubsystem;
+    //this.i_IntakeSubsystem = i_IntakeSubsystem;
+    //this.s_ShooterSubsystem = s_ShooterSubsystem;
     addRequirements(i_IntakeSubsystem2);
     addRequirements(s_ShooterSubsystem2);
   }

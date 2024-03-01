@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.0,
-        "y": 7.127377584234937
+        "x": 1.4437834806867724,
+        "y": 6.77778209648946
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.351670310277036,
-        "y": 6.823681069327456
+        "x": 1.6677619120362805,
+        "y": 4.9956928383607675
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.6174047608210813,
-        "y": 6.2447595877850715
+        "x": 1.7748820313773495,
+        "y": 4.051088149625884
       },
       "prevControl": {
-        "x": 1.1276921662841066,
-        "y": 6.390993209764862
-      },
-      "nextControl": {
-        "x": 2.984039077904743,
-        "y": 5.836667395878144
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 4.825199199531347,
-        "y": 6.349155264784518
-      },
-      "prevControl": {
-        "x": 3.0694537227224736,
-        "y": 6.567437134874269
+        "x": 1.1321613153309351,
+        "y": 4.070564534960624
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +30,13 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": 20.0,
+      "waypointRelativePos": 0.25,
+      "rotationDegrees": 0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 0.1,
+      "rotationDegrees": 27.0,
       "rotateFast": false
     }
   ],
@@ -55,7 +44,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.4,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "parallel",
         "data": {
@@ -64,6 +53,23 @@
               "type": "named",
               "data": {
                 "name": "Shoot2"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.55,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeOut"
               }
             }
           ]
@@ -78,12 +84,15 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 5.0,
-    "rotation": 0.0,
+    "velocity": 2.0,
+    "rotation": 32.31961650818017,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }
