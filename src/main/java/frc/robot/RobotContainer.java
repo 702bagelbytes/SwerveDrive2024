@@ -134,7 +134,7 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0.1542, 0.47) //0.13 0.57   0.52 0    0.1542 0.42
+                Shoot(0.1542, 0.45) //0.13 0.57   0.52 0    0.1542 0.42
 
         );
     }
