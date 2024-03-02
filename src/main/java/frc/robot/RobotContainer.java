@@ -2,6 +2,7 @@ package frc.robot;
 
 
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -89,8 +90,7 @@ public class RobotContainer {
     }
 
     public Command AutoPickUp() {
-
-        return new SequentialCommandGroup(
+        return new SequentialCommandGroup(IntakeOut(),
                 (IntakeOn(0.25)).raceWith(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(),
                         () -> l_LimelightSubsystem.getTargetA(),
@@ -116,11 +116,21 @@ public class RobotContainer {
                 () -> l_LimitSwitch.isRingIn());
     }
 
+    
+
     private double power = 1;
 
     private ShooterSpeeds topShooterSpeed = ShooterSpeeds.DEFAULT;
     private ShooterSpeeds bottomShooterSpeed = ShooterSpeeds.DEFAULT;
 
+    public Command Outtake() {
+        return new SequentialCommandGroup(
+                Commands.runOnce(() -> i_IntakeSubsystem.setMode(NeutralModeValue.Coast), i_IntakeSubsystem),
+                Commands.runOnce(() -> i_IntakeSubsystem.set(-0.55), i_IntakeSubsystem),
+                new WaitCommand(0.25),
+                Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem),
+                Commands.runOnce(() -> i_IntakeSubsystem.setMode(NeutralModeValue.Brake), i_IntakeSubsystem));
+    }
     public Command Shoot(double TopSpeed, double BottomSpeed) {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(TopSpeed, BottomSpeed),
@@ -240,12 +250,15 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
+        NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42)));
+        NamedCommands.registerCommand("ShootOff", Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
         NamedCommands.registerCommand("Shoot", Shoot(0.5, 0.5));
         NamedCommands.registerCommand("Shoot2", Shoot(0.90, 0.21));
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());
         NamedCommands.registerCommand("IntakeOn", IntakeOn(0.35));
         NamedCommands.registerCommand("IntakeIn", IntakeIn());
+         NamedCommands.registerCommand("Outtake", Outtake());
         NamedCommands.registerCommand("AutoPickUpCmd", AutoPickUp());
         NamedCommands.registerCommand("AutoFollowCmd", new AutoFollowCommand(
                         () -> l_LimelightSubsystem.getTargetX(),

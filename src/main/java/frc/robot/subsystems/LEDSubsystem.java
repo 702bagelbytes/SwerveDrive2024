@@ -16,6 +16,7 @@ public class LEDSubsystem extends SubsystemBase {
   private AddressableLED led1 = new AddressableLED(Constants.LEDConstants.LED_1_PwmID);
   private AddressableLEDBuffer buffer1 = new AddressableLEDBuffer(Constants.LEDConstants.LED_1_Length);
   private int m_rainbowFirstPixelHue = 0;
+  private boolean do_the_rainbow = true;
 
   public LEDSubsystem() {
     led1.setLength(Constants.LEDConstants.LED_1_Length);
@@ -25,9 +26,11 @@ public class LEDSubsystem extends SubsystemBase {
   }
   
    public void setColor(Color color) {
+    do_the_rainbow = false;
     for(int i = 0; i < buffer1.getLength(); ++i) {
         buffer1.setLED(i, color);
     }
+    led1.setData(buffer1);
    }
  
    public void rainbow(){
@@ -39,6 +42,7 @@ public class LEDSubsystem extends SubsystemBase {
       // Set the value
       buffer1.setHSV(i, hue, 255, 128);
     }
+    led1.setData(buffer1);
     // Increase by to make the rainbow "move"
     m_rainbowFirstPixelHue += 3;
     // Check bounds
@@ -48,6 +52,9 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (do_the_rainbow) {
+      rainbow();
+    }
 
   }
 }

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.0,
-      "y": 7.0
+      "x": 1.4048307100172925,
+      "y": 5.531293435066112
     },
     "rotation": 0
   },
@@ -12,9 +12,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "shoot Path"
+            "name": "Shoot"
           }
         },
         {
@@ -30,7 +30,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Return Path"
+                  "pathName": "Shoot Path2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
                 }
               },
               {
@@ -43,9 +49,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Shoot Path2"
+            "name": "Outtake"
           }
         },
         {
@@ -61,7 +67,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Return Path"
+                  "pathName": "Shoot Path2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
                 }
               },
               {
@@ -74,9 +86,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Shoot Path2"
+            "name": "Outtake"
           }
         },
         {
@@ -92,7 +104,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Return Path"
+                  "pathName": "Shoot Path2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
                 }
               },
               {
@@ -105,9 +123,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "shoot Path"
+            "name": "Outtake"
           }
         }
       ]

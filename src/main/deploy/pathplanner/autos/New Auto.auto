@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.0,
-      "y": 7.0
+      "x": 1.385354324682553,
+      "y": 5.52155524239874
     },
     "rotation": 0
   },
@@ -15,6 +15,12 @@
           "type": "path",
           "data": {
             "pathName": "shoot Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOut"
           }
         }
       ]

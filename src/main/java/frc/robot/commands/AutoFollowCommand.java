@@ -54,7 +54,7 @@ public class AutoFollowCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AutoFollowPID.setSetpoint(50);
+    AutoFollowPID.setSetpoint(20);
     AutoFollowPID.setTolerance(1);
     AutoAimPID.setSetpoint(0);
     AutoAimPID.setTolerance(1);

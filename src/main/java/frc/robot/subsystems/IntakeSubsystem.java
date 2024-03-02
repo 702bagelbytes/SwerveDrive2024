@@ -38,6 +38,9 @@ public class IntakeSubsystem extends SubsystemBase {
   public void set(double value) {
     IntakeMotor.set(value);
   }
+  public void setMode(NeutralModeValue mode) {
+    IntakeMotor.setNeutralMode(mode);
+  }
 
   public Command runCmd(double value) {
     return this.run(() -> this.set(value));
