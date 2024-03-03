@@ -65,7 +65,7 @@ public class AutoFollowCommand extends Command {
     boolean Target = tv.getAsBoolean();
     double value = AutoFollowPID.calculate(a);
     double result = value > 0 ? value + 0.0955 : value - 0.0955;
-    double FollowPID = (Target ? MathUtil.clamp(result, -0.67, 0.67) : 0);
+    double FollowPID = (Target ? MathUtil.clamp(result, -0.87, 0.87) : 0);
     SmartDashboard.putNumber("FPID", value);
     SmartDashboard.putNumber("Fta", a);
 
