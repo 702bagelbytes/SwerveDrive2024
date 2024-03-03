@@ -30,17 +30,44 @@ public class LEDSubsystem extends SubsystemBase {
     for(int i = 0; i < buffer1.getLength(); ++i) {
         buffer1.setLED(i, color);
     }
+    led1.setData(buffer1);}
+
+    public void DoTheRainbow(boolean val) {
+    do_the_rainbow = val;
+    
+   }
+
+   public void bagelbow() {
+    // NDB: TODO: Get the colors right and then create a private
+    // variable for the first index that can be looped over
+    buffer1.setHSV(0, 55, 40, 128);  
+    buffer1.setHSV(1, 56, 100, 128);
+    buffer1.setHSV(2, 57, 160, 128);
+    buffer1.setHSV(3, 58, 160, 128);
+    buffer1.setHSV(4, 59, 160, 128);
+    buffer1.setHSV(5, 60, 100, 128);
+    buffer1.setHSV(6, 61, 40, 128);
+
+    buffer1.setHSV(7, 175, 40, 128);
+    buffer1.setHSV(8, 176, 100, 128);
+    buffer1.setHSV(9, 177, 160, 128);
+    buffer1.setHSV(10, 178, 160, 128);
+    buffer1.setHSV(11, 179, 160, 128);
+    buffer1.setHSV(12, 180, 160, 128);
+    buffer1.setHSV(13, 181, 160, 128);
+
     led1.setData(buffer1);
    }
  
    public void rainbow(){
     // For every pixel
-    for (var i = 0; i < buffer1.getLength(); i++) {
+    for (var i = 0; i < 14; i++) {
       // Calculate the hue - hue is easier for rainbows because the color
       // shape is a circle so only one value needs to precess
-      final var hue = (m_rainbowFirstPixelHue + (i * 180 / buffer1.getLength())) % 180;
+      final var hue = (m_rainbowFirstPixelHue + (i * 180 / 14)) % 180;
       // Set the value
       buffer1.setHSV(i, hue, 255, 128);
+      buffer1.setHSV(i+14, hue, 255, 128);
     }
     led1.setData(buffer1);
     // Increase by to make the rainbow "move"
@@ -55,6 +82,5 @@ public class LEDSubsystem extends SubsystemBase {
     if (do_the_rainbow) {
       rainbow();
     }
-
   }
 }

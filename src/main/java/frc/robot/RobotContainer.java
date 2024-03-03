@@ -91,7 +91,7 @@ public class RobotContainer {
 
     public Command AutoPickUp() {
         return new SequentialCommandGroup(IntakeOut(),
-                (IntakeOn(0.25)).raceWith(
+                (IntakeOn(0.40)).raceWith(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(),
                         () -> l_LimelightSubsystem.getTargetA(),
                         () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve)));
@@ -127,7 +127,7 @@ public class RobotContainer {
         return new SequentialCommandGroup(
                 Commands.runOnce(() -> i_IntakeSubsystem.setMode(NeutralModeValue.Coast), i_IntakeSubsystem),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.55), i_IntakeSubsystem),
-                new WaitCommand(0.25),
+                new WaitCommand(0.2),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem),
                 Commands.runOnce(() -> i_IntakeSubsystem.setMode(NeutralModeValue.Brake), i_IntakeSubsystem));
     }
@@ -144,7 +144,7 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0.1542, 0.45) //0.13 0.57   0.52 0    0.1542 0.42
+                Shoot(0.42, 0.45) //0.13 0.57   0.52 0    0.1542 0.42
 
         );
     }
@@ -252,11 +252,11 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42)));
         NamedCommands.registerCommand("ShootOff", Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
-        NamedCommands.registerCommand("Shoot", Shoot(0.5, 0.5));
+        NamedCommands.registerCommand("Shoot", Shoot(0.58, 0.5));
         NamedCommands.registerCommand("Shoot2", Shoot(0.90, 0.21));
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());
-        NamedCommands.registerCommand("IntakeOn", IntakeOn(0.35));
+        NamedCommands.registerCommand("IntakeOn", IntakeOn(0.40));
         NamedCommands.registerCommand("IntakeIn", IntakeIn());
          NamedCommands.registerCommand("Outtake", Outtake());
         NamedCommands.registerCommand("AutoPickUpCmd", AutoPickUp());
@@ -279,6 +279,17 @@ public class RobotContainer {
                 i_IntakeSubsystem
                         .moveCmd(() -> l_LimitSwitch.isRingIn() ? 0 - codriver.getRawAxis(RightTrigger) * 0.25
                                 : codriver.getRawAxis(LeftTrigger) * 0.25 - codriver.getRawAxis(RightTrigger) * 0.25));
+
+        
+        l_LEDSubsystem.setDefaultCommand(new InstantCommand(() -> {
+            if(l_LimitSwitch.isRingIn()) {
+               l_LEDSubsystem.setColor(Color.kGreen);
+               
+            } else {
+                l_LEDSubsystem.DoTheRainbow(true);;
+            }
+        }, l_LEDSubsystem
+        ));
 
         //
         // l_LimitSwitch.setDefaultCommand(IsRingIn());
@@ -353,18 +364,17 @@ public class RobotContainer {
         LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue,
                 Constants.ClimberConstants.RightLiftPosOutValue));
 
-        AutoAim.whileTrue(
-                new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(), () -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve));
+        AutoAim.whileTrue(new SequentialCommandGroup(
+                new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(), IntakeIn()));
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
-                new InstantCommand(() -> AimPID = 0)));
+                new InstantCommand(() -> AimPID = 0), new InstantCommand(()-> l_LimelightSubsystem.setCamMode(1))));
         AutoShoot.whileTrue(new SequentialCommandGroup(
-                new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()),
-                Shoot(50, 50)));
+                new ParallelCommandGroup(new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable()), Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42))),
+                Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
-        AutoShoot.onFalse(new InstantCommand(() -> AimPID = 0));
+        AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
         OutIntake.onTrue(ArmMove(-0.4));
         OutIntake.onFalse(ArmMove(0));

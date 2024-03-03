@@ -163,7 +163,7 @@ public final class Constants {
         public static final boolean ANGLE_ENABLE_CURRENT_LIMIT = true;
         public static final boolean ANGLE_ENABLE_STATOR_CURRENT_LIMIT = true;
 
-        public static final int DRIVE_STATOR_CURRENT_LIMIT = 60;
+        public static final int DRIVE_STATOR_CURRENT_LIMIT = 50;
         public static final int DRIVE_CURRENT_LIMIT = 35;//35
         public static final int DRIVE_CURRENT_THRESHOLD = 60;//60
         public static final double DRIVE_CURRENT_THRESHOLD_TIME = 0.1;
@@ -176,7 +176,7 @@ public final class Constants {
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
          */
         public static final double OPEN_LOOP_RAMP = 0.3;
-        public static final double CLOSED_LOOP_RAMP = 0.0;
+        public static final double CLOSED_LOOP_RAMP = 0.3;
 
         public static final PIDConstants ANGLE_PID = new PIDConstants(FALCON_500_CONSTANTS.angleKP,
                 FALCON_500_CONSTANTS.angleKI, FALCON_500_CONSTANTS.angleKD);
@@ -238,8 +238,8 @@ public final class Constants {
         }
 
         public static final HolonomicPathFollowerConfig PATHPLANNER_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-                new PIDConstants(0.3, .02, .05),
-                new PIDConstants(.5, .025, 0.05),
+                new PIDConstants(1.14, .03, .15),
+                new PIDConstants(.97, .035, 0.15),
                 MAX_SPEED,
                 DRIVEBASE_RADIUS,
                 new ReplanningConfig());
@@ -342,9 +342,9 @@ public final class Constants {
     }
 
     public static final class AutoAimConstants {
-        public static final double kP = 0.007237;
-        public static final double kI = 0.000665;
-        public static final double kD = 0.0000333;
+        public static final double kP = 0.005837;
+        public static final double kI = 0.0000665;
+        public static final double kD = 0.0003333;
 
         public static final double AutoAimPIDTolerance = 1.0;
         // public static final double DeflectorPosInValue = 0.0;
@@ -353,9 +353,9 @@ public final class Constants {
     }
 
     public static final class AutoFollowConstants {
-        public static final double kP = 0.01571;
+        public static final double kP = 0.04571;
         public static final double kI = 0.000665;
-        public static final double kD = 0.0000333;
+        public static final double kD = 0.001333;
 
         public static final double AutoFollowPIDTolerance = 1.0;
         // public static final double DeflectorPosInValue = 0.0;

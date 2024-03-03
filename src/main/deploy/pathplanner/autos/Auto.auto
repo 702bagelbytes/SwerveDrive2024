@@ -18,40 +18,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "AutoPickUpCmd"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Shoot Path2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ShootOn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeIn"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Outtake"
+            "pathName": "right note Path"
           }
         },
         {
@@ -92,6 +61,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "right note Path"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "AutoPickUpCmd"
@@ -126,6 +101,98 @@
           "type": "named",
           "data": {
             "name": "Outtake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "right note Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoPickUpCmd"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Shoot Path2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "right note Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoPickUpCmd"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Shoot Path2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootOff"
           }
         }
       ]
