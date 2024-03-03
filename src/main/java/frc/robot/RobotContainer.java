@@ -163,6 +163,7 @@ public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final Joystick codriver = new Joystick(1);
+    private final Joystick master = new Joystick(2);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -196,17 +197,28 @@ public class RobotContainer {
 
     public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
 
-    private final POVButton increaseTopSpeed = new POVButton(driver, Direction.UP.direction);
-    private final POVButton decreaseTopSpeed = new POVButton(driver, Direction.DOWN.direction);
+    private final POVButton Up = new POVButton(driver, Direction.UP.direction);
+    // private final POVButton Up_Right = new POVButton(driver, Direction.UP_LEFT);
+    // private final POVButton Up_Left = new POVButton(driver, Direction.LEFT.direction);
 
-    private final POVButton increaseBottomSpeed = new POVButton(driver, Direction.RIGHT.direction);
-    private final POVButton decreaseBottomSpeed = new POVButton(driver, Direction.LEFT.direction);
+    private final POVButton Down = new POVButton(driver, Direction.DOWN.direction);
+    // private final POVButton Down_Right = new POVButton(driver, Direction.RIGHT.direction);
+    // private final POVButton Down_Left = new POVButton(driver, Direction.LEFT.direction);
+
+    private final POVButton Right = new POVButton(driver, Direction.RIGHT.direction);
+    private final POVButton Left = new POVButton(driver, Direction.LEFT.direction);
 
     private final POVButton OutIntake = new POVButton(codriver, Direction.UP.direction);
     private final POVButton InIntake = new POVButton(codriver, Direction.DOWN.direction);
 
     private final POVButton InDeflector = new POVButton(codriver, Direction.RIGHT.direction);
     private final POVButton OutDeflector = new POVButton(codriver, Direction.LEFT.direction);
+
+    private final POVButton increaseTopSpeed = new POVButton(master, Direction.UP.direction);
+    private final POVButton decreaseTopSpeed = new POVButton(master, Direction.DOWN.direction);
+
+    private final POVButton increaseBottomSpeed = new POVButton(master, Direction.RIGHT.direction);
+    private final POVButton decreaseBottomSpeed = new POVButton(master, Direction.LEFT.direction);
 
     public static double AimPID;
     public static double FollowPID;
@@ -375,6 +387,12 @@ public class RobotContainer {
                 Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
         AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
+
+        Up.onTrue(new AutoRotateCommand(0, s_Swerve));
+        Right.onTrue(new AutoRotateCommand(270, s_Swerve));
+        Down.onTrue(new AutoRotateCommand(180, s_Swerve));
+        Left.onTrue(new AutoRotateCommand(90, s_Swerve));
+        
 
         OutIntake.onTrue(ArmMove(-0.4));
         OutIntake.onFalse(ArmMove(0));
