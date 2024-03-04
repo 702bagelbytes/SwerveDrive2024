@@ -15,14 +15,10 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Swerve;
 
-public class AutoFollowCommand extends Command {
+public class AutoRotateCommand extends Command {
   boolean interrupted;
 
-  private PIDController AutoFollowPID = new PIDController(
-
-      Constants.AutoFollowConstants.kP,
-      Constants.AutoFollowConstants.kI,
-      Constants.AutoFollowConstants.kD);
+ 
 
       private PIDController AutoAimPID = new PIDController(
         Constants.AutoAimConstants.kP,
@@ -30,17 +26,17 @@ public class AutoFollowCommand extends Command {
         Constants.AutoAimConstants.kD);
   
   
-  DoubleSupplier tx;
-  DoubleSupplier ta;
-  BooleanSupplier tv;
+  double angle;
   Swerve s_Swerve;
+  double translation;
+  double strafe;
 
   /** Creates a new AutoAim. */
-  public AutoFollowCommand(DoubleSupplier tx, DoubleSupplier ta, BooleanSupplier tv, Swerve s_Swerve) {
-    this.ta = ta;
-    this.tx = tx;
-    this.tv = tv;
+  public AutoRotateCommand(double angle, Swerve s_Swerve, double translation, double strafe) {
+    this.angle = angle;
     this.s_Swerve = s_Swerve;
+    this.translation = translation;
+    this.strafe = strafe;
     
     addRequirements(s_Swerve);
   }
@@ -54,33 +50,26 @@ public class AutoFollowCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AutoFollowPID.setSetpoint(7);
-    AutoFollowPID.setTolerance(1);
-    AutoAimPID.setSetpoint(0);
+    
+    AutoAimPID.setSetpoint(angle);
     AutoAimPID.setTolerance(1);
     
 
 
-    double a = ta.getAsDouble();
-    boolean Target = tv.getAsBoolean();
-    double value = AutoFollowPID.calculate(a);
-    double result = value > 0 ? value + 0.0955 : value - 0.0955;
-    double FollowPID = (Target ? MathUtil.clamp(result, -0.87, 0.87) : 0);
-    SmartDashboard.putNumber("FPID", value);
-    SmartDashboard.putNumber("Fta", a);
+    
 
-    double x = tx.getAsDouble();
+    double a = s_Swerve.getGyroYaw().getDegrees();
 
-    double value2 = AutoAimPID.calculate(x);
+    double value2 = AutoAimPID.calculate(a);
     double result2 = Math.copySign(Math.abs(value2) + 0.0955, value2); 
     // value > 0 ? value + 0.0955 : value - 0.0955;
-    double AimPID = (Target ? MathUtil.clamp(result2, -0.57, 0.57) : 0);
+    double AimPID =  MathUtil.clamp(result2, -0.57, 0.57);
     // SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
-    SmartDashboard.putNumber("Ftx", x);
+
     s_Swerve.drive(
-                new Translation2d(FollowPID, 0).times(Constants.Swerve.MAX_SPEED),
+                new Translation2d(translation, strafe).times(Constants.Swerve.MAX_SPEED),
                 AimPID * Constants.Swerve.MAX_ANGULAR_VELOCITY,
-                !true,
+                !false,
                 false);
 
   }
@@ -96,6 +85,6 @@ public class AutoFollowCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return RobotContainer.isRingIn;
+    return false;
   }
 }

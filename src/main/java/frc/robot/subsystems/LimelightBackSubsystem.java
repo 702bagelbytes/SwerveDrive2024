@@ -25,6 +25,8 @@ public class LimelightBackSubsystem extends SubsystemBase {
   public NetworkTableEntry botpose_wpired;
   public NetworkTableEntry botpose;
   public NetworkTableEntry camMode;
+  public NetworkTableEntry priorityid;
+
 
   /** Creates a new LimelightSubsystem. */
   public LimelightBackSubsystem() {
@@ -40,6 +42,7 @@ public class LimelightBackSubsystem extends SubsystemBase {
     botpose = table.getEntry("botpose");
     botpose_wpiblue = table.getEntry("botpose_wpiblue");
     botpose_wpired = table.getEntry("botpose_wpired");
+    priorityid = table.getEntry("priorityid");
   }
 
   public double getTargetX() {
@@ -56,6 +59,10 @@ public class LimelightBackSubsystem extends SubsystemBase {
 
   public boolean IsTargetAvailable() {
     return tv.getNumber(0).intValue() == 1 ? true : false;
+  }
+
+  public void setId(Number[] ID) {
+    priorityid.setNumberArray(ID);
   }
 
   public void setPipeline(int value) {
