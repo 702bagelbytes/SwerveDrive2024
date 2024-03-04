@@ -2,6 +2,11 @@ package frc.robot;
 
 
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
+import javax.swing.plaf.ButtonUI;
+
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -10,6 +15,7 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -99,6 +105,18 @@ public class RobotContainer {
                 
     }
 
+    public Command AutoAmpScore(LimelightBackSubsystem l_LimelightBackSubsystem){
+        Number Id[] = {1, 2};
+        l_LimelightBackSubsystem.setId(Id);
+        boolean x = (l_LimelightBackSubsystem.getTargetX() > -20 && l_LimelightBackSubsystem.IsTargetAvailable() == true);
+        BooleanSupplier interrupt = ()-> x;
+        
+        return new SequentialCommandGroup(new ParallelCommandGroup(new AutoRotateCommand(-90, s_Swerve, -.4, 0).until(interrupt), Commands.runOnce(() -> s_ShooterSubsystem.set(0.42, 37), s_ShooterSubsystem)), Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
+        
+    }
+
+    
+
     /**
      * Turns off the intake motor
      */
@@ -181,6 +199,7 @@ public class RobotContainer {
     private final JoystickButton ArmPosIn = new JoystickButton(codriver, XboxController.Button.kA.value);
     private final JoystickButton ArmPosOut = new JoystickButton(codriver, XboxController.Button.kY.value);
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
+    
     private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kRightBumper.value);
     // public final JoystickButton AutoAim = new JoystickButton(driver,
     // XboxController.Button.kStart.value);
@@ -194,6 +213,8 @@ public class RobotContainer {
     private final JoystickButton DeflectorPosOut = new JoystickButton(codriver, XboxController.Button.kX.value);
     private final JoystickButton LiftPosOut = new JoystickButton(codriver, XboxController.Button.kLeftStick.value);
     private final JoystickButton LiftPosIn = new JoystickButton(codriver, XboxController.Button.kRightStick.value);
+
+    private final JoystickButton AutoAmp = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
 
     public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
 
@@ -367,7 +388,8 @@ public class RobotContainer {
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());
-        ShootS.onTrue(Shoot(topShooterSpeed.speed, bottomShooterSpeed.speed));
+        ShootS.onTrue(Commands.runOnce(() -> s_ShooterSubsystem.set(0.59, 0.42)));
+        ShootS.onFalse(new SequentialCommandGroup(Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
         ShootA.onTrue(ShootACommand());
         onandstow.onTrue(OnAndStow());
         LiftPosOut.onTrue(new ParallelCommandGroup(new ClimberPIDCommand(c_ClimberSubsystem,
@@ -387,6 +409,9 @@ public class RobotContainer {
                 Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
         AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
+
+        AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
+        AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
         Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
         Right.onTrue(new AutoRotateCommand(-90, s_Swerve, 0, 0));
