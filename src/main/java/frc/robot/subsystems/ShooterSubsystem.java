@@ -30,8 +30,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void set(double value) {
     value = MathUtil.applyDeadband(value, 0.1);
-    ShooterMotor1.set(value);
-    ShooterMotor2.set(value);
+    ShooterMotor1.setVoltage(value * 12);
+    ShooterMotor2.setVoltage(value * 12);
   }
 
   public void set(double top, double bottom) {
