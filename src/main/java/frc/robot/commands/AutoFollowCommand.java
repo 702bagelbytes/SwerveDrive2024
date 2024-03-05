@@ -34,13 +34,15 @@ public class AutoFollowCommand extends Command {
   DoubleSupplier ta;
   BooleanSupplier tv;
   Swerve s_Swerve;
+  double turn;
 
   /** Creates a new AutoAim. */
-  public AutoFollowCommand(DoubleSupplier tx, DoubleSupplier ta, BooleanSupplier tv, Swerve s_Swerve) {
+  public AutoFollowCommand(DoubleSupplier tx, DoubleSupplier ta, BooleanSupplier tv, Swerve s_Swerve, double turn) {
     this.ta = ta;
     this.tx = tx;
     this.tv = tv;
     this.s_Swerve = s_Swerve;
+    this.turn = turn;
     
     addRequirements(s_Swerve);
   }
@@ -74,7 +76,7 @@ public class AutoFollowCommand extends Command {
     double value2 = AutoAimPID.calculate(x);
     double result2 = Math.copySign(Math.abs(value2) + 0.0955, value2); 
     // value > 0 ? value + 0.0955 : value - 0.0955;
-    double AimPID = (Target ? MathUtil.clamp(result2, -0.57, 0.57) : 0);
+    double AimPID = (Target ? MathUtil.clamp(result2, -0.57, 0.57) : turn);
     // SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
     SmartDashboard.putNumber("Ftx", x);
     s_Swerve.drive(

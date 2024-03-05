@@ -95,12 +95,12 @@ public class RobotContainer {
                 .until(l_LimitSwitch::isRingIn);
     }
 
-    public Command AutoPickUp() {
+    public Command AutoPickUp(double turn) {
         return new SequentialCommandGroup(IntakeOut(),
                 (IntakeOn(0.40)).raceWith(
                 new AutoFollowCommand(() -> l_LimelightSubsystem.getTargetX(),
                         () -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve)));
+                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve, turn)));
                 
                 
     }
@@ -292,11 +292,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeOn", IntakeOn(0.40));
         NamedCommands.registerCommand("IntakeIn", IntakeIn());
          NamedCommands.registerCommand("Outtake", Outtake());
-        NamedCommands.registerCommand("AutoPickUpCmd", AutoPickUp());
+         NamedCommands.registerCommand("AutoPickUpCmdL", AutoPickUp(0.3));
+        NamedCommands.registerCommand("AutoPickUpCmd", AutoPickUp(0));
+        NamedCommands.registerCommand("AutoPickUpCmdR", AutoPickUp(-0.3));
         NamedCommands.registerCommand("AutoFollowCmd", new AutoFollowCommand(
                         () -> l_LimelightSubsystem.getTargetX(),
                         () -> l_LimelightSubsystem.getTargetA(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve));
+                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve, 0.3));
 
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
@@ -399,7 +401,7 @@ public class RobotContainer {
                 Constants.ClimberConstants.RightLiftPosOutValue));
 
         AutoAim.whileTrue(new SequentialCommandGroup(
-                new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(), IntakeIn()));
+                new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(0.3), IntakeIn()));
 
         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                 new InstantCommand(() -> AimPID = 0), new InstantCommand(()-> l_LimelightSubsystem.setCamMode(1))));
