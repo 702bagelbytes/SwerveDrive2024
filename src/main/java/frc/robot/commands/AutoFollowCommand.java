@@ -34,13 +34,15 @@ public class AutoFollowCommand extends Command {
   DoubleSupplier ta;
   BooleanSupplier tv;
   Swerve s_Swerve;
+  double turn;
 
   /** Creates a new AutoAim. */
-  public AutoFollowCommand(DoubleSupplier tx, DoubleSupplier ta, BooleanSupplier tv, Swerve s_Swerve) {
+  public AutoFollowCommand(DoubleSupplier tx, DoubleSupplier ta, BooleanSupplier tv, Swerve s_Swerve, double turn) {
     this.ta = ta;
     this.tx = tx;
     this.tv = tv;
     this.s_Swerve = s_Swerve;
+    this.turn = turn;
     
     addRequirements(s_Swerve);
   }
@@ -65,7 +67,7 @@ public class AutoFollowCommand extends Command {
     boolean Target = tv.getAsBoolean();
     double value = AutoFollowPID.calculate(a);
     double result = value > 0 ? value + 0.0955 : value - 0.0955;
-    double FollowPID = (Target ? MathUtil.clamp(result, -0.67, 0.67) : 0);
+    double FollowPID = (Target ? MathUtil.clamp(result, -0.87, 0.87) : 0);
     SmartDashboard.putNumber("FPID", value);
     SmartDashboard.putNumber("Fta", a);
 
@@ -74,7 +76,7 @@ public class AutoFollowCommand extends Command {
     double value2 = AutoAimPID.calculate(x);
     double result2 = Math.copySign(Math.abs(value2) + 0.0955, value2); 
     // value > 0 ? value + 0.0955 : value - 0.0955;
-    double AimPID = (Target ? MathUtil.clamp(result2, -0.57, 0.57) : 0);
+    double AimPID = (Target ? MathUtil.clamp(result2, -0.57, 0.57) : turn);
     // SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
     SmartDashboard.putNumber("Ftx", x);
     s_Swerve.drive(
