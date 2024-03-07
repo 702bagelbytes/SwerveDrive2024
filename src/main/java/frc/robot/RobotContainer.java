@@ -173,6 +173,18 @@ public class RobotContainer {
                 DeflectorIn());
     }
 
+    public Command ShootOn(double top, double Bottom){
+        return new InstantCommand(() -> s_ShooterSubsystem.set(top, Bottom));
+    }
+
+    public Command ShootOff(){
+        return new InstantCommand(() -> s_ShooterSubsystem.set(0, 0));
+    }
+
+    public Command QuickShoot(){
+        return new SequentialCommandGroup(ShootOn(0.9, 0.9), new WaitCommand(0.2), Outtake(), ShootOff());
+    }
+
     public Command DeflectorIn = new DeflectorPIDCommand(d_DeflectorSubsystem,
             Constants.DeflectorConstants.DeflectorPosInValue);
     public Command DeflectorOut = new DeflectorPIDCommand(d_DeflectorSubsystem,
@@ -287,6 +299,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("ShootOff", Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
         NamedCommands.registerCommand("Shoot", Shoot(0.58, 0.5));
         NamedCommands.registerCommand("Shoot2", Shoot(0.90, 0.21));
+        NamedCommands.registerCommand("QuickShoot", QuickShoot());
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());
         NamedCommands.registerCommand("IntakeOn", IntakeOn(0.40));

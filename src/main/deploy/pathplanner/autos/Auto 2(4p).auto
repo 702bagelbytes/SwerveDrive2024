@@ -1,0 +1,103 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3464015540130732,
+      "y": 5.55
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L1 Path2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoPickUpCmdR"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Return L1 Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoPickUpCmdR"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L2 Return Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L3 Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoPickUpCmd"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Return L3 Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

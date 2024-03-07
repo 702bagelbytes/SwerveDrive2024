@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.59,
-        "y": 5.91
+        "x": 1.3950925173473103,
+        "y": 6.320087041120213
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.911360358023207,
-        "y": 6.05607289001055
+        "x": 2.39509251734731,
+        "y": 5.820087041120213
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.891740343381566,
-        "y": 6.485636316471072
+        "x": 3.5959240601755234,
+        "y": 0.8180081840590729
       },
       "prevControl": {
-        "x": 1.7359292607036474,
-        "y": 6.349301619127893
+        "x": 2.2113227305694134,
+        "y": 0.5301207788934462
+      },
+      "nextControl": {
+        "x": 4.579481519579886,
+        "y": 1.0225102300738418
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.121149805763432,
+        "y": 5.6968427104114
+      },
+      "prevControl": {
+        "x": 6.410261741045428,
+        "y": 4.6548560950028195
       },
       "nextControl": null,
       "isLocked": false,
@@ -37,31 +53,24 @@
       "command": {
         "type": "parallel",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeOut"
-              }
-            }
-          ]
+          "commands": []
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 10.0,
-    "maxAcceleration": 8.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 36.02737338510367,
-    "rotateFast": true
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Auto 1(6p)",
+  "folder": "possible Auto",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

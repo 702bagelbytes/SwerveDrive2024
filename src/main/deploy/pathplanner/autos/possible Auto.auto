@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.695314845175145,
-      "y": 4.393839333133212
+      "x": 0.7,
+      "y": 4.39
     },
     "rotation": -60.0
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1"
+            "pathName": "Path"
           }
         },
         {

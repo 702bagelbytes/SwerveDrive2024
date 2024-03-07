@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1284908121417674,
-        "y": 7.391288234533764
+        "x": 3.110724185824963,
+        "y": 5.577308253853149
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.651319371440642,
-        "y": 6.787520289156831
+        "x": 2.6198375043060524,
+        "y": 5.566863856374023
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4048307100172925,
-        "y": 5.61893716907244
+        "x": 1.39784299924834,
+        "y": 5.577308253853149
       },
       "prevControl": {
-        "x": 2.2228388940763635,
-        "y": 5.872130178424059
+        "x": 2.5049491320356703,
+        "y": 5.598197048811399
       },
       "nextControl": null,
       "isLocked": false,
@@ -53,23 +53,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Outtake"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
@@ -85,9 +68,6 @@
   },
   "reversed": false,
   "folder": "Auto 1(6p)",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }
