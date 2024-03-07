@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7502903555425439,
+      "y": 4.417980133670191
+    },
+    "rotation": -58.57043438516141
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R5 Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R5-R4 Return Path"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
