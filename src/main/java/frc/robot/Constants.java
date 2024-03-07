@@ -293,8 +293,8 @@ public final class Constants {
     }
 
     public static final class ShootConstants {
-        public static final int BottomShootMotorID = 16;
-        public static final int TopShootMotorID = 17;
+        public static final int BottomShootMotorID = 17;
+        public static final int TopShootMotorID = 16;
 
         public static final boolean TopShootMotorInverted = true;
         public static final boolean BottomShootMotorInverted = false;
