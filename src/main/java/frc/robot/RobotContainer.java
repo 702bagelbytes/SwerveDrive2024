@@ -193,7 +193,7 @@ public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final Joystick codriver = new Joystick(1);
-    private final Joystick master = new Joystick(2);
+    //private final Joystick master = new Joystick(2);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -247,11 +247,11 @@ public class RobotContainer {
     private final POVButton InDeflector = new POVButton(codriver, Direction.RIGHT.direction);
     private final POVButton OutDeflector = new POVButton(codriver, Direction.LEFT.direction);
 
-    private final POVButton increaseTopSpeed = new POVButton(master, Direction.UP.direction);
-    private final POVButton decreaseTopSpeed = new POVButton(master, Direction.DOWN.direction);
+    // private final POVButton increaseTopSpeed = new POVButton(master, Direction.UP.direction);
+    // private final POVButton decreaseTopSpeed = new POVButton(master, Direction.DOWN.direction);
 
-    private final POVButton increaseBottomSpeed = new POVButton(master, Direction.RIGHT.direction);
-    private final POVButton decreaseBottomSpeed = new POVButton(master, Direction.LEFT.direction);
+    // private final POVButton increaseBottomSpeed = new POVButton(master, Direction.RIGHT.direction);
+    // private final POVButton decreaseBottomSpeed = new POVButton(master, Direction.LEFT.direction);
 
     public static double AimPID;
     public static double FollowPID;
@@ -316,9 +316,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
-                        () -> -driver.getRawAxis(translationAxis) * power + FollowPID,
+                        () -> -driver.getRawAxis(translationAxis) * power,
                         () -> -driver.getRawAxis(strafeAxis) * power,
-                        () -> -driver.getRawAxis(rotationAxis) * power + AimPID,
+                        () -> -driver.getRawAxis(rotationAxis) * power,
                         ()-> robotCentric));
 
         c_ClimberSubsystem.setDefaultCommand(c_ClimberSubsystem.moveCmd(() -> codriver.getRawAxis(translationAxis),
@@ -396,7 +396,7 @@ public class RobotContainer {
 
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .665));
+        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .50));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
         // ArmPosOut.onFalse(Stow());
@@ -413,20 +413,20 @@ public class RobotContainer {
         LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue,
                 Constants.ClimberConstants.RightLiftPosOutValue));
 
-        AutoAim.whileTrue(new SequentialCommandGroup(
-                new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(0.3), IntakeIn()));
+        // AutoAim.whileTrue(new SequentialCommandGroup(
+        //         new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(0.3), IntakeIn()));
 
-        AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
-                new InstantCommand(() -> AimPID = 0), new InstantCommand(()-> l_LimelightSubsystem.setCamMode(1))));
-        AutoShoot.whileTrue(new SequentialCommandGroup(
-                new ParallelCommandGroup(new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
-                        () -> l_LimelightSubsystem.IsTargetAvailable()), Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42))),
-                Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
+        // AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
+        //         new InstantCommand(() -> AimPID = 0), new InstantCommand(()-> l_LimelightSubsystem.setCamMode(1))));
+        // AutoShoot.whileTrue(new SequentialCommandGroup(
+        //         new ParallelCommandGroup(new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
+        //                 () -> l_LimelightSubsystem.IsTargetAvailable()), Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42))),
+        //         Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
-        AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
+        // AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
-        AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
-        AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
+        // AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
+        // AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
         Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
         Right.onTrue(new AutoRotateCommand(-90, s_Swerve, 0, 0));
@@ -443,10 +443,10 @@ public class RobotContainer {
         OutDeflector.onTrue(DeflectorMove(0.5));
         OutDeflector.onFalse(DeflectorMove(0));
 
-        increaseTopSpeed.onTrue(wrapSpeedChange(this::nextTopSpeed));
-        decreaseTopSpeed.onTrue(wrapSpeedChange(this::prevTopSpeed));
-        increaseBottomSpeed.onTrue(wrapSpeedChange(this::nextBottomSpeed));
-        decreaseBottomSpeed.onTrue(wrapSpeedChange(this::prevBottomSpeed));
+        // increaseTopSpeed.onTrue(wrapSpeedChange(this::nextTopSpeed));
+        // decreaseTopSpeed.onTrue(wrapSpeedChange(this::prevTopSpeed));
+        // increaseBottomSpeed.onTrue(wrapSpeedChange(this::nextBottomSpeed));
+        // decreaseBottomSpeed.onTrue(wrapSpeedChange(this::prevBottomSpeed));
     }
 
     void nextTopSpeed() {
