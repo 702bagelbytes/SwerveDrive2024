@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.ejml.equation.IntegerSequence.For;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
@@ -17,6 +19,7 @@ public class LEDSubsystem extends SubsystemBase {
   private AddressableLEDBuffer buffer1 = new AddressableLEDBuffer(Constants.LEDConstants.LED_1_Length);
   private int m_rainbowFirstPixelHue = 0;
   private boolean do_the_rainbow = true;
+  private int m_bagelbow_first_index = 0;
 
   public LEDSubsystem() {
     led1.setLength(Constants.LEDConstants.LED_1_Length);
@@ -40,23 +43,33 @@ public class LEDSubsystem extends SubsystemBase {
    public void bagelbow() {
     // NDB: TODO: Get the colors right and then create a private
     // variable for the first index that can be looped over
-    buffer1.setHSV(0, 55, 40, 128);  
-    buffer1.setHSV(1, 56, 100, 128);
-    buffer1.setHSV(2, 57, 160, 128);
-    buffer1.setHSV(3, 58, 160, 128);
-    buffer1.setHSV(4, 59, 160, 128);
-    buffer1.setHSV(5, 60, 100, 128);
-    buffer1.setHSV(6, 61, 40, 128);
-
-    buffer1.setHSV(7, 175, 40, 128);
-    buffer1.setHSV(8, 176, 100, 128);
-    buffer1.setHSV(9, 177, 160, 128);
-    buffer1.setHSV(10, 178, 160, 128);
-    buffer1.setHSV(11, 179, 160, 128);
-    buffer1.setHSV(12, 180, 160, 128);
-    buffer1.setHSV(13, 181, 160, 128);
-
+    // blue
+    for(var i = 0; i < 7; i++) {
+       buffer1.setHSV((m_bagelbow_first_index + i) % 14, 239, 160, 128);
+       buffer1.setHSV((m_bagelbow_first_index + i + 14) % 28, 239, 160, 128);
+    }
+    // yellow
+    for(var i = 0; i < 7; i++) {
+      buffer1.setHSV((m_bagelbow_first_index + i + 7) % 14, 61, 160, 128);
+      buffer1.setHSV((m_bagelbow_first_index + i + 21) % 28, 61, 160, 128);
+    }
+    m_bagelbow_first_index = m_bagelbow_first_index + 1 % 14;
     led1.setData(buffer1);
+    // buffer1.setHSV(1, 56, 100, 128);
+    // buffer1.setHSV(2, 57, 160, 128);
+    // buffer1.setHSV(3, 58, 160, 128);
+    // buffer1.setHSV(4, 59, 160, 128);
+    // buffer1.setHSV(5, 60, 100, 128);
+    // buffer1.setHSV(6, 61, 40, 128);
+
+    // blue
+    // buffer1.setHSV(8, 176, 100, 128);
+    // buffer1.setHSV(9, 177, 160, 128);
+    // buffer1.setHSV(10, 178, 160, 128);
+    // buffer1.setHSV(11, 179, 160, 128);
+    // buffer1.setHSV(12, 180, 160, 128);
+    // buffer1.setHSV(13, 181, 160, 128);
+
    }
  
    public void rainbow(){
@@ -80,7 +93,7 @@ public class LEDSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (do_the_rainbow) {
-      rainbow();
+      bagelbow();
     }
   }
 }

@@ -160,7 +160,7 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0.42, 0.45) //0.13 0.57   0.52 0    0.1542 0.42
+                Shoot(0.15, 0.38) //0.13 0.57   0.52 0    0.1542 0.42
 
         );
     }
@@ -300,7 +300,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("QuickShoot", QuickShoot());
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());
-        NamedCommands.registerCommand("IntakeOn", IntakeOn(0.40));
+        NamedCommands.registerCommand("IntakeOn", IntakeOn(0.6));
         NamedCommands.registerCommand("IntakeIn", IntakeIn());
          NamedCommands.registerCommand("Outtake", Outtake());
          NamedCommands.registerCommand("AutoPickUpCmdL", AutoPickUp(0.3));
@@ -323,8 +323,8 @@ public class RobotContainer {
                 () -> codriver.getRawAxis(upAxis)));
         i_IntakeSubsystem.setDefaultCommand(
                 i_IntakeSubsystem
-                        .moveCmd(() -> l_LimitSwitch.isRingIn() ? 0 - codriver.getRawAxis(RightTrigger) * 0.25
-                                : codriver.getRawAxis(LeftTrigger) * 0.25 - codriver.getRawAxis(RightTrigger) * 0.25));
+                        .moveCmd(() -> l_LimitSwitch.isRingIn() ? 0 - codriver.getRawAxis(RightTrigger) * 0.45
+                                : codriver.getRawAxis(LeftTrigger) * 0.25 - codriver.getRawAxis(RightTrigger) * 0.45));
 
         
         l_LEDSubsystem.setDefaultCommand(new InstantCommand(() -> {
@@ -396,13 +396,13 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .50));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
-        ArmPosIn.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue));
+        ArmPosIn.onTrue(new ParallelCommandGroup(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue), Commands.runOnce(() -> s_ShooterSubsystem.set(0.5, 0.40))));
         // ArmPosOut.onFalse(Stow());
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());
-        ShootS.onTrue(Commands.runOnce(() -> s_ShooterSubsystem.set(0.59, 0.42)));
-        ShootS.onFalse(new SequentialCommandGroup(Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
+        ShootS.onTrue(Commands.runOnce(() -> s_ShooterSubsystem.set(0.67, 0.43)));
+        ShootS.onFalse(new SequentialCommandGroup(new WaitCommand(0.1), Outtake(), new WaitCommand(0.5), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
         ShootA.onTrue(ShootACommand());
         onandstow.onTrue(OnAndStow());
         LiftPosOut.onTrue(new ParallelCommandGroup(new ClimberPIDCommand(c_ClimberSubsystem,
@@ -423,8 +423,8 @@ public class RobotContainer {
 
          AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
-         AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
-         AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
+         //AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
+         //AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
         Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
         Right.onTrue(new AutoRotateCommand(-90, s_Swerve, 0, 0));
