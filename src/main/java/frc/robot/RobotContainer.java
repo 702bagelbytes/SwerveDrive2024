@@ -3,9 +3,7 @@ package frc.robot;
 
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
-import javax.swing.plaf.ButtonUI;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -15,7 +13,7 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
+
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -413,20 +411,20 @@ public class RobotContainer {
         LiftPosIn.onTrue(new ClimberPIDCommand(c_ClimberSubsystem, Constants.ClimberConstants.LeftLiftPosOutValue,
                 Constants.ClimberConstants.RightLiftPosOutValue));
 
-        // AutoAim.whileTrue(new SequentialCommandGroup(
-        //         new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(0.3), IntakeIn()));
+         AutoAim.whileTrue(new SequentialCommandGroup(
+                 new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(0.3), IntakeIn()));
 
-        // AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
-        //         new InstantCommand(() -> AimPID = 0), new InstantCommand(()-> l_LimelightSubsystem.setCamMode(1))));
-        // AutoShoot.whileTrue(new SequentialCommandGroup(
-        //         new ParallelCommandGroup(new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
-        //                 () -> l_LimelightSubsystem.IsTargetAvailable()), Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42))),
-        //         Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
+         AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
+                 new InstantCommand(() -> AimPID = 0), new InstantCommand(()-> l_LimelightSubsystem.setCamMode(1))));
+         AutoShoot.whileTrue(new SequentialCommandGroup(
+                 new ParallelCommandGroup(new AutoAimCommand(() -> l_LimelightBackSubsystem.getTargetX(),
+                         () -> l_LimelightSubsystem.IsTargetAvailable()), Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42))),
+                 Outtake(), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
-        // AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
+         AutoShoot.onFalse(new ParallelCommandGroup(new InstantCommand(() -> AimPID = 0), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
 
-        // AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
-        // AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
+         AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
+         AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
         Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
         Right.onTrue(new AutoRotateCommand(-90, s_Swerve, 0, 0));

@@ -156,27 +156,27 @@ public final class Constants {
         /**
          * Units: Volts
          */
-        //public static final int ANGLE_STATOR_CURRENT_LIMIT = 40;
+        public static final int ANGLE_STATOR_CURRENT_LIMIT = 40;
         public static final int ANGLE_CURRENT_LIMIT = 25;
         public static final int ANGLE_CURRENT_THRESHOLD = 40;
         public static final double ANGLE_CURRENT_THRESHOLD_TIME = 0.1;
         public static final boolean ANGLE_ENABLE_CURRENT_LIMIT = true;
-        //public static final boolean ANGLE_ENABLE_STATOR_CURRENT_LIMIT = false;
+        public static final boolean ANGLE_ENABLE_STATOR_CURRENT_LIMIT = false;
 
-        //public static final int DRIVE_STATOR_CURRENT_LIMIT = 60;
+        public static final int DRIVE_STATOR_CURRENT_LIMIT = 60;
         public static final int DRIVE_CURRENT_LIMIT = 35;//35
         public static final int DRIVE_CURRENT_THRESHOLD = 60;//60
         public static final double DRIVE_CURRENT_THRESHOLD_TIME = 0.1;
         public static final boolean DRIVE_ENABLE_CURRENT_LIMIT = true;
-        //public static final boolean DRIVE_ENABLE_STATOR_CURRENT_LIMIT = false;
+        public static final boolean DRIVE_ENABLE_STATOR_CURRENT_LIMIT = false;
 
         /*
          * These values are used by the drive falcon to ramp in open loop and closed
          * loop driving.
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
          */
-        public static final double OPEN_LOOP_RAMP = 0.25;
-        public static final double CLOSED_LOOP_RAMP = 0;
+        public static final double OPEN_LOOP_RAMP = 0.3;
+        public static final double CLOSED_LOOP_RAMP = 0.3;
 
         public static final PIDConstants ANGLE_PID = new PIDConstants(FALCON_500_CONSTANTS.angleKP,
                 FALCON_500_CONSTANTS.angleKI, FALCON_500_CONSTANTS.angleKD);
