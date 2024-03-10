@@ -172,7 +172,7 @@ public class RobotContainer {
     }
 
     public Command ShootOn(double top, double Bottom){
-        return new InstantCommand(() -> s_ShooterSubsystem.set(top, Bottom));
+        return Commands.run(() -> s_ShooterSubsystem.set(top, Bottom), s_ShooterSubsystem);
     }
 
     public Command ShootOff(){
