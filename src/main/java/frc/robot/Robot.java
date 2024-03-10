@@ -109,7 +109,7 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    l_LimelightSubsystem.setCamMode(1);
+    l_LimelightSubsystem.setCamMode(0);
     l_LimelightBackSubsystem.setCamMode(0);
   }
 
