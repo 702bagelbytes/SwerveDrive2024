@@ -57,9 +57,9 @@ public class AutoRotateCommand extends Command {
 
     
 
-    double a = s_Swerve.getGyroYaw().getDegrees();
+    
 
-    double value2 = AutoAimPID.calculate(a);
+    double value2 = AutoAimPID.calculate(s_Swerve.getGyroYaw());
     double result2 = Math.copySign(Math.abs(value2) + 0.0955, value2); 
     // value > 0 ? value + 0.0955 : value - 0.0955;
     double AimPID =  MathUtil.clamp(result2, -0.57, 0.57);

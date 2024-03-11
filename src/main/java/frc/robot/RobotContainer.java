@@ -427,7 +427,8 @@ public class RobotContainer {
          //AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
         Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
-        Right.onTrue(new AutoRotateCommand(-90, s_Swerve, 0, 0));
+        Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
+        Right.onTrue(new AutoRotateCommand(270, s_Swerve, 0, 0));
         Down.onTrue(new AutoRotateCommand(180, s_Swerve, 0, 0));
         Left.onTrue(new AutoRotateCommand(90, s_Swerve, 0, 0));
         
