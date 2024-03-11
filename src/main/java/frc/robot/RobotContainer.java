@@ -426,11 +426,10 @@ public class RobotContainer {
          //AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
          //AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
-        Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
-        Up.onTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
-        Right.onTrue(new AutoRotateCommand(270, s_Swerve, 0, 0));
-        Down.onTrue(new AutoRotateCommand(180, s_Swerve, 0, 0));
-        Left.onTrue(new AutoRotateCommand(90, s_Swerve, 0, 0));
+        Up.whileTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
+        Right.whileTrue(new AutoRotateCommand(270, s_Swerve, 0, 0));
+        Down.whileTrue(new AutoRotateCommand(180, s_Swerve, 0, 0));
+        Left.whileTrue(new AutoRotateCommand(90, s_Swerve, 0, 0));
         
 
         OutIntake.onTrue(ArmMove(-0.4));
