@@ -160,7 +160,7 @@ public class RobotContainer {
 
     public Command ShootA() {
         return new SequentialCommandGroup(IntakeIn(),
-                Shoot(0.18, 0.39) //0.13 0.57   0.52 0    0.1542 0.42
+                Shoot(0.32, 0.39) //0.13 0.57   0.52 0    0.1542 0.42
 
         );
     }
@@ -394,7 +394,7 @@ public class RobotContainer {
 
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .50));
+        slowMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = .333));
         fastMode.onTrue(new InstantCommand(() -> RobotContainer.this.power = 1));
         ArmPosIn.onTrue(new ParallelCommandGroup(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosInValue), Commands.runOnce(() -> s_ShooterSubsystem.set(0.5, 0.40))));
         // ArmPosOut.onFalse(Stow());
