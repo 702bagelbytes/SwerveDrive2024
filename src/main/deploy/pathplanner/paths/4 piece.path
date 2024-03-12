@@ -1,0 +1,92 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.47,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8640734424325998,
+        "y": 6.054356108712217
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.1834246525635916,
+        "y": 6.450161471751516
+      },
+      "prevControl": {
+        "x": 2.450451758046374,
+        "y": 6.391523640190138
+      },
+      "nextControl": {
+        "x": 4.20443815106308,
+        "y": 6.531842551631476
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.551943103886208,
+        "y": 5.937080445589463
+      },
+      "prevControl": {
+        "x": 6.159294604303494,
+        "y": 6.347545266519105
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeOut and on",
+      "waypointRelativePos": 1.6,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeOut"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeOn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 10.0,
+    "maxAcceleration": 8.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 1.0,
+    "rotation": -10.007979801441367,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Autos almost against speaker",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
