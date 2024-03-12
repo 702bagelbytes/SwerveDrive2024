@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.26,
+        "y": 6.57
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.585543742516057,
+        "y": 5.790485866686019
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.47,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 1.5736086215029577,
+        "y": 5.687869661453608
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 7.5,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Max's Autos",
+  "previewStartingState": {
+    "rotation": 35.69022389332967,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
