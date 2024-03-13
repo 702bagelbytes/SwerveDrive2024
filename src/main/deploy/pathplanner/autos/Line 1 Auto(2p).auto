@@ -1,0 +1,82 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7512873207564597,
+      "y": 6.688710831967119
+    },
+    "rotation": 59.6567511157604
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeOut"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Line L1 Path"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeOn"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Line L1 Return Path"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Line Autos",
+  "choreoAuto": false
+}

@@ -2,30 +2,30 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7502903555425439,
-      "y": 4.417980133670191
+      "x": 0.695314845175145,
+      "y": 4.384510587202993
     },
-    "rotation": -58.57043438516141
+    "rotation": -59.620873988631644
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "R5 Path"
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R5-R4 Return Path"
+            "pathName": "Line 3 Path"
           }
         }
       ]
     }
   },
-  "folder": "Work in Progress Autos",
+  "folder": "Line Autos",
   "choreoAuto": false
 }
