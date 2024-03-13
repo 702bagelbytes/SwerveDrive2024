@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -14,18 +15,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
-     CurrentLimitsConfigs currentlimits = new CurrentLimitsConfigs()
+
+    
+    private TalonFX ArmMotor = new TalonFX(Constants.ArmConstants.ArmMotorID);
+
+    public ArmSubsystem() {
+        CurrentLimitsConfigs currentlimits = new CurrentLimitsConfigs()
     .withStatorCurrentLimit(Constants.ArmConstants.STATOR_CURRENT_LIMIT)
     .withStatorCurrentLimitEnable(Constants.ArmConstants.ENABLE_STATOR_CURRENT_LIMIT)
     .withSupplyCurrentLimit(Constants.ArmConstants.CURRENT_LIMIT)
     .withSupplyCurrentLimitEnable(Constants.ArmConstants.ENABLE_CURRENT_LIMIT)
     .withSupplyCurrentThreshold(Constants.ArmConstants.CURRENT_THRESHOLD)
     .withSupplyTimeThreshold(Constants.ArmConstants.CURRENT_THRESHOLD_TIME);
-
+   
     
-    private TalonFX ArmMotor = new TalonFX(Constants.ArmConstants.ArmMotorID);
 
-    public ArmSubsystem() {
         var limitConfigs = new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(Constants.ArmConstants.ArmLimitEnable)
         .withForwardSoftLimitThreshold(DegToTick(Constants.ArmConstants.ArmPosInValue))

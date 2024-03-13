@@ -249,7 +249,7 @@ public final class Constants {
     public static final class ArmConstants {
         public static final int ArmMotorID = 13;
 
-        public static final double kP = 0.042;
+        public static final double kP = 0.052;
         public static final double kI = 0.0014;
         public static final double kD = 0.0042;
 
