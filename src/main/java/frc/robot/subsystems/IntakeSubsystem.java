@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
@@ -23,6 +24,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
+    CurrentLimitsConfigs currentlimits = new CurrentLimitsConfigs()
+    .withStatorCurrentLimit(Constants.IntakeConstants.STATOR_CURRENT_LIMIT)
+    .withStatorCurrentLimitEnable(Constants.IntakeConstants.ENABLE_STATOR_CURRENT_LIMIT)
+    .withSupplyCurrentLimit(Constants.IntakeConstants.CURRENT_LIMIT)
+    .withSupplyCurrentLimitEnable(Constants.IntakeConstants.ENABLE_CURRENT_LIMIT)
+    .withSupplyCurrentThreshold(Constants.IntakeConstants.CURRENT_THRESHOLD)
+    .withSupplyTimeThreshold(Constants.IntakeConstants.CURRENT_THRESHOLD_TIME);
+
     var limitConfig = new HardwareLimitSwitchConfigs();
     limitConfig.ForwardLimitSource = ForwardLimitSourceValue.LimitSwitchPin;
     limitConfig.ForwardLimitRemoteSensorID = Constants.LIMIT_SWITCH_INTAKE;
@@ -31,6 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
     
     IntakeMotor.setNeutralMode(NeutralModeValue.Brake);
     IntakeMotor.getConfigurator().apply(limitConfig);
+    IntakeMotor.getConfigurator().apply(currentlimits);
 
     
   }

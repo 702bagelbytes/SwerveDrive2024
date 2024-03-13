@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
-
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -23,6 +23,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
+    CurrentLimitsConfigs currentlimits = new CurrentLimitsConfigs()
+    .withStatorCurrentLimit(Constants.ClimberConstants.STATOR_CURRENT_LIMIT)
+    .withStatorCurrentLimitEnable(Constants.ClimberConstants.ENABLE_STATOR_CURRENT_LIMIT)
+    .withSupplyCurrentLimit(Constants.ClimberConstants.CURRENT_LIMIT)
+    .withSupplyCurrentLimitEnable(Constants.ClimberConstants.ENABLE_CURRENT_LIMIT)
+    .withSupplyCurrentThreshold(Constants.ClimberConstants.CURRENT_THRESHOLD)
+    .withSupplyTimeThreshold(Constants.ClimberConstants.CURRENT_THRESHOLD_TIME);
+
     var Leftlimitconfigs = new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(Constants.ClimberConstants.LiftLimitEnable)
         .withForwardSoftLimitThreshold(Constants.ClimberConstants.LeftLiftPosOutValue)
@@ -42,6 +50,8 @@ public class ClimberSubsystem extends SubsystemBase {
     Rmotor.setNeutralMode(Constants.ClimberConstants.RightLiftMotorMode);
     Lmotor.getConfigurator().apply(Leftlimitconfigs);
     Rmotor.getConfigurator().apply(Rightlimitconfigs);
+    Lmotor.getConfigurator().apply(currentlimits);
+    Rmotor.getConfigurator().apply(currentlimits);
   }
 
   public void setLmotor(double value) {

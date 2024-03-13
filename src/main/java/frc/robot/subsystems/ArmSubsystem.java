@@ -34,6 +34,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         ArmMotor.setNeutralMode(NeutralModeValue.Brake);
         ArmMotor.getConfigurator().apply(limitConfigs);
+        ArmMotor.getConfigurator().apply(currentlimits);
     }
 
     public void ResetArmPos() {

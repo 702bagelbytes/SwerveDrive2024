@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -12,6 +13,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DeflectorSubsystem extends SubsystemBase {
+    CurrentLimitsConfigs currentlimits = new CurrentLimitsConfigs()
+    .withStatorCurrentLimit(Constants.DeflectorConstants.STATOR_CURRENT_LIMIT)
+    .withStatorCurrentLimitEnable(Constants.DeflectorConstants.ENABLE_STATOR_CURRENT_LIMIT)
+    .withSupplyCurrentLimit(Constants.DeflectorConstants.CURRENT_LIMIT)
+    .withSupplyCurrentLimitEnable(Constants.DeflectorConstants.ENABLE_CURRENT_LIMIT)
+    .withSupplyCurrentThreshold(Constants.DeflectorConstants.CURRENT_THRESHOLD)
+    .withSupplyTimeThreshold(Constants.DeflectorConstants.CURRENT_THRESHOLD_TIME);
+
     private TalonFX DeflectorMotor = new TalonFX(Constants.DeflectorConstants.DeflectorMotorID);
 
     public DeflectorSubsystem() {
@@ -24,6 +33,7 @@ public class DeflectorSubsystem extends SubsystemBase {
         DeflectorMotor.setNeutralMode(NeutralModeValue.Brake);
         DeflectorMotor.setInverted(false);
         DeflectorMotor.getConfigurator().apply(limitConfigs);
+        DeflectorMotor.getConfigurator().apply(currentlimits);
     }
 
     public void ResetArmPos() {

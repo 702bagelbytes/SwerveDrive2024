@@ -271,6 +271,13 @@ public final class Constants {
         public static final int IntakeMotorID = 14;
         
         public static final double MaxIntakeSpeed = 1;
+
+        public static final int STATOR_CURRENT_LIMIT = 25;
+        public static final int CURRENT_LIMIT = 15;
+        public static final int CURRENT_THRESHOLD = 25;
+        public static final double CURRENT_THRESHOLD_TIME = 0.1;
+        public static final boolean ENABLE_CURRENT_LIMIT = true;
+        public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
     }
 
     public static final class DeflectorConstants {
@@ -289,6 +296,12 @@ public final class Constants {
 
         public static final boolean DeflectorLimitEnable = true;
 
+        public static final int STATOR_CURRENT_LIMIT = 20;
+        public static final int CURRENT_LIMIT = 15;
+        public static final int CURRENT_THRESHOLD = 20;
+        public static final double CURRENT_THRESHOLD_TIME = 0.1;
+        public static final boolean ENABLE_CURRENT_LIMIT = true;
+        public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
 
     }
 
@@ -303,6 +316,13 @@ public final class Constants {
         public static final NeutralModeValue BottomShootMotorMode = NeutralModeValue.Coast;
         
         public static final double MaxShootSpeed = 1;
+
+        public static final int STATOR_CURRENT_LIMIT = 30;
+        public static final int CURRENT_LIMIT = 25;
+        public static final int CURRENT_THRESHOLD = 30;
+        public static final double CURRENT_THRESHOLD_TIME = 0.1;
+        public static final boolean ENABLE_CURRENT_LIMIT = true;
+        public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
     }
 
     public static final class ClimberConstants {
@@ -331,15 +351,15 @@ public final class Constants {
         public static final double RightLiftPosInValue = -13;
         public static final double RightLiftPosOutValue = 0;     
 
+        public static final int STATOR_CURRENT_LIMIT = 35;
+        public static final int CURRENT_LIMIT = 30;
+        public static final int CURRENT_THRESHOLD = 35;
+        public static final double CURRENT_THRESHOLD_TIME = 0.1;
+        public static final boolean ENABLE_CURRENT_LIMIT = true;
+        public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
+
     }
 
-    public static final class ShooterConstants{
-        public static final int TMotorID = 17;
-        public static final int BMotorID = 16;
-
-        public static final boolean TMotorInvert = true;
-        public static final boolean BMotorInvert = false;
-    }
 
     public static final class AutoAimConstants {
         public static final double kP = 0.005037;

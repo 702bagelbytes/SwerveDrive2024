@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -22,6 +23,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Creates a new IntakeSubsystem. */
   public ShooterSubsystem() {
+  CurrentLimitsConfigs currentlimits = new CurrentLimitsConfigs()
+    .withStatorCurrentLimit(Constants.ShootConstants.STATOR_CURRENT_LIMIT)
+    .withStatorCurrentLimitEnable(Constants.ShootConstants.ENABLE_STATOR_CURRENT_LIMIT)
+    .withSupplyCurrentLimit(Constants.ShootConstants.CURRENT_LIMIT)
+    .withSupplyCurrentLimitEnable(Constants.ShootConstants.ENABLE_CURRENT_LIMIT)
+    .withSupplyCurrentThreshold(Constants.ShootConstants.CURRENT_THRESHOLD)
+    .withSupplyTimeThreshold(Constants.ShootConstants.CURRENT_THRESHOLD_TIME);
+
     ShooterMotor1.setNeutralMode(Constants.ShootConstants.TopShootMotorMode);
     ShooterMotor2.setNeutralMode(Constants.ShootConstants.BottomShootMotorMode);
     ShooterMotor1.setInverted(Constants.ShootConstants.TopShootMotorInverted);
@@ -44,6 +53,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // ShooterMotor1.getConfigurator().apply(talonFXConfigs);
     // ShooterMotor2.getConfigurator().apply(talonFXConfigs);
+    ShooterMotor1.getConfigurator().apply(currentlimits);
+    ShooterMotor2.getConfigurator().apply(currentlimits);
   }
 
   final MotionMagicVelocityVoltage m_request = new MotionMagicVelocityVoltage(0);
