@@ -238,8 +238,8 @@ public final class Constants {
         }
 
         public static final HolonomicPathFollowerConfig PATHPLANNER_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-                new PIDConstants(2.14, .03, .15),
-                new PIDConstants(1.77, .035, 0.15),
+                new PIDConstants(3.4, .03, 0.05),
+                new PIDConstants(2.5, .035, 0.05),
                 MAX_SPEED,
                 DRIVEBASE_RADIUS,
                 new ReplanningConfig());
@@ -363,7 +363,7 @@ public final class Constants {
 
 
     public static final class AutoAimConstants {
-        public static final double kP = 0.005037;
+        public static final double kP = 0.004837;
         public static final double kI = 0.0000665;
         public static final double kD = 0.0003333;
 

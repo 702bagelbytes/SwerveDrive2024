@@ -58,7 +58,7 @@ public class AutoFollowCommand extends Command {
   public void execute() {
     AutoFollowPID.setSetpoint(6);
     AutoFollowPID.setTolerance(1);
-    AutoAimPID.setSetpoint(0);
+    AutoAimPID.setSetpoint(1);
     AutoAimPID.setTolerance(1);
     
 
