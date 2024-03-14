@@ -24,63 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "R1 Path"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOut"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoPickUpCmdR"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Return R1-R2 Path"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeIn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOn"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "R1 Path"
+                  "pathName": "R1-R2 Path"
                 }
               },
               {
@@ -126,7 +70,63 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "R2-R3 Path"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeOut"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoPickUpCmdR"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Return R1-R2 Path"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
           }
         },
         {
@@ -169,6 +169,12 @@
                 "data": {
                   "name": "IntakeIn"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
               }
             ]
           }
@@ -176,7 +182,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         },
         {
@@ -213,6 +219,12 @@
                 "data": {
                   "name": "IntakeIn"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
               }
             ]
           }
@@ -220,7 +232,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         },
         {
@@ -263,6 +275,12 @@
                 "data": {
                   "name": "IntakeIn"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
               }
             ]
           }
@@ -270,7 +288,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         }
       ]
