@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
+            "name": "Shoot"
           }
         },
         {
@@ -70,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
+            "name": "Shoot"
           }
         },
         {
@@ -126,7 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
+            "name": "Shoot"
           }
         },
         {
@@ -189,7 +189,7 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
+            "name": "Shoot"
           }
         },
         {
@@ -245,7 +245,7 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
+            "name": "Shoot"
           }
         }
       ]
