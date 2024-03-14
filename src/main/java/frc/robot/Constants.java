@@ -338,14 +338,14 @@ public final class Constants {
         
         public static final double MaxLiftSpeed = 1.0;
 
-        public static final double LP = 0.05;
+        public static final double LP = 0.1;
         public static final double LI = 0.0023;
         public static final double LD = 0.00147;
-        public static final double RP = 0.1;
-        public static final double RI = 0.0023;
-        public static final double RD = 0.00147;
+        public static final double RP = 0.3;
+        public static final double RI = 0.0069;
+        public static final double RD = 0.00294;
 
-        public static final boolean LiftLimitEnable = true;
+        public static boolean LiftLimitEnable = true;
         public static final double LiftPIDTolerance = .5;
         public static final double LeftLiftPosInValue = -41.7;
         public static final double LeftLiftPosOutValue = 0;   

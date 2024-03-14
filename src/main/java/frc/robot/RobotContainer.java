@@ -206,27 +206,27 @@ public class RobotContainer {
     //private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton fastMode = new JoystickButton(driver, XboxController.Button.kB.value);
+    //public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
+    public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    //public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
+
     private final JoystickButton ArmPosIn = new JoystickButton(codriver, XboxController.Button.kA.value);
     private final JoystickButton ArmPosOut = new JoystickButton(codriver, XboxController.Button.kY.value);
     private final JoystickButton ShootS = new JoystickButton(codriver, XboxController.Button.kLeftBumper.value);
     
     private final JoystickButton ShootA = new JoystickButton(codriver, XboxController.Button.kRightBumper.value);
-    // public final JoystickButton AutoAim = new JoystickButton(driver,
-    // XboxController.Button.kStart.value);
-    public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
     public final JoystickButton Intake = new JoystickButton(codriver, XboxController.Axis.kLeftTrigger.value);
     public final JoystickButton Outtake = new JoystickButton(codriver, XboxController.Axis.kRightTrigger.value);
     public final JoystickButton AutoShoot = new JoystickButton(codriver, XboxController.Button.kStart.value);
-    public final JoystickButton AutoAim = new JoystickButton(driver, XboxController.Button.kStart.value);
-
+    
     private final JoystickButton DeflectorPosIn = new JoystickButton(codriver, XboxController.Button.kB.value);
     private final JoystickButton DeflectorPosOut = new JoystickButton(codriver, XboxController.Button.kX.value);
     private final JoystickButton LiftPosOut = new JoystickButton(codriver, XboxController.Button.kLeftStick.value);
     private final JoystickButton LiftPosIn = new JoystickButton(codriver, XboxController.Button.kRightStick.value);
 
-    private final JoystickButton AutoAmp = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    //private final JoystickButton AutoAmp = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
 
-    public final JoystickButton onandstow = new JoystickButton(driver, XboxController.Button.kX.value);
+    
 
     private final POVButton Up = new POVButton(driver, Direction.UP.direction);
     // private final POVButton Up_Right = new POVButton(driver, Direction.UP_LEFT);
@@ -410,7 +410,7 @@ public class RobotContainer {
         ShootS.onTrue(Commands.runOnce(() -> s_ShooterSubsystem.set(0.67, 0.47)));
         ShootS.onFalse(new SequentialCommandGroup(new WaitCommand(0.1), Outtake(), new WaitCommand(0.5), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
         ShootA.onTrue(ShootACommand());
-        onandstow.onTrue(OnAndStow());
+        //onandstow.onTrue(OnAndStow());
         LiftPosOut.onTrue(new ParallelCommandGroup(new ClimberPIDCommand(c_ClimberSubsystem,
                 Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue),
                 DeflectorOut()));
@@ -432,10 +432,10 @@ public class RobotContainer {
          //AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
          //AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
-        Up.whileTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
-        Right.whileTrue(new AutoRotateCommand(270, s_Swerve, 0, 0));
-        Down.whileTrue(new AutoRotateCommand(180, s_Swerve, 0, 0));
-        Left.whileTrue(new AutoRotateCommand(90, s_Swerve, 0, 0));
+        //Up.whileTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
+        //Right.whileTrue(new AutoRotateCommand(270, s_Swerve, 0, 0));
+        //Down.whileTrue(new AutoRotateCommand(180, s_Swerve, 0, 0));
+        //Left.whileTrue(new AutoRotateCommand(90, s_Swerve, 0, 0));
         
 
         OutIntake.onTrue(ArmMove(-0.4));
