@@ -3,11 +3,13 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "Auto Breakers",
     "Auto 2",
+    "Auto Breakers",
     "Line Autos",
+    "Max Right Side",
     "Max's Autos",
-    "Random",
+    "Max Left Side",
+    "New New Folder",
     "possible Auto"
   ],
   "autoFolders": [

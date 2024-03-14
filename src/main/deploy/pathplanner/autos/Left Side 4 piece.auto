@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
-      "y": 5.55
+      "x": 0.8,
+      "y": 6.65
     },
-    "rotation": 0
+    "rotation": 60.971652773373386
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,39 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeOut"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "1 piece L"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeOn"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -24,7 +56,38 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "1st piece"
+                  "pathName": "1 piece L return"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeOff"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4 piece L "
                 }
               },
               {
@@ -49,7 +112,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "1st piece return"
+                  "pathName": "4 piece L return"
                 }
               },
               {
@@ -70,13 +133,7 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4th piece"
+            "name": "Shoot"
           }
         },
         {
@@ -86,75 +143,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "4th piece return"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeIn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOff"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "QuickShoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "5th piece"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "5th piece return"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeIn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOff"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "QuickShoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "2nd piece"
+                  "pathName": "5 piece L"
                 }
               },
               {
@@ -179,7 +168,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2nd piece return"
+                  "pathName": "5 piece L return"
                 }
               },
               {
@@ -200,63 +189,7 @@
         {
           "type": "named",
           "data": {
-            "name": "QuickShoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "3rd piece"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOut"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOn"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "3rd piece return"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeIn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOff"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "QuickShoot"
+            "name": "Shoot"
           }
         }
       ]
