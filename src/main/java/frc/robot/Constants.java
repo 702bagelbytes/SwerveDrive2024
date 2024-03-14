@@ -238,7 +238,7 @@ public final class Constants {
         }
 
         public static final HolonomicPathFollowerConfig PATHPLANNER_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-                new PIDConstants(8.8, .03, 0.15), //2.8 .03 0.1
+                new PIDConstants(9.4, .03, 0.35), //2.8 .03 0.1
                 new PIDConstants(3, .035, 0.1),
                 MAX_SPEED,
                 DRIVEBASE_RADIUS,

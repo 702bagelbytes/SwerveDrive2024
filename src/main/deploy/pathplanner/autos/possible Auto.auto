@@ -14,12 +14,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "3.2"
           }
         },
