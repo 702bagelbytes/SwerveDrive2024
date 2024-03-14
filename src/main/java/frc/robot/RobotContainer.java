@@ -293,10 +293,10 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
-        NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.4, 0.42)));
+        NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.67, 0.47)));
         NamedCommands.registerCommand("ShootOff", Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
         NamedCommands.registerCommand("Shoot", Shoot(0.58, 0.5));
-        NamedCommands.registerCommand("Shoot2", Shoot(0.90, 0.21));
+        NamedCommands.registerCommand("Shoot2", Shoot(0.70, 0.31));
         NamedCommands.registerCommand("QuickShoot", QuickShoot());
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());

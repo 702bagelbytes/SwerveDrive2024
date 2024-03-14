@@ -63,6 +63,12 @@
                 "data": {
                   "name": "IntakeOff"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
               }
             ]
           }
@@ -70,7 +76,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         },
         {
@@ -119,6 +125,12 @@
                 "data": {
                   "name": "IntakeOff"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
               }
             ]
           }
@@ -126,7 +138,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         },
         {
@@ -182,6 +194,12 @@
                 "data": {
                   "name": "IntakeOff"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
               }
             ]
           }
@@ -189,7 +207,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         },
         {
@@ -238,6 +256,12 @@
                 "data": {
                   "name": "IntakeOff"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOn"
+                }
               }
             ]
           }
@@ -245,7 +269,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         }
       ]
