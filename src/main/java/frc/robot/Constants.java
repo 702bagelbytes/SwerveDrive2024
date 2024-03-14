@@ -238,8 +238,8 @@ public final class Constants {
         }
 
         public static final HolonomicPathFollowerConfig PATHPLANNER_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-                new PIDConstants(3.4, .03, 0.05),
-                new PIDConstants(2.5, .035, 0.05),
+                new PIDConstants(8.3, .03, 0.05), //2.8 .03 0.1
+                new PIDConstants(3, .035, 0.1),
                 MAX_SPEED,
                 DRIVEBASE_RADIUS,
                 new ReplanningConfig());
@@ -249,13 +249,13 @@ public final class Constants {
     public static final class ArmConstants {
         public static final int ArmMotorID = 13;
 
-        public static final double kP = 0.052;
+        public static final double kP = 0.057;
         public static final double kI = 0.0014;
         public static final double kD = 0.0042;
 
         public static final double ArmPIDTolerance = 1.0;
         public static final double ArmPosInValue = 0.0;
-        public static final double ArmPosOutValue = -58;
+        public static final double ArmPosOutValue = -58.5;
         public static final boolean ArmLimitEnable = true;
 
         public static final int STATOR_CURRENT_LIMIT = 20;
@@ -363,7 +363,7 @@ public final class Constants {
 
 
     public static final class AutoAimConstants {
-        public static final double kP = 0.004837;
+        public static final double kP = 0.005037;
         public static final double kI = 0.0000665;
         public static final double kD = 0.0003333;
 
