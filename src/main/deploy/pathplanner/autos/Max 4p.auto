@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "QuickShoot"
           }
         },
         {
@@ -70,19 +70,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "QuickShoot"
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "2nd piece"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -90,9 +84,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "IntakeOn"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "2nd piece"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeOn"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -126,7 +133,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "QuickShoot"
           }
         },
         {
@@ -182,7 +189,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "QuickShoot"
           }
         }
       ]
