@@ -300,7 +300,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("QuickShoot", QuickShoot());
         NamedCommands.registerCommand("IntakeOut", IntakeOut());
         NamedCommands.registerCommand("IntakeOff", IntakeOff());
-        NamedCommands.registerCommand("IntakeOn", IntakeOn(0.6));
+        NamedCommands.registerCommand("IntakeOn", IntakeOn(0.67));
         NamedCommands.registerCommand("IntakeIn", IntakeIn());
          NamedCommands.registerCommand("Outtake", Outtake());
          NamedCommands.registerCommand("AutoPickUpCmdL", AutoPickUp(0.3));
@@ -324,7 +324,7 @@ public class RobotContainer {
         i_IntakeSubsystem.setDefaultCommand(
                 i_IntakeSubsystem
                         .moveCmd(() -> l_LimitSwitch.isRingIn() ? 0 - codriver.getRawAxis(RightTrigger) * 0.45
-                                : codriver.getRawAxis(LeftTrigger) * 0.45 - codriver.getRawAxis(RightTrigger) * 0.45));
+                                : codriver.getRawAxis(LeftTrigger) * 0.55 - codriver.getRawAxis(RightTrigger) * 0.55));
 
         
         l_LEDSubsystem.setDefaultCommand(new InstantCommand(() -> {
