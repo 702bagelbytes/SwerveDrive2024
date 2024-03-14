@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.888933915272411,
-        "y": 1.5144376344732333
+        "x": 5.854111344586325,
+        "y": 1.40864063546309
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.9071605522345925,
-        "y": 1.6633213571770662
+        "x": 2.2277215907658734,
+        "y": 3.1592640765665525
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3769542042900886,
-        "y": 4.010648631984287
+        "x": 1.0031634608723763,
+        "y": 4.319209365691459
       },
       "prevControl": {
-        "x": 1.3456210118527117,
-        "y": 2.9244312941552093
+        "x": 2.019996767266262,
+        "y": 3.3676772808091076
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Auto 1",
+  "folder": "Auto Breakers",
   "previewStartingState": null,
   "useDefaultConstraints": true
 }

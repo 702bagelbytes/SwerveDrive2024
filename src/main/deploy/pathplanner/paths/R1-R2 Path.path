@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.9,
-      "rotationDegrees": 19.309252270979503,
+      "rotationDegrees": 4.736866091626282,
       "rotateFast": false
     }
   ],
@@ -65,7 +65,7 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "Auto 1",
+  "folder": "Auto Breakers",
   "previewStartingState": {
     "rotation": 0.0,
     "velocity": 0.0

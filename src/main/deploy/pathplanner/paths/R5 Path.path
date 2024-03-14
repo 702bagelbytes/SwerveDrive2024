@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1471774597493225,
-        "y": 3.4153179756741197
+        "x": 1.8893943242431936,
+        "y": 3.3490197889486693
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.960375920751841,
-        "y": 1.6232017918581303
+        "x": 4.790634308541344,
+        "y": 1.5485718244163769
       },
       "prevControl": {
-        "x": 1.5959821385291626,
-        "y": 2.033195451540106
+        "x": 3.456623640520008,
+        "y": 2.2948714988339067
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "Auto 1",
+  "folder": "Auto Breakers",
   "previewStartingState": {
     "rotation": -59.67639313744998,
     "velocity": 0
