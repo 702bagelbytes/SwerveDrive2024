@@ -228,16 +228,16 @@ public class RobotContainer {
 
     
 
-    private final POVButton Up = new POVButton(driver, Direction.UP.direction);
+    //private final POVButton Up = new POVButton(driver, Direction.UP.direction);
     // private final POVButton Up_Right = new POVButton(driver, Direction.UP_LEFT);
     // private final POVButton Up_Left = new POVButton(driver, Direction.LEFT.direction);
 
-    private final POVButton Down = new POVButton(driver, Direction.DOWN.direction);
+    //private final POVButton Down = new POVButton(driver, Direction.DOWN.direction);
     // private final POVButton Down_Right = new POVButton(driver, Direction.RIGHT.direction);
     // private final POVButton Down_Left = new POVButton(driver, Direction.LEFT.direction);
 
-    private final POVButton Right = new POVButton(driver, Direction.RIGHT.direction);
-    private final POVButton Left = new POVButton(driver, Direction.LEFT.direction);
+    //private final POVButton Right = new POVButton(driver, Direction.RIGHT.direction);
+    //private final POVButton Left = new POVButton(driver, Direction.LEFT.direction);
 
     private final POVButton OutIntake = new POVButton(codriver, Direction.UP.direction);
     private final POVButton InIntake = new POVButton(codriver, Direction.DOWN.direction);
@@ -381,12 +381,12 @@ public class RobotContainer {
         RobotContainer.FollowPID = FollowPID;
     }
 
-    private Command wrapSpeedChange(Runnable r) {
-        return Commands.runOnce(() -> {
-            r.run();
-            RobotContainer.this.debugSpeeds();
-        });
-    }
+    // private Command wrapSpeedChange(Runnable r) {
+    //     return Commands.runOnce(() -> {
+    //         r.run();
+    //         RobotContainer.this.debugSpeeds();
+    //     });
+    // }
 
     /**
      * Use this method to define your button->command mappings. Buttons can be
