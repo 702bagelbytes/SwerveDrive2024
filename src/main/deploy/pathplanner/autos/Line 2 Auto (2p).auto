@@ -56,9 +56,15 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Line L2 Return Path"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Shoot2"
+            "name": "Shoot"
           }
         }
       ]

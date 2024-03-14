@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7426336086361384,
-        "y": 4.401663085651201
+        "x": 0.8156700536414118,
+        "y": 4.450354048988052
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4437834806867724,
-        "y": 4.206899232303804
+        "x": 0.9714811363193305,
+        "y": 4.177684654301695
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.2228388940763653,
-        "y": 4.265328388308022
+        "x": 2.295875339081639,
+        "y": 4.109517305630104
       },
       "prevControl": {
-        "x": 1.9501694993900078,
-        "y": 4.703547058339669
+        "x": 1.8917403433857864,
+        "y": 4.138731883632213
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,8 +39,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -12.907408671265795,
-    "rotateFast": false
+    "rotation": -1.1457628381750713,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "Line Autos",

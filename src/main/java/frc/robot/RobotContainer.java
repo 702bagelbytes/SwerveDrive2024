@@ -293,7 +293,7 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
-        NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.52, 0.42)));
+        NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.4, 0.42)));
         NamedCommands.registerCommand("ShootOff", Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
         NamedCommands.registerCommand("Shoot", Shoot(0.58, 0.5));
         NamedCommands.registerCommand("Shoot2", Shoot(0.90, 0.21));
@@ -324,7 +324,7 @@ public class RobotContainer {
         i_IntakeSubsystem.setDefaultCommand(
                 i_IntakeSubsystem
                         .moveCmd(() -> l_LimitSwitch.isRingIn() ? 0 - codriver.getRawAxis(RightTrigger) * 0.45
-                                : codriver.getRawAxis(LeftTrigger) * 0.25 - codriver.getRawAxis(RightTrigger) * 0.45));
+                                : codriver.getRawAxis(LeftTrigger) * 0.45 - codriver.getRawAxis(RightTrigger) * 0.45));
 
         
         l_LEDSubsystem.setDefaultCommand(new InstantCommand(() -> {

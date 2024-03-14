@@ -238,8 +238,8 @@ public final class Constants {
         }
 
         public static final HolonomicPathFollowerConfig PATHPLANNER_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-                new PIDConstants(1.14, .03, .15),
-                new PIDConstants(.97, .035, 0.15),
+                new PIDConstants(2.14, .03, .15),
+                new PIDConstants(1.77, .035, 0.15),
                 MAX_SPEED,
                 DRIVEBASE_RADIUS,
                 new ReplanningConfig());
@@ -272,9 +272,9 @@ public final class Constants {
         
         public static final double MaxIntakeSpeed = 1;
 
-        public static final int STATOR_CURRENT_LIMIT = 25;
-        public static final int CURRENT_LIMIT = 15;
-        public static final int CURRENT_THRESHOLD = 25;
+        public static final int STATOR_CURRENT_LIMIT = 60;
+        public static final int CURRENT_LIMIT = 55;
+        public static final int CURRENT_THRESHOLD = 60;
         public static final double CURRENT_THRESHOLD_TIME = 0.1;
         public static final boolean ENABLE_CURRENT_LIMIT = true;
         public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
@@ -283,6 +283,7 @@ public final class Constants {
     public static final class DeflectorConstants {
         public static final int DeflectorMotorID = 15;
         public static final boolean DeflectorMotorInverted = false;
+
 
 
         public static final double kP = 0.028;
@@ -317,9 +318,9 @@ public final class Constants {
         
         public static final double MaxShootSpeed = 1;
 
-        public static final int STATOR_CURRENT_LIMIT = 30;
-        public static final int CURRENT_LIMIT = 25;
-        public static final int CURRENT_THRESHOLD = 30;
+        public static final int STATOR_CURRENT_LIMIT = 50;
+        public static final int CURRENT_LIMIT = 35;
+        public static final int CURRENT_THRESHOLD = 50;
         public static final double CURRENT_THRESHOLD_TIME = 0.1;
         public static final boolean ENABLE_CURRENT_LIMIT = true;
         public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
