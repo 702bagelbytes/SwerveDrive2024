@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    Constants.ClimberConstants.LiftLimitEnable = true;
+    
   }
 
   /**
@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
     }
     l_LimelightSubsystem.setCamMode(0);
     l_LimelightBackSubsystem.setCamMode(0);
-    Constants.ClimberConstants.LiftLimitEnable = true;
+   
   }
 
   /** This function is called periodically during autonomous. */
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
     }
     l_LimelightSubsystem.setCamMode(0);
     l_LimelightBackSubsystem.setCamMode(0);
-    Constants.ClimberConstants.LiftLimitEnable = true;
+    
   }
 
   /** This function is called periodically during operator control. */
@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    Constants.ClimberConstants.LiftLimitEnable = false;
+    
   }
 
   /** This function is called periodically during test mode. */

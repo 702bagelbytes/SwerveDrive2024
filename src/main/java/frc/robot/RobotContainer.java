@@ -330,12 +330,13 @@ public class RobotContainer {
         l_LEDSubsystem.setDefaultCommand(new InstantCommand(() -> {
             if(l_LimitSwitch.isRingIn()) {
                l_LEDSubsystem.setColor(Color.kGreen);
-               l_LEDSubsystem.setColor(Color.kWhite);
-               new WaitCommand(0.1);
+               new WaitCommand(0.6);
+               l_LEDSubsystem.setColor(Color.kHoneydew);
+               new WaitCommand(0.6);
                l_LEDSubsystem.setColor(Color.kGreen);
-               new WaitCommand(0.1);
-               l_LEDSubsystem.setColor(Color.kWhite);
-               new WaitCommand(0.1);
+               new WaitCommand(0.6);
+               l_LEDSubsystem.setColor(Color.kHoneydew);
+               new WaitCommand(0.6);
                l_LEDSubsystem.setColor(Color.kGreen);
             } else {
                 l_LEDSubsystem.DoTheRainbow(true);;
