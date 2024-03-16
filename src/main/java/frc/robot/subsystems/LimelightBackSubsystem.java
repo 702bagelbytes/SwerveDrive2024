@@ -26,6 +26,7 @@ public class LimelightBackSubsystem extends SubsystemBase {
   public NetworkTableEntry botpose;
   public NetworkTableEntry camMode;
   public NetworkTableEntry priorityid;
+  public NetworkTableEntry targetpose_cameraspace;
 
 
   /** Creates a new LimelightSubsystem. */
@@ -43,6 +44,8 @@ public class LimelightBackSubsystem extends SubsystemBase {
     botpose_wpiblue = table.getEntry("botpose_wpiblue");
     botpose_wpired = table.getEntry("botpose_wpired");
     priorityid = table.getEntry("priorityid");
+    targetpose_cameraspace = table.getEntry("targetpose_cameraspace");
+
   }
 
   public double getTargetX() {
@@ -101,6 +104,15 @@ public class LimelightBackSubsystem extends SubsystemBase {
 
   public void setCamMode(int value) {
     camMode.setDouble(value);
+  }
+
+  public double getTargetPos(int value){
+    double pos[] = targetpose_cameraspace.getDoubleArray(new double[6]);
+    return pos[value];
+  }
+
+  public double getTargetDistance(){
+    return Math.sqrt(Math.pow(getTargetPos(0), 2) + Math.pow(getTargetPos(2), 2));
   }
 
   @Override

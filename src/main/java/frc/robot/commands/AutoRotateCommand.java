@@ -49,21 +49,17 @@ public class AutoRotateCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    AutoAimPID.setInputRange(0, 360);
+    AutoAimPID.setContinuous(true);
     AutoAimPID.setSetpoint(angle);
-    AutoAimPID.setTolerance(1);
-    
+    AutoAimPID.setTolerance(5);
 
-
-    
-
-    
-
-    double value2 = AutoAimPID.calculate(s_Swerve.getGyroYaw().getDegrees());
+    double angle = s_Swerve.getGyroYaw().getDegrees();
+    double value2 = AutoAimPID.calculate();
     double result2 = Math.copySign(Math.abs(value2) + 0.0955, value2); 
     // value > 0 ? value + 0.0955 : value - 0.0955;
     double AimPID =  MathUtil.clamp(result2, -0.57, 0.57);
-    // SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
+    //SmartDashboard.putNumber("FollowPID", RobotContainer.FollowPID);
 
     s_Swerve.drive(
                 new Translation2d(translation, strafe).times(Constants.Swerve.MAX_SPEED),
@@ -76,14 +72,13 @@ public class AutoRotateCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   RobotContainer.FollowPID = 0;
-   RobotContainer.AimPID = 0;
+   
    RobotContainer.robotCentric = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return AutoAimPID.atSetpoint();
   }
 }

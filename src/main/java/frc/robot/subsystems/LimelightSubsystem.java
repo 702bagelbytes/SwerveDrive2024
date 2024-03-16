@@ -100,8 +100,8 @@ public class LimelightSubsystem extends SubsystemBase {
     return pos[value];
   }
 
-  public double TargetDistance(){
-    return Math.sqrt(Math.pow(getTargetPos(0), 2) + Math.pow(getTargetPos(1), 2));
+  public double getTargetDistance(){
+    return Math.sqrt(Math.pow(getTargetPos(0), 2) + Math.pow(getTargetPos(2), 2));
   }
 
   public void setCamMode(int value) {

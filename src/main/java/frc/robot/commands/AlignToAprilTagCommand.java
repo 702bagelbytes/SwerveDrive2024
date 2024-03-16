@@ -11,7 +11,8 @@ import frc.robot.subsystems.Swerve;
 public class AlignToAprilTagCommand extends Command {
     private final LimelightBackSubsystem limelightSubsystem;
     private final Swerve driveSubsystem;
-    private final PIDController pid = new PIDController(0.3, 0.2, 0.05);
+    private final PIDController RotatePID = new PIDController(0.3, 0.2, 0.05);
+    private final PIDController Translatepid = new PIDController(0.3, 0.2, 0.05);
 
     private final int pipelineBeforeRunning;
 

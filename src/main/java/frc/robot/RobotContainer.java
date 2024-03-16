@@ -103,6 +103,16 @@ public class RobotContainer {
                 
     }
 
+    public Command AutoPickUp_Driver(double turn) {
+        return new SequentialCommandGroup(IntakeOut(),
+                (IntakeOn(0.40)).raceWith(
+                new AutoPickUpCommand(() -> l_LimelightSubsystem.getTargetX(),
+                        () -> l_LimelightSubsystem.getTargetA(),
+                        () -> l_LimelightSubsystem.IsTargetAvailable(), s_Swerve, turn)));
+                
+                
+    }
+
     public Command AutoAmpScore(LimelightBackSubsystem l_LimelightBackSubsystem){
         Number Id[] = {1, 2};
         l_LimelightBackSubsystem.setId(Id);
@@ -143,7 +153,7 @@ public class RobotContainer {
         return new SequentialCommandGroup(
                 Commands.runOnce(() -> i_IntakeSubsystem.setMode(NeutralModeValue.Coast), i_IntakeSubsystem),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.55), i_IntakeSubsystem),
-                new WaitCommand(0.2),
+                new WaitCommand(0.17),
                 Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem),
                 Commands.runOnce(() -> i_IntakeSubsystem.setMode(NeutralModeValue.Brake), i_IntakeSubsystem));
     }
@@ -151,9 +161,9 @@ public class RobotContainer {
         return new SequentialCommandGroup(IntakeIn(),
                 Commands.runOnce(() -> s_ShooterSubsystem.set(TopSpeed, BottomSpeed),
                         s_ShooterSubsystem),
-                new WaitCommand(.52),
+                new WaitCommand(.42),//.52
                 Commands.runOnce(() -> i_IntakeSubsystem.set(-0.55), i_IntakeSubsystem),
-                new WaitCommand(0.35),
+                new WaitCommand(0.15),//.35
                 new ParallelCommandGroup(Commands.runOnce(() -> s_ShooterSubsystem.set(0), s_ShooterSubsystem),
                         Commands.runOnce(() -> i_IntakeSubsystem.set(0), i_IntakeSubsystem)));
     }
@@ -203,7 +213,7 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    //private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton AutoTrap = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton fastMode = new JoystickButton(driver, XboxController.Button.kB.value);
     //public final JoystickButton AutoTurn = new JoystickButton(driver, XboxController.Button.kX.value);
@@ -228,16 +238,16 @@ public class RobotContainer {
 
     
 
-    //private final POVButton Up = new POVButton(driver, Direction.UP.direction);
-    // private final POVButton Up_Right = new POVButton(driver, Direction.UP_LEFT);
-    // private final POVButton Up_Left = new POVButton(driver, Direction.LEFT.direction);
+    private final POVButton Up = new POVButton(driver, Direction.UP.direction);
+    private final POVButton Up_Right = new POVButton(driver, Direction.UP_LEFT);
+    private final POVButton Up_Left = new POVButton(driver, Direction.LEFT.direction);
 
-    //private final POVButton Down = new POVButton(driver, Direction.DOWN.direction);
-    // private final POVButton Down_Right = new POVButton(driver, Direction.RIGHT.direction);
-    // private final POVButton Down_Left = new POVButton(driver, Direction.LEFT.direction);
+    private final POVButton Down = new POVButton(driver, Direction.DOWN.direction);
+    private final POVButton Down_Right = new POVButton(driver, Direction.RIGHT.direction);
+    private final POVButton Down_Left = new POVButton(driver, Direction.LEFT.direction);
 
-    //private final POVButton Right = new POVButton(driver, Direction.RIGHT.direction);
-    //private final POVButton Left = new POVButton(driver, Direction.LEFT.direction);
+    private final POVButton Right = new POVButton(driver, Direction.RIGHT.direction);
+    private final POVButton Left = new POVButton(driver, Direction.LEFT.direction);
 
     private final POVButton OutIntake = new POVButton(codriver, Direction.UP.direction);
     private final POVButton InIntake = new POVButton(codriver, Direction.DOWN.direction);
@@ -293,7 +303,7 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
-        NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.67, 0.47)));
+        NamedCommands.registerCommand("ShootOn", Commands.runOnce(() -> s_ShooterSubsystem.set(0.60, 0.49)));
         NamedCommands.registerCommand("ShootOff", Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
         NamedCommands.registerCommand("Shoot", Shoot(0.58, 0.5));
         NamedCommands.registerCommand("Shoot2", Shoot(0.70, 0.31));
@@ -408,9 +418,11 @@ public class RobotContainer {
         ArmPosOut.onTrue(new ArmPIDCommand(a_ArmSubsystem, Constants.ArmConstants.ArmPosOutValue));
         DeflectorPosIn.onTrue(DeflectorIn());
         DeflectorPosOut.onTrue(DeflectorOut());
-        ShootS.onTrue(Commands.runOnce(() -> s_ShooterSubsystem.set(0.67, 0.47)));
+        ShootS.onTrue(Commands.runOnce(() -> s_ShooterSubsystem.set(0.62, 0.47)));
         ShootS.onFalse(new SequentialCommandGroup(new WaitCommand(0.1), Outtake(), new WaitCommand(0.5), Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0))));
         ShootA.onTrue(ShootACommand());
+        AutoTrap.whileTrue(new SequentialCommandGroup(new AutoTrapAlignCommand(l_LimelightBackSubsystem, s_Swerve), Shoot(0.42, 0.52)));
+        AutoTrap.onFalse(Shoot(0.42, 0.52))
         //onandstow.onTrue(OnAndStow());
         LiftPosOut.onTrue(new ParallelCommandGroup(new ClimberPIDCommand(c_ClimberSubsystem,
                 Constants.ClimberConstants.LeftLiftPosInValue, Constants.ClimberConstants.RightLiftPosInValue),
@@ -419,7 +431,7 @@ public class RobotContainer {
                 Constants.ClimberConstants.RightLiftPosOutValue));
 
          AutoAim.whileTrue(new SequentialCommandGroup(
-                 new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp(0)));
+                 new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0)), AutoPickUp_Driver(0)));
 
          AutoAim.onFalse(new ParallelCommandGroup(new InstantCommand(() -> FollowPID = 0),
                  new InstantCommand(() -> AimPID = 0), new InstantCommand(()-> l_LimelightSubsystem.setCamMode(0))));
@@ -433,10 +445,17 @@ public class RobotContainer {
          //AutoAmp.onTrue(AutoAmpScore(l_LimelightBackSubsystem));
          //AutoAmp.onFalse(Commands.runOnce(() -> s_ShooterSubsystem.set(0, 0)));
 
-        //Up.whileTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
-        //Right.whileTrue(new AutoRotateCommand(270, s_Swerve, 0, 0));
-        //Down.whileTrue(new AutoRotateCommand(180, s_Swerve, 0, 0));
-        //Left.whileTrue(new AutoRotateCommand(90, s_Swerve, 0, 0));
+        Up.whileTrue(new AutoRotateCommand(0, s_Swerve, 0, 0));
+        Up_Left.whileTrue(new AutoRotateCommand(60, s_Swerve, 0, 0));
+        Up_Right.whileTrue(new AutoRotateCommand(300, s_Swerve, 0, 0));
+
+        
+        Down.whileTrue(new AutoRotateCommand(180, s_Swerve, 0, 0));
+        Down_Left.whileTrue(new AutoRotateCommand(120, s_Swerve, 0, 0));
+        Down_Right.whileTrue(new AutoRotateCommand(240, s_Swerve, 0, 0));
+
+        Left.whileTrue(new AutoRotateCommand(90, s_Swerve, 0, 0));
+        Right.whileTrue(new AutoRotateCommand(270, s_Swerve, 0, 0));
         
 
         OutIntake.onTrue(ArmMove(-0.4));

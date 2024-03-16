@@ -238,7 +238,7 @@ public final class Constants {
         }
 
         public static final HolonomicPathFollowerConfig PATHPLANNER_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-                new PIDConstants(9.4, .03, 0.35), //2.8 .03 0.1
+                new PIDConstants(10.3, .1, 0.35), //2.8 .03 0.1
                 new PIDConstants(3, .035, 0.1),
                 MAX_SPEED,
                 DRIVEBASE_RADIUS,
@@ -258,9 +258,9 @@ public final class Constants {
         public static final double ArmPosOutValue = -58.5;
         public static final boolean ArmLimitEnable = true;
 
-        public static final int STATOR_CURRENT_LIMIT = 20;
-        public static final int CURRENT_LIMIT = 15;
-        public static final int CURRENT_THRESHOLD = 20;
+        public static final int STATOR_CURRENT_LIMIT = 22;
+        public static final int CURRENT_LIMIT = 18;
+        public static final int CURRENT_THRESHOLD = 22;
         public static final double CURRENT_THRESHOLD_TIME = 0.1;
         public static final boolean ENABLE_CURRENT_LIMIT = true;
         public static final boolean ENABLE_STATOR_CURRENT_LIMIT = true;
@@ -336,12 +336,12 @@ public final class Constants {
         public static final NeutralModeValue LeftLiftMotorMode = NeutralModeValue.Brake;
         public static final NeutralModeValue RightLiftMotorMode = NeutralModeValue.Brake;
         
-        public static final double MaxLiftSpeed = 1.0;
+        public static final double MaxLiftSpeed = 4.0;
 
-        public static final double LP = 0.1;
+        public static final double LP = 1.3;
         public static final double LI = 0.0023;
         public static final double LD = 0.00147;
-        public static final double RP = 0.3;
+        public static final double RP = 2.4;
         public static final double RI = 0.0069;
         public static final double RD = 0.00294;
 
@@ -363,7 +363,7 @@ public final class Constants {
 
 
     public static final class AutoAimConstants {
-        public static final double kP = 0.005037;
+        public static final double kP = 0.004537;
         public static final double kI = 0.0000665;
         public static final double kD = 0.0003333;
 
@@ -374,13 +374,52 @@ public final class Constants {
     }
 
     public static final class AutoFollowConstants {
-        public static final double kP = 0.04571;
+        public static final double kP = 0.05471;
         public static final double kI = 0.000665;
         public static final double kD = 0.001333;
+
+       
 
         public static final double AutoFollowPIDTolerance = 1.0;
         // public static final double DeflectorPosInValue = 0.0;
         // public static final double DeflectorPosOutValue = 0.0;
+
+    }
+
+    public static final class AutoRotateConstants {
+        public static final double kP = 0.002037;
+        public static final double kI = 0.0000665;
+        public static final double kD = 0.0003333;
+
+        public static final double Tolerance = 6.0;
+        // public static final double DeflectorPosInValue = 0.0;
+        // public static final double DeflectorPosOutValue = 0.0;
+
+    }
+
+    public static final class AutoTranslateConstants {
+        public static final double kP = 0.05471;
+        public static final double kI = 0.000665;
+        public static final double kD = 0.001333;
+
+       
+
+        public static final double Tolerance = 0.3;
+        public static final double Setpoint = 1.2;
+        // public static final double DeflectorPosInValue = 0.0;
+        // public static final double DeflectorPosOutValue = 0.0;
+
+    }
+
+    public static final class AutoStrafeConstants {
+        public static final double kP = 0.05471;
+        public static final double kI = 0.000665;
+        public static final double kD = 0.001333;
+
+       
+
+        public static final double Tolerance = 1;
+        
 
     }
 
